@@ -1,0 +1,45 @@
+{
+  "name": "@zougui/firestone-bot",
+  "private": true,
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon --enable-source-maps dist",
+    "compile": "tsc --project .",
+    "compile:watch": "npm run compile -- --watch",
+    "clean": "rimraf ./dist & rimraf ./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "build": "npm run clean && npm run compile",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@xstate/store": "^3.2.0",
+    "axios": "^1.8.1",
+    "big.js": "^6.2.2",
+    "execa": "^9.5.2",
+    "fast-levenshtein": "^3.0.0",
+    "immer": "^10.1.1",
+    "node-moving-things-tracker": "^0.9.1",
+    "radash": "^12.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/big.js": "^6.2.2",
+    "@types/fast-levenshtein": "^0.0.4",
+    "@types/node": "^22.13.9",
+    "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1",
+    "typescript": "~5.6.2"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "iohook",
+      "robotjs",
+      "tesseract.js"
+    ],
+    "onlyBuiltDependencies": [
+      "iohook",
+      "robotjs",
+      "tesseract.js"
+    ]
+  }
+}
