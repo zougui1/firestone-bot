@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Query
-import mss
 import easyocr
 import numpy as np
 from PIL import Image
@@ -12,32 +11,29 @@ reader = easyocr.Reader(['en'], gpu=False)
 
 @app.get('/find-text')
 def find_text(left: int, top: int, width: int, height: int, debug: bool = Query(False)):
-  with mss.mss() as sct:
-    monitor = { 'left': left, 'top': top, 'width': width, 'height': height }
-    screenshot = sct.grab(monitor)
-    image = Image.frombytes('RGB', (screenshot.width, screenshot.height), screenshot.rgb)
+  screenshot = pyautogui.screenshot(region=(left, top, width, height))
 
-    if debug:
-      image.save('screenshot.png')
+  if debug:
+    screenshot.save('screenshot.png')
 
-    results = reader.readtext(np.array(image))
-    texts = []
+  results = reader.readtext(np.array(image))
+  texts = []
 
-    for (bbox, text, _) in results:
-      (left, top), (right, bottom) = bbox[0], bbox[1]
+  for (bbox, text, _) in results:
+    (left, top), (right, bottom) = bbox[0], bbox[1]
 
-      width = right - left
-      height = bottom - top
+    width = right - left
+    height = bottom - top
 
-      texts.append({
-        'content': text,
-        'left': int(left),
-        'top': int(top),
-        'width': int(width),
-        'height': int(height),
-      });
+    texts.append({
+      'content': text,
+      'left': int(left),
+      'top': int(top),
+      'width': int(width),
+      'height': int(height),
+    });
 
-    return { 'texts': texts }
+  return { 'texts': texts }
 
 @app.get('/press')
 def press(key: str):
