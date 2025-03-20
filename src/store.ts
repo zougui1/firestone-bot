@@ -18,13 +18,9 @@ const views = [
 
 export type ViewName = typeof views[number];
 
-export const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
-export type GuardianName = typeof guardians[number];
-
 export interface State {
   views: ViewName[];
   isDialog: boolean;
-  currentGuardian: GuardianName;
   window: {
     left: number;
     top: number;
@@ -37,7 +33,6 @@ export const store = createStore({
   context: {
     views: [],
     isDialog: false,
-    currentGuardian: 'Vermillion',
     window: {
       left: 0,
       top: 0,
@@ -73,12 +68,6 @@ export const store = createStore({
     popView: (context) => {
       return produce(context, draft => {
         draft.views = draft.views.slice(0, -1);
-      });
-    },
-
-    changeGuardian: (context, event: { name: GuardianName }) => {
-      return produce(context, draft => {
-        draft.currentGuardian = event.name;
       });
     },
 

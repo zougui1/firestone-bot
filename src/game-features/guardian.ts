@@ -1,50 +1,19 @@
-import { click, press } from '../game-bindings';
-import { hotkeys } from '../hotkeys';
-import { guardians, store, type GuardianName } from '../store';
 import { goToView } from './view';
+import { click } from '../game-bindings';
 
-const navigateGuardians: Record<'left' | 'right', () => Promise<void>> = {
-  left: async () => {
-    const { currentGuardian } = store.getSnapshot().context;
-    const index = guardians.indexOf(currentGuardian);
-    const prevGuardian = guardians[index - 1];
+const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
+type GuardianName = typeof guardians[number];
 
-    if (prevGuardian) {
-      await press({ key: hotkeys.left });
-      store.trigger.changeGuardian({ name: prevGuardian });
-    }
-  },
-
-  right: async () => {
-    const { currentGuardian } = store.getSnapshot().context;
-    const index = guardians.indexOf(currentGuardian);
-    const nextGuardian = guardians[index + 1];
-
-    if (nextGuardian) {
-      await press({ key: hotkeys.right });
-      store.trigger.changeGuardian({ name: nextGuardian });
-    }
-  },
-};
+const guardianCoordinates = {
+  Vermillion: { left: '40%', top: '90%' },
+  Grace: { left: '45%', top: '90%' },
+  Ankaa: { left: '55%', top: '90%' },
+  Azhar: { left: '60%', top: '90%' },
+} as const;
 
 export const selectGuardian = async (name: GuardianName): Promise<void> => {
-  const { currentGuardian } = store.getSnapshot().context;
-  const targetIndex = guardians.indexOf(name);
-  const currentIndex = guardians.indexOf(currentGuardian);
-
-  if (targetIndex < 0 || currentIndex < 0 || targetIndex === currentIndex) {
-    return;
-  }
-
-  if (targetIndex < currentIndex) {
-    for (let index = targetIndex; index < currentIndex; index++) {
-      await navigateGuardians.left();
-    }
-  }
-
-  for (let index = currentIndex; index < targetIndex; index++) {
-    await navigateGuardians.right();
-  }
+  const guardianCoords = guardianCoordinates[name];
+  await click({ ...guardianCoords });
 }
 
 export const handleTrainGuardian = async () => {
