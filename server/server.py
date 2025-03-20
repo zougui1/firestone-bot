@@ -11,29 +11,32 @@ reader = easyocr.Reader(['en'], gpu=False)
 
 @app.get('/find-text')
 def find_text(left: int, top: int, width: int, height: int, debug: bool = Query(False)):
-  screenshot = pyautogui.screenshot(region=(left, top, width, height))
+  try:
+    screenshot = pyautogui.screenshot(region=(left, top, width, height))
 
-  if debug:
-    screenshot.save('screenshot.png')
+    if debug:
+      screenshot.save('screenshot.png')
 
-  results = reader.readtext(np.array(screenshot))
-  texts = []
+    results = reader.readtext(np.array(screenshot))
+    texts = []
 
-  for (bbox, text, _) in results:
-    (left, top), (right, bottom) = bbox[0], bbox[1]
+    for (bbox, text, _) in results:
+      (left, top), (right, bottom) = bbox[0], bbox[1]
 
-    width = right - left
-    height = bottom - top
+      width = right - left
+      height = bottom - top
 
-    texts.append({
-      'content': text,
-      'left': int(left),
-      'top': int(top),
-      'width': int(width),
-      'height': int(height),
-    });
+      texts.append({
+        'content': text,
+        'left': int(left),
+        'top': int(top),
+        'width': int(width),
+        'height': int(height),
+      });
 
-  return { 'texts': texts }
+    return { 'texts': texts }
+  except Exception:
+    return { 'texts': [] }
 
 @app.get('/press')
 def press(key: str):
