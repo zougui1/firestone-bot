@@ -16,7 +16,7 @@ def find_text(left: int, top: int, width: int, height: int, debug: bool = Query(
   if debug:
     screenshot.save('screenshot.png')
 
-  results = reader.readtext(np.array(image))
+  results = reader.readtext(np.array(screenshot))
   texts = []
 
   for (bbox, text, _) in results:
