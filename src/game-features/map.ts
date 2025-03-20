@@ -1,75 +1,112 @@
+import { sleep } from 'radash';
+
 import { goToView } from './view';
-import { click, drag, findText } from '../game-bindings';
+import { click, drag, findText, press } from '../api';
+import { hotkeys } from '../hotkeys';
+import { calcPosition } from '../utils';
 
-const iconWidth = 4.621;
-const iconHeight = 11.4;
+const startMissions = async ({ squads }: { squads: number; }) => {
+  let missionsStarted = 0;
 
-const clickPotentialIcon = async ({ left, top, debug }: { left: number; top: number; debug?: boolean; }) => {
-  // click on potential icon; automatically claims it if it's finished
-  await click({ left: `${left}%`, top: `${top}%`, debug });
+  const left = '18%';
+  const top = '20%';
 
-  const [leftButton, rightButton] = await Promise.all([
-    findText({
-      left: '51%',
-      top: '71%',
-      width: '22%',
-      height: '6%',
-    }),
-    findText({
-      left: '65%',
-      top: '71%',
-      width: '22%',
-      height: '6%',
-    }),
-  ]);
+  const texts = await findText({
+    left,
+    top,
+    width: '63%',
+    height: '68%',
+  });
 
-  if (rightButton.some(text => text.content.toLowerCase() === 'free')) {
-    await click({ left: '65%', top: '71%', debug });
-  }
+  const durations = texts.filter(text => /\d/.test(text.content));
+  console.log(durations)
 
-  if (leftButton.some(text => text.content.toLowerCase() === 'start')) {
-    await click({ left: '51%', top: '71%', debug });
-  }
+  for (const duration of durations) {
+    if (squads - missionsStarted <= 0) {
+      break;
+    }
 
-  // leave dialog
-  await click({ left: '96%', top: '20%', debug });
-}
+    await click({
+      left: calcPosition(left, 'width') + duration.left,
+      top: calcPosition(top, 'height') + duration.top,
+    });
+    // wait for the dialog to open and be interactable
+    await sleep(1000);
 
-const handleBottomMap = async () => {
-  const left = 18;
-  const right = 81;
-  const top = 26;
-  const bottom = 88;
+    const [missionLabelTexts, leftButtonTexts] = await Promise.all([
+      findText({
+        left: '22%',
+        top: '20%',
+        width: '25%',
+        height: '5%',
+      }),
+      findText({
+        left: '50%',
+        top: '81%',
+        width: '13%',
+        height: '6%',
+        debug: true
+      }),
+    ]);
 
-  await drag({ top: '20%', x: '50%' });
+    if (missionLabelTexts.some(text => text.content.toLowerCase().includes('mission'))) {
+      missionsStarted++;
 
-  try {
-    for (let row = left; row < right; row += iconWidth) {
-      for (let col = top; col < bottom; col += iconHeight) {
-        await clickPotentialIcon({ left: row, top: col });
+      if (leftButtonTexts.some(text => text.content.toLowerCase().includes('start'))) {
+        await click({ left: '51%', top: '81%' });
+      } else {
+        await press({ key: hotkeys.escape });
       }
     }
-  } finally {
-    await drag({ top: '-20%', x: '50%' });
   }
+
+  return { missionsStarted };
 }
 
-const handleTopMap = async () => {
-  const left = 20;
-  const right = 79;
-  const top = 20;
-  const bottom = 87;
-
-  await drag({ top: '-20%', x: '50%' });
+const handleBottomMap = async ({ squads }: { squads: number; }) => {
+  await drag({ top: '20%', x: '99%', });
 
   try {
-    for (let row = left; row < right; row += iconWidth) {
-      for (let col = top; col < bottom; col += iconHeight) {
-        await clickPotentialIcon({ left: row, top: col });
-      }
-    }
+    return await startMissions({ squads });
   } finally {
-    await drag({ top: '20%', x: '50%' });
+    await drag({ top: '-20%', x: '99%' });
+  }
+
+  return { missionsStarted: 0 };
+}
+
+const handleTopMap = async ({ squads }: { squads: number; }) => {
+  await drag({ top: '-20%', x: '99%' });
+
+  try {
+    return await startMissions({ squads });
+  } finally {
+    await drag({ top: '20%', x: '99%' });
+  }
+
+  return { missionsStarted: 0 };
+}
+
+const claimMissions = async () => {
+  const left = '5%';
+  const top = '28%';
+
+  const checkClaimButton = async () => {
+    const texts = await findText({
+      left,
+      top,
+      width: '8%',
+      height: '5%',
+    });
+
+    return texts.some(text => text.content.toLowerCase().includes('claim'));
+  }
+
+  while (await checkClaimButton()) {
+    await click({ left, top });
+    // wait for the dialog to open and be interactable
+    await sleep(1000);
+    await press({ key: hotkeys.escape });
   }
 }
 
@@ -77,12 +114,31 @@ export const handleMapMissions = async () => {
   await goToView('map');
 
   try {
-    // click on the whole map to claim finished missions
-    await handleBottomMap();
-    await handleTopMap();
-    // click on the whole map again, this time to start new missions
-    await handleBottomMap();
-    await handleTopMap();
+    await claimMissions();
+
+    const [text] = await findText({
+      left: '62%',
+      top: '2%',
+      width: '5%',
+      height: '3%',
+    });
+
+    let [squads] = text.content.split('/').map(Number);
+
+    if (!squads) {
+      return;
+    }
+
+    console.log('available squads');
+
+    const { missionsStarted } = await handleBottomMap({ squads });
+    squads -= missionsStarted;
+
+    if (squads <= 0) {
+      return;
+    }
+
+    await handleTopMap({ squads });
   } finally {
     await goToView('main');
   }

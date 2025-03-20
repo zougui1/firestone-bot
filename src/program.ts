@@ -28,13 +28,13 @@ const main = async () => {
     await handleEngineerTools();
     await handleCampaignLoot();
     await handleGuildExpeditions();
-    await handleMapMissions();
     await handleExperiments();
+    await handleMapMissions();
 
     //! not finished
     //await handleFirestoneResearch();
 
-    await sleep(150);
+    await sleep(1000);
   }
 }
 

@@ -1,5 +1,6 @@
 import { sleep } from 'radash';
-import { click, press } from '../game-bindings';
+
+import { click, press } from '../api';
 import { hotkeys } from '../hotkeys';
 import { store, ViewName } from '../store';
 

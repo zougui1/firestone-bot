@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --enable-source-maps dist",
-    "start:server": "uvicorn server.server:app --host 127.0.0.1 --port 8000",
+    "dev": "DISPLAY=:0 nodemon --enable-source-maps dist",
+    "start:server": "DISPLAY=:0 uvicorn server.server:app --host 127.0.0.1 --port 8000",
     "compile": "tsc --project .",
     "compile:watch": "npm run compile -- --watch",
     "clean": "rimraf ./dist & rimraf ./node_modules/.tmp/tsconfig.app.tsbuildinfo",

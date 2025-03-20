@@ -1,5 +1,5 @@
 import { goToView } from './view';
-import { click } from '../game-bindings';
+import { click } from '../api';
 
 const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
 type GuardianName = typeof guardians[number];

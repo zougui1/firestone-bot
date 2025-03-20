@@ -1,6 +1,7 @@
 import { sleep } from 'radash';
-import { click, findText } from '../game-bindings';
+
 import { goToView } from './view';
+import { click, findText } from '../api';
 import { repeatUntil } from '../utils';
 
 export const handleCampaignLoot = async () => {

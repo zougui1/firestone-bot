@@ -1,5 +1,5 @@
-import { click } from '../game-bindings';
 import { goToView } from './view';
+import { click } from '../api';
 
 export const handleEngineerTools = async () => {
   await goToView('engineer');

@@ -1,7 +1,7 @@
 import leven from 'fast-levenshtein';
 
 import { goToView } from './view';
-import { click, drag, findText } from '../game-bindings';
+import { click, drag, findText } from '../api';
 
 const upgradePriorities = [
   'trainer skills',

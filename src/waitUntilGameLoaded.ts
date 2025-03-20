@@ -1,4 +1,4 @@
-import { findText } from './game-bindings';
+import { findText } from './api';
 import { repeatUntil } from './utils'
 
 export const waitUntilGameLoaded = async () => {

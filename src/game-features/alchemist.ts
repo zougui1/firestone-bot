@@ -1,7 +1,7 @@
 import { sleep } from 'radash';
 
 import { goToView } from './view';
-import { click, findText } from '../game-bindings';
+import { click, findText } from '../api';
 
 const claimAndRestart = async ({ left }: { left: `${number}%`; }) => {
   const texts = await findText({
