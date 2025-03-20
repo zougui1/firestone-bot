@@ -2,21 +2,12 @@ import { isNumber } from 'radash';
 
 export const findGameWindow = async () => {
   const { execa } = await import('execa');
-  const geometryResult = await execa('xdotool', [
-    'search',
-    '--onlyvisible',
-    '--name',
-    '^Firestone$',
-    'getwindowgeometry',
+  const geometryResult = await execa('bash', [
+    '-c',
+    'wmctrl -G -l | grep -E "^([^ ]+ +)+Firestone$"',
   ]);
 
-  const geometryResultLines = geometryResult.stdout.toLowerCase().split('\n');
-  const [left, top] = geometryResultLines
-    .find(line => line.includes('position:'))
-    ?.matchAll(/\d+/g).map(Number) ?? [];
-  const [width, height] = geometryResultLines
-    .find(line => line.includes('geometry:'))
-    ?.matchAll(/\d+/g).map(Number) ?? [];;
+  const [left, top, width, height] = geometryResult.stdout.split(/ +/).slice(2, 6).map(Number);
 
   if (!isNumber(left) || !isNumber(top) || !isNumber(width) || !isNumber(height)) {
     throw new Error('Invalid window geometry');
