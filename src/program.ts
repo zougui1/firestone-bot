@@ -2,6 +2,8 @@ import { ServerSocket, ClientSocket } from './socket';
 import { env } from './env';
 import { sleep } from 'radash';
 import { startBot } from './bot';
+import { press } from './api';
+import { hotkeys } from './hotkeys';
 
 const serverProgram = async () => {
   const server = new ServerSocket(env.socket);
@@ -20,6 +22,7 @@ const serverProgram = async () => {
           console.error(error);
         }
       } finally {
+        await press({ key: hotkeys.escape });
         await sleep(120_000);
       }
     }

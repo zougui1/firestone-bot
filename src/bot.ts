@@ -73,7 +73,7 @@ export const startBot = async ({ signal }: BotOptions) => {
   await waitUntilGameLoaded({
     signal: AbortSignal.any([
       signal,
-      AbortSignal.timeout(60_000),
+      AbortSignal.timeout(30_000),
     ]),
   });
   checkAborted(signal);
