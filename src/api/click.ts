@@ -26,8 +26,8 @@ export const click = async (options: ClickOptions) => {
     ? Number(options.top.slice(0, -1)) / 100 * window.height
     : options.top;
 
-  const left = clamp(window.left + leftPixels, window.left, window.left + window.width);
-  const top = clamp(window.top + topPixels, window.top, window.top + window.height);
+  const left = clamp(window.left + leftPixels, window.left + 1, window.left + window.width - 1);
+  const top = clamp(window.top + topPixels, window.top + 1, window.top + window.height - 1);
 
   await axios.get('http://127.0.0.1:8000/click', {
     params: {

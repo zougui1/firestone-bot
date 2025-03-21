@@ -29,10 +29,10 @@ export const drag = async (options: DragOptions) => {
   const endLeftPixels = options.left ? startLeftPixels * -1 : startLeftPixels;
   const endTopPixels = options.top ? startTopPixels * -1 : startTopPixels;
 
-  const startLeft = clamp(window.left + startLeftPixels, window.left, window.left + window.width);
-  const startTop = clamp(window.top + startTopPixels, window.top, window.top + window.width);
-  const endLeft = clamp(window.left + endLeftPixels, window.left, window.left + window.width);
-  const endTop = clamp(window.top + endTopPixels, window.top, window.top + window.width);
+  const startLeft = clamp(window.left + startLeftPixels, window.left + 1, window.left + window.width - 1);
+  const startTop = clamp(window.top + startTopPixels, window.top + 1, window.top + window.width - 1);
+  const endLeft = clamp(window.left + endLeftPixels, window.left + 1, window.left + window.width - 1);
+  const endTop = clamp(window.top + endTopPixels, window.top + 1, window.top + window.width - 1);
 
   await axios.get('http://127.0.0.1:8000/drag', {
     params: {

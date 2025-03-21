@@ -32,10 +32,10 @@ export const findText = async (options: FindTextOptions): Promise<z.infer<typeof
     ? Number(options.height.slice(0, -1)) / 100 * window.height
     : options.height ?? window.height;
 
-  const left = clamp(window.left + leftPixels, window.left, window.left + window.width);
-  const top = clamp(window.top + topPixels, window.top, window.top + window.height);
-  const width = clamp(widthPixels, 0, window.width);
-  const height = clamp(heightPixels, 0, window.height);
+  const left = clamp(window.left + leftPixels, window.left + 1, window.left + window.width - 1);
+  const top = clamp(window.top + topPixels, window.top + 1, window.top + window.height - 1);
+  const width = clamp(widthPixels, 0, window.width - 2);
+  const height = clamp(heightPixels, 0, window.height - 2);
 
   const response = await axios.get('http://127.0.0.1:8000/find-text', {
     params: {
