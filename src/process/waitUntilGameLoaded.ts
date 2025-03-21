@@ -4,6 +4,7 @@ import { checkAborted, repeatUntil } from '../utils'
 export const waitUntilGameLoaded = async ({ signal }: { signal: AbortSignal; }) => {
   await repeatUntil({ delay: 1000 }, async () => {
     checkAborted(signal);
+    console.log('waiting for game to load');
 
     const texts = await findText({
       left: '94%',

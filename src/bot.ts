@@ -24,6 +24,7 @@ const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
 
   await repeatUntil({ delay: 1000 }, async () => {
     checkAborted(signal);
+    console.log('waiting for startup dialog to open');;
 
     const texts = await findText({
       left: '43%',
@@ -55,11 +56,13 @@ const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
   });
 
   if (isEventDialogOpen) {
+    console.log('closing event dialog');
     await click({ left: 1, top: 1 });
   }
 }
 
 export const startBot = async ({ signal }: BotOptions) => {
+  console.log('starting bot');
   await ensureGameRunning();
   checkAborted(signal);
 
@@ -78,6 +81,8 @@ export const startBot = async ({ signal }: BotOptions) => {
   await closeStartupDialogs({ signal });
 
   while (true) {
+    console.log('bot iteration\n');
+
     await click({ left: 1, top: 1 });
     await handleTrainGuardian();
     await sleep(5000);

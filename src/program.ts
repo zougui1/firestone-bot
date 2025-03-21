@@ -14,11 +14,13 @@ const serverProgram = async () => {
       try {
         await startBot({ signal: controller.signal });
       } catch (error) {
-        console.error(error);
-
         if (controller.signal.aborted) {
-          return;
+          console.log(controller.signal.reason ? `Aborted: ${controller.signal.reason}` : 'Aborted');
+        } else {
+          console.error(error);
         }
+      } finally {
+        await sleep(120_000);
       }
     }
   }
@@ -30,7 +32,7 @@ const serverProgram = async () => {
   server.io.on('connection', socket => {
     socket.on('kill', async () => {
       console.log('kill bot');
-      controller.abort();
+      controller.abort('Killed remotely');
 
       const { execa } = await import('execa');
       const pidResult = await execa('pgrep', ['Firestone']);
@@ -38,8 +40,6 @@ const serverProgram = async () => {
 
       if (pid) {
         await execa('kill', [pid]);
-        await sleep(60000);
-        await runBot();
       }
     });
   });
