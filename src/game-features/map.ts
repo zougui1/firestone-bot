@@ -19,7 +19,6 @@ const startMissions = async ({ squads }: { squads: number; }) => {
   });
 
   const durations = texts.filter(text => /\d/.test(text.content));
-  console.log(durations)
 
   for (const duration of durations) {
     if (squads - missionsStarted <= 0) {
@@ -123,7 +122,7 @@ export const handleMapMissions = async () => {
       height: '3%',
     });
 
-    let [squads] = text.content.split('/').map(Number);
+    let [squads] = text?.content.split('/').map(Number);
 
     if (!squads) {
       return;

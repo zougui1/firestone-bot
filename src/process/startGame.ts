@@ -1,5 +1,5 @@
 import { getIsGameRunning } from './getIsGameRunning';
-import { repeatUntil } from './utils';
+import { repeatUntil } from '../utils';
 
 export const startGame = async () => {
   const { execa } = await import('execa');

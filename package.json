@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "DISPLAY=:0 nodemon --enable-source-maps dist",
-    "start:server": "DISPLAY=:0 uvicorn server.server:app --host 127.0.0.1 --port 8000",
+    "start:client": "ROLE=client DISPLAY=:0 node --enable-source-maps dist",
+    "start:server": "ROLE=server DISPLAY=:0 node --enable-source-maps dist",
+    "start:py-server": "DISPLAY=:0 uvicorn server.server:app --host 127.0.0.1 --port 8000",
     "compile": "tsc --project .",
     "compile:watch": "npm run compile -- --watch",
     "clean": "rimraf ./dist & rimraf ./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -16,11 +18,16 @@
     "@xstate/store": "^3.2.0",
     "axios": "^1.8.1",
     "big.js": "^6.2.2",
+    "dotenv": "^16.4.7",
+    "emittery": "^0.13.1",
+    "env-var": "^7.5.0",
     "execa": "^9.5.2",
     "fast-levenshtein": "^3.0.0",
     "immer": "^10.1.1",
     "node-moving-things-tracker": "^0.9.1",
     "radash": "^12.1.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {

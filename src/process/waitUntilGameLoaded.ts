@@ -1,5 +1,5 @@
-import { findText } from './api';
-import { repeatUntil } from './utils'
+import { findText } from '../api';
+import { repeatUntil } from '../utils'
 
 export const waitUntilGameLoaded = async () => {
   await repeatUntil({ delay: 1000 }, async () => {
