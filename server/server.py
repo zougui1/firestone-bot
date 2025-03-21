@@ -40,7 +40,10 @@ def find_text(left: int, top: int, width: int, height: int, debug: bool = Query(
 
 @app.get('/press')
 def press(key: str):
-  pyautogui.press(key)
+  try:
+    pyautogui.press(key)
+  except Exception:
+    return
 
 @app.get('/click')
 def click(left: int, top: int, interval: float = Query(0.01), button: str = Query('left'), debug: bool = Query(False)):
