@@ -16,23 +16,18 @@ import {
   ensureGameRunning,
   waitUntilGameLoaded,
 } from './process';
-import { click, findText, press } from './api';
+import { click, findText } from './api';
 import { checkAborted, repeatUntil } from './utils';
-import { hotkeys } from './hotkeys';
 
 const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
-  const collectButton = {
-    left: '43%',
-    top: '84%',
-  } as const;
-
   await sleep(5000);
 
   await repeatUntil({ delay: 1000 }, async () => {
     checkAborted(signal);
 
     const texts = await findText({
-      ...collectButton,
+      left: '43%',
+      top: '84%',
       width: '14%',
       height: '5%',
     });
@@ -40,7 +35,7 @@ const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
     return texts.some(text => text.content.toLowerCase().includes('collect the loot'));
   });
 
-  await click(collectButton);
+  await click({ left: 1, top: 1 });
   await sleep(3000);
 
   const eventDialogTexts = await findText({
@@ -60,7 +55,7 @@ const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
   });
 
   if (isEventDialogOpen) {
-    await press({ key: hotkeys.escape });
+    await click({ left: 1, top: 1 });
   }
 }
 
