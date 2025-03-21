@@ -75,7 +75,7 @@ export const navigateViews: Record<ViewName, () => Promise<void>> = {
     console.log('changing view: campaign');
     await press({ key: hotkeys.map });
     // wait for animation to finish
-    await sleep(150);
+    await sleep(1500);
     await click({ left: '96%', top: '55%' });
     store.trigger.navigateView({ view: 'map' });
     await sleep(1500);
