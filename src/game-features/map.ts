@@ -135,7 +135,7 @@ export const handleMapMissions = async () => {
     await claimMissions();
 
     const [text] = await findText({
-      left: '62%',
+      left: '60%',
       top: '2%',
       width: '5%',
       height: '3%',
