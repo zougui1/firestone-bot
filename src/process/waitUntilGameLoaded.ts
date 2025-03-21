@@ -1,8 +1,10 @@
 import { findText } from '../api';
-import { repeatUntil } from '../utils'
+import { checkAborted, repeatUntil } from '../utils'
 
-export const waitUntilGameLoaded = async () => {
+export const waitUntilGameLoaded = async ({ signal }: { signal: AbortSignal; }) => {
   await repeatUntil({ delay: 1000 }, async () => {
+    checkAborted(signal);
+
     const texts = await findText({
       left: '94%',
       top: '94%',

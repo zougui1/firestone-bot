@@ -8,13 +8,19 @@ const serverProgram = async () => {
   let controller = new AbortController();
 
   const runBot = async () => {
-    if (!server.connectedClients) {
-      controller = new AbortController();
+    while (true) {
+      if (!server.connectedClients) {
+        controller = new AbortController();
 
-      try {
-        await startBot({ signal: controller.signal });
-      } catch (error) {
-        console.error(error);
+        try {
+          await startBot({ signal: controller.signal });
+        } catch (error) {
+          console.error(error);
+
+          if (controller.signal.aborted) {
+            return;
+          }
+        }
       }
     }
   }

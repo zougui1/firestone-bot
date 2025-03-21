@@ -17,12 +17,7 @@ import {
   waitUntilGameLoaded,
 } from './process';
 import { click } from './api';
-
-const checkAborted = (signal: AbortSignal) => {
-  if (signal.aborted) {
-    throw new Error(signal.reason ? `Aborted: ${signal.reason}` : 'Aborted');
-  }
-}
+import { checkAborted } from './utils';
 
 export const startBot = async ({ signal }: BotOptions) => {
   await ensureGameRunning();
@@ -32,7 +27,12 @@ export const startBot = async ({ signal }: BotOptions) => {
   store.trigger.changeWindow(gameWindow);
   checkAborted(signal);
 
-  await waitUntilGameLoaded();
+  await waitUntilGameLoaded({
+    signal: AbortSignal.any([
+      signal,
+      AbortSignal.timeout(60_000),
+    ]),
+  });
   checkAborted(signal);
 
   while (true) {
@@ -56,7 +56,7 @@ export const startBot = async ({ signal }: BotOptions) => {
     //await handleFirestoneResearch();
     //checkAborted(signal);
 
-    await sleep(1000);
+    await sleep(5000);
     checkAborted(signal);
   }
 }
