@@ -29,12 +29,10 @@ export const handleExperiments = async () => {
   await goToView('alchemist');
 
   try {
-    // blood
     console.log('blood');
     await claimAndRestart({ left: '45%' });
-    console.log('exotic coins');
-    // exotic coins
-    await claimAndRestart({ left: '81%' });
+    //console.log('exotic coins');
+    //await claimAndRestart({ left: '81%' });
   } finally {
     await goToView('main');
   }

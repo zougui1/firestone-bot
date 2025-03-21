@@ -33,21 +33,19 @@ const startMissions = async ({ squads }: { squads: number; }) => {
     // wait for the dialog to open and be interactable
     await sleep(1500);
 
-    const [missionLabelTexts, leftButtonTexts] = await Promise.all([
-      findText({
-        left: '22%',
-        top: '20%',
-        width: '25%',
-        height: '5%',
-      }),
-      findText({
-        left: '50%',
-        top: '81%',
-        width: '13%',
-        height: '6%',
-        debug: true
-      }),
-    ]);
+    const missionLabelTexts = await findText({
+      left: '22%',
+      top: '20%',
+      width: '25%',
+      height: '5%',
+    });
+    const leftButtonTexts = await findText({
+      left: '50%',
+      top: '81%',
+      width: '13%',
+      height: '6%',
+      debug: true
+    });
 
     console.log('missionLabelTexts:', missionLabelTexts)
 

@@ -12,6 +12,6 @@ export const env = {
 
   socket: {
     port: envVar.get('SOCKET.PORT').required().asPortNumber(),
-    domain: envVar.get('SOCKET.DOMAIN').required().asUrlString(),
+    domain: envVar.get('SOCKET.DOMAIN').required().asString(),
   },
 };

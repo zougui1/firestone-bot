@@ -27,19 +27,21 @@ const serverProgram = async () => {
   // client is actually just restarting
   await sleep(3000);
 
-  server.io.on('kill', async () => {
-    const { execa } = await import('execa');
+  server.io.on('connection', socket => {
+    socket.on('kill', async () => {
+      console.log('kill bot');
+      controller.abort();
 
-    controller.abort();
+      const { execa } = await import('execa');
+      const pidResult = await execa('pgrep', ['Firestone']);
+      const [pid] = pidResult.stdout.split('\n');
 
-    const pidResult = await execa('pgrep', ['Firestone']);
-    const [pid] = pidResult.stdout.split('\n');
-
-    if (pid) {
-      await execa('kill', [pid]);
-      await sleep(60000);
-      await runBot();
-    }
+      if (pid) {
+        await execa('kill', [pid]);
+        await sleep(60000);
+        await runBot();
+      }
+    });
   });
 
   await runBot();
@@ -47,6 +49,10 @@ const serverProgram = async () => {
 
 const clientProgram = async () => {
   const client = new ClientSocket(env.socket);
+  console.log('clientProgram')
+  await client.waitStatus();
+  console.log('emit kill')
+  client.socket.emit('kill');
 }
 
 const main = async () => {
