@@ -1,11 +1,10 @@
-import { getIsGameRunning } from './getIsGameRunning';
-import { repeatUntil } from '../utils';
+import { sleep } from 'radash';
 
 export const startGame = async () => {
   const { execa } = await import('execa');
 
-  execa('steam', ['steam://rungameid/1013320']);
+  await execa('steam', ['steam://rungameid/1013320']);
 
   // wait until the game has started
-  await repeatUntil({ delay: 1000 }, getIsGameRunning);
+  await sleep(10_000);
 }
