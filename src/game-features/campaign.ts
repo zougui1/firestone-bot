@@ -8,6 +8,7 @@ export const handleCampaignLoot = async () => {
   await goToView('campaign');
 
   try {
+    console.log('claiming loots');
     // claim loots
     await click({ left: '7%', top: '93%' });
   } finally {

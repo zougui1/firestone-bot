@@ -12,12 +12,15 @@ const claimAndRestart = async ({ left }: { left: `${number}%`; }) => {
   });
 
   if (texts.some(text => text.content.toLowerCase() === 'speed up')) {
+    console.log('ignored');
     return;
   }
 
+  console.log('claiming');
   // claim
   await click({ left, top: '75%' });
-  await sleep(50);
+  await sleep(1500);
+  console.log('starting new');
   // start new
   await click({ left, top: '75%' });
 }
@@ -27,7 +30,9 @@ export const handleExperiments = async () => {
 
   try {
     // blood
+    console.log('blood');
     await claimAndRestart({ left: '45%' });
+    console.log('exotic coins');
     // exotic coins
     await claimAndRestart({ left: '81%' });
   } finally {

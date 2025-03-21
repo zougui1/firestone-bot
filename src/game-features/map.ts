@@ -25,12 +25,13 @@ const startMissions = async ({ squads }: { squads: number; }) => {
       break;
     }
 
+    console.log('clicking mission');
     await click({
       left: calcPosition(left, 'width') + duration.left,
       top: calcPosition(top, 'height') + duration.top,
     });
     // wait for the dialog to open and be interactable
-    await sleep(1000);
+    await sleep(1500);
 
     const [missionLabelTexts, leftButtonTexts] = await Promise.all([
       findText({
@@ -52,17 +53,27 @@ const startMissions = async ({ squads }: { squads: number; }) => {
       missionsStarted++;
 
       if (leftButtonTexts.some(text => text.content.toLowerCase().includes('start'))) {
+        console.log('starting mission');
         await click({ left: '51%', top: '81%' });
       } else {
+        console.log('mission already running');
         await press({ key: hotkeys.escape });
       }
+
+      // wait for the dialog to be closed
+      await sleep(1500);
+    } else {
+      console.log('invalid mission');
     }
   }
+
+  console.log('missions started:', missionsStarted);
 
   return { missionsStarted };
 }
 
 const handleBottomMap = async ({ squads }: { squads: number; }) => {
+  console.log('bottom map');
   await drag({ top: '20%', x: '99%', });
 
   try {
@@ -75,6 +86,7 @@ const handleBottomMap = async ({ squads }: { squads: number; }) => {
 }
 
 const handleTopMap = async ({ squads }: { squads: number; }) => {
+  console.log('top map');
   await drag({ top: '-20%', x: '99%' });
 
   try {
@@ -101,12 +113,17 @@ const claimMissions = async () => {
     return texts.some(text => text.content.toLowerCase().includes('claim'));
   }
 
+  console.log('checking missions to claim');
+
   while (await checkClaimButton()) {
+    console.log('claiming mission');
     await click({ left, top });
     // wait for the dialog to open and be interactable
     await sleep(1000);
     await press({ key: hotkeys.escape });
   }
+
+  console.log('no missions to claim');
 }
 
 export const handleMapMissions = async () => {
@@ -123,12 +140,11 @@ export const handleMapMissions = async () => {
     });
 
     let [squads] = text?.content.split('/').map(Number);
+    console.log('squads:', squads);
 
     if (!squads) {
       return;
     }
-
-    console.log('available squads');
 
     const { missionsStarted } = await handleBottomMap({ squads });
     squads -= missionsStarted;

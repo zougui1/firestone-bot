@@ -20,7 +20,9 @@ export const handleTrainGuardian = async () => {
   await goToView('guardians');
 
   try {
+    console.log('selecting guardian');
     await selectGuardian('Grace');
+    console.log('training guardian');
     await click({ left: '60%', top: '72%' });
   } finally {
     await goToView('main');
