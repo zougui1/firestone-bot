@@ -36,7 +36,7 @@ export const startBot = async ({ signal }: BotOptions) => {
   checkAborted(signal);
 
   while (true) {
-    await click({ left: 0, top: 0 });
+    await click({ left: 1, top: 1 });
     await handleTrainGuardian();
     checkAborted(signal);
     await handleOracleRituals();
