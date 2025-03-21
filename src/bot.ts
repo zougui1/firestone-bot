@@ -16,48 +16,14 @@ import {
   ensureGameRunning,
   waitUntilGameLoaded,
 } from './process';
-import { click, findText } from './api';
-import { checkAborted, repeatUntil } from './utils';
+import { click } from './api';
+import { checkAborted } from './utils';
 
 const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
-  await sleep(5000);
-
-  await repeatUntil({ delay: 1000 }, async () => {
+  for (let iteration = 0; iteration < 15; iteration++) {
     checkAborted(signal);
-    console.log('waiting for startup dialog to open');;
-
-    const texts = await findText({
-      left: '43%',
-      top: '84%',
-      width: '14%',
-      height: '5%',
-    });
-
-    return texts.some(text => text.content.toLowerCase().includes('collect the loot'));
-  });
-
-  await click({ left: 1, top: 1 });
-  await sleep(3000);
-
-  const eventDialogTexts = await findText({
-    left: '13%',
-    top: '10%',
-    width: '74%',
-    height: '76%',
-  });
-
-  const isEventDialogOpen = eventDialogTexts.some(text => {
-    const content = text.content.toLowerCase();
-    return (
-      content.includes('decorated heroes') ||
-      content.includes('event') ||
-      content.includes('unique rewards')
-    );
-  });
-
-  if (isEventDialogOpen) {
-    console.log('closing event dialog');
     await click({ left: 1, top: 1 });
+    await sleep(1000);
   }
 }
 
@@ -79,6 +45,7 @@ export const startBot = async ({ signal }: BotOptions) => {
   checkAborted(signal);
 
   await closeStartupDialogs({ signal });
+  checkAborted(signal);
 
   while (true) {
     console.log('bot iteration\n');
