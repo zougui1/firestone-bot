@@ -49,6 +49,8 @@ const startMissions = async ({ squads }: { squads: number; }) => {
       }),
     ]);
 
+    console.log('missionLabelTexts:', missionLabelTexts)
+
     if (missionLabelTexts.some(text => text.content.toLowerCase().includes('mission'))) {
       missionsStarted++;
 
