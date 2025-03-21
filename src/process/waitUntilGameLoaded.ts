@@ -10,7 +10,6 @@ export const waitUntilGameLoaded = async ({ signal }: { signal: AbortSignal; }) 
       top: '94%',
       width: '4.5%',
       height: '3%',
-      debug: true,
     });
 
     return texts.some(text => text.content.toLowerCase() === 'party');
