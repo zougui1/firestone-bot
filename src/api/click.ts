@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { sleep } from 'radash';
 
 import { store } from '../store';
 import { clamp } from '../utils';
@@ -38,6 +39,8 @@ export const click = async (options: ClickOptions) => {
       debug: options.debug,
     },
   });
+
+  await sleep(5000);
 }
 
 export interface ClickOptions {

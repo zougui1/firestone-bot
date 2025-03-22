@@ -1,5 +1,3 @@
-import { sleep } from 'radash';
-
 import { goToView } from './view';
 import { click, findText } from '../api';
 
@@ -17,11 +15,8 @@ const claimAndRestart = async ({ left }: { left: `${number}%`; }) => {
   }
 
   console.log('claiming');
-  // claim
   await click({ left, top: '75%' });
-  await sleep(1500);
   console.log('starting new');
-  // start new
   await click({ left, top: '75%' });
 }
 

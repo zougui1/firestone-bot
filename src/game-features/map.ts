@@ -1,5 +1,3 @@
-import { sleep } from 'radash';
-
 import { goToView } from './view';
 import { click, drag, findText, press } from '../api';
 import { hotkeys } from '../hotkeys';
@@ -30,8 +28,6 @@ const startMissions = async ({ squads }: { squads: number; }) => {
       left: calcPosition(left, 'width') + duration.left,
       top: calcPosition(top, 'height') + duration.top,
     });
-    // wait for the dialog to open and be interactable
-    await sleep(1500);
 
     const missionLabelTexts = await findText({
       left: '22%',
@@ -59,9 +55,6 @@ const startMissions = async ({ squads }: { squads: number; }) => {
         console.log('mission already running');
         await press({ key: hotkeys.escape });
       }
-
-      // wait for the dialog to be closed
-      await sleep(1500);
     } else {
       console.log('invalid mission');
     }
@@ -118,8 +111,6 @@ const claimMissions = async () => {
   while (await checkClaimButton()) {
     console.log('claiming mission');
     await click({ left, top });
-    // wait for the dialog to open and be interactable
-    await sleep(1000);
     await press({ key: hotkeys.escape });
   }
 

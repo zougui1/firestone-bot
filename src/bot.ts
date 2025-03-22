@@ -1,5 +1,3 @@
-import { sleep } from 'radash';
-
 import { store } from './store';
 import {
   handleCampaignLoot,
@@ -24,7 +22,6 @@ const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
     checkAborted(signal);
     console.log('Closing any potential startup dialog:', iteration);
     await click({ left: 1, top: 1 });
-    await sleep(1000);
   }
 }
 
@@ -53,36 +50,28 @@ export const startBot = async ({ signal }: BotOptions) => {
 
     await click({ left: 1, top: 1 });
     await handleTrainGuardian();
-    await sleep(5000);
     checkAborted(signal);
 
     await handleOracleRituals();
-    await sleep(5000);
     checkAborted(signal);
 
     await handleEngineerTools();
-    await sleep(5000);
     checkAborted(signal);
 
     await handleCampaignLoot();
-    await sleep(5000);
     checkAborted(signal);
 
     await handleGuildExpeditions();
-    await sleep(5000);
     checkAborted(signal);
 
     await handleExperiments();
-    await sleep(5000);
     checkAborted(signal);
 
     await handleMapMissions();
-    await sleep(5000);
     checkAborted(signal);
 
     //! not finished
     //await handleFirestoneResearch();
-    //await sleep(5000);
     //checkAborted(signal);
   }
 }

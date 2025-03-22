@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { sleep } from 'radash';
+
 import { store } from '../store';
 import { clamp } from '../utils';
 
@@ -44,6 +46,8 @@ export const drag = async (options: DragOptions) => {
       debug: options.debug,
     },
   });
+
+  await sleep(5000);
 }
 
 export interface DragOptions {

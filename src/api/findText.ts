@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { z } from 'zod';
+import { sleep } from 'radash';
 
 import { store } from '../store';
 import { clamp } from '../utils';
@@ -46,6 +47,7 @@ export const findText = async (options: FindTextOptions): Promise<z.infer<typeof
       debug: options.debug,
     },
   });
+  await sleep(5000);
 
   const result = resultSchema.safeParse(response.data);
 
