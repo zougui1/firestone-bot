@@ -18,7 +18,7 @@ import { click } from './api';
 import { checkAborted } from './utils';
 
 const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
-  for (let iteration = 0; iteration < 15; iteration++) {
+  for (let iteration = 0; iteration < 5; iteration++) {
     checkAborted(signal);
     console.log('Closing any potential startup dialog:', iteration);
     await click({ left: 1, top: 1 });
