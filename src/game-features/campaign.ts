@@ -1,4 +1,5 @@
 import { Console, Effect, pipe } from 'effect';
+import { sleep } from 'radash';
 
 import { goTo } from './view';
 import { click, findText } from '../api';
