@@ -1,29 +1,27 @@
-import { goToView } from './view';
+import { Console, Effect, pipe } from 'effect';
+
+import { goTo } from './view';
 import { click } from '../api';
 
-const clickRituals = async () => {
-  console.log('obedience');
-  await click({ left: '61%', top: '81%' });
-  console.log('serenity');
-  await click({ left: '80%', top: '81%' });
-  console.log('harmony');
-  await click({ left: '80%', top: '48%' });
-  console.log('concentration');
-  await click({ left: '61%', top: '48%' });
+const handleRitual = (name: string, coords: { left: `${number}%`; top: `${number}%`; }) => {
+  return pipe(
+    Console.log(`ritual: claiming ${name}`),
+    Effect.andThen(() => click(coords)),
+    Effect.tap(() => Console.log(`ritual: starting ${name}`)),
+    Effect.andThen(() => click(coords)),
+  );
 }
 
-export const handleOracleRituals = async () => {
-  await goToView('oracle');
+export const handleOracleRituals = () => {
+  return Effect.scoped(pipe(
+    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
+    Effect.andThen(() => goTo.oracle()),
+    Effect.tap(() => Console.log('going to rituals')),
+    Effect.andThen(() => click({ left: '43%', top: '40%' })),
 
-  try {
-    console.log('going to rituals');
-    await click({ left: '43%', top: '40%' });
-
-    console.log('claiming');
-    await clickRituals();
-    console.log('starting new');
-    await clickRituals();
-  } finally {
-    await goToView('main');
-  }
+    Effect.andThen(() => handleRitual('obedience', { left: '61%', top: '81%' })),
+    Effect.andThen(() => handleRitual('serenity', { left: '80%', top: '81%' })),
+    Effect.andThen(() => handleRitual('harmony', { left: '80%', top: '48%' })),
+    Effect.andThen(() => handleRitual('concentration', { left: '61%', top: '48%' })),
+  ));
 }

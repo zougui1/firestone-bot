@@ -1,10 +1,9 @@
+import { Effect } from 'effect';
 import { findGameWindow } from './findGameWindow'
 
-export const getIsGameRunning = async () => {
-  try {
-    await findGameWindow();
-    return true;
-  } catch {
-    return false;
-  }
+export const getIsGameRunning = () => {
+  return Effect.orElse(
+    findGameWindow().pipe(Effect.flatMap(() => Effect.succeed(true))),
+    () => Effect.succeed(false),
+  );
 }

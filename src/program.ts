@@ -1,3 +1,7 @@
+import { Effect, Fiber } from 'effect';
+import { RuntimeFiber } from 'effect/Fiber';
+import { UnknownException } from 'effect/Cause';
+
 import { ServerSocket, ClientSocket } from './socket';
 import { env } from './env';
 import { sleep } from 'radash';
@@ -8,23 +12,24 @@ import { hotkeys } from './hotkeys';
 const serverProgram = async () => {
   const server = new ServerSocket(env.socket);
   let controller = new AbortController();
+  let fiber: RuntimeFiber<void, UnknownException | Error> | undefined;
 
   const runBot = async () => {
-    while (true) {
-      controller = new AbortController();
+    const bot = Effect.loop(true, {
+      while: bool => bool,
+      step: () => true,
+      body: () => Effect.gen(function* () {
+        fiber = yield* Effect.fork(startBot());
+        yield* Fiber.await(fiber);
+        yield* press({ key: hotkeys.escape });
+        yield* Effect.sleep('2 minutes');
+      }),
+    });
 
-      try {
-        await startBot({ signal: controller.signal });
-      } catch (error) {
-        if (controller.signal.aborted) {
-          console.log(controller.signal.reason ? `Aborted: ${controller.signal.reason}` : 'Aborted');
-        } else {
-          console.error(error);
-        }
-      } finally {
-        await press({ key: hotkeys.escape });
-        await sleep(120_000);
-      }
+    const result = await Effect.runPromiseExit(bot);
+
+    if (result._tag === 'Failure') {
+      console.error('Bot error:', result.cause);
     }
   }
 

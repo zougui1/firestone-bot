@@ -61,7 +61,7 @@ export const handleFirestoneResearch = async () => {
     let scrollX = 0;
     const scrolls: `${number}%`[] = [];
 
-    do {
+    /*do {
       const [
         allVisibleTexts,
         rightMostTexts,
@@ -127,7 +127,7 @@ export const handleFirestoneResearch = async () => {
       .map(u => upgrades.get(u))
       .filter(Boolean) as Upgrade[];
 
-    console.log('upgrades:', prioritizedUpgrades.map(u => u.text))
+    console.log('upgrades:', prioritizedUpgrades.map(u => u.text))*/
   } finally {
     //await goToView('main');
   }

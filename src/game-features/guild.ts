@@ -1,17 +1,15 @@
-import { goToView } from './view';
+import { Console, Effect, pipe } from 'effect';
+
+import { goTo } from './view';
 import { click } from '../api';
 
-export const handleGuildExpeditions = async () => {
-  await goToView('guildExpeditions');
-
-  try {
-    console.log('claiming');
-    // claim expedition
-    await click({ left: '68%', top: '28%' });
-    console.log('starting new');
-    // start new expedition
-    await click({ left: '68%', top: '28%' });
-  } finally {
-    await goToView('main');
-  }
+export const handleGuildExpeditions = () => {
+  return Effect.scoped(pipe(
+    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
+    Effect.andThen(() => goTo.guildExpeditions()),
+    Effect.tap(() => Console.log('expedition: claiming')),
+    Effect.andThen(() => click({ left: '68%', top: '28%' })),
+    Effect.tap(() => Console.log('expedition: starting new')),
+    Effect.andThen(() => click({ left: '68%', top: '28%' })),
+  ));
 }

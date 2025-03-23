@@ -1,10 +1,27 @@
-import { sleep } from 'radash';
+import { Effect, pipe } from 'effect';
 
-export const startGame = async () => {
-  const { execa } = await import('execa');
+export const startGame = () => {
+  return pipe(
+    Effect.tryPromise({
+      try: () => import('execa'),
+      catch: cause => new Error('Could not import execa', { cause }),
+    }),
+    Effect.flatMap(({ execa }) => Effect.tryPromise({
+      try: async (signal) => {
+        const subProcess = execa('steam', ['steam://rungameid/1013320']);
+        const kill = () => subProcess.kill();
 
-  await execa('steam', ['steam://rungameid/1013320']);
+        signal.addEventListener('abort', kill);
 
-  // wait until the game has started
-  await sleep(10_000);
+        try {
+          await subProcess;
+        } finally {
+          signal.removeEventListener('abort', kill);
+        }
+      },
+      catch: cause => new Error('Could not start the game', { cause }),
+    })),
+    // wait until the game has started
+    Effect.tap(() => Effect.sleep('10 seconds')),
+  );
 }

@@ -123,10 +123,10 @@ export const handleCampaignFights = async () => {
   await click({ ...difficultyButtons.easy });
   await sleep(15000);
 
-  await repeatUntil({ delay: 200 }, async () => {
+  /*await repeatUntil({ delay: 200 }, async () => {
     const texts = await findText({ top: '69.5%', left: '48%', width: '4%', height: '4%' });
     return texts.some(text => text.content.toLowerCase() === 'ok');
-  });
+  });*/
 
   console.log('end');
   await click({ left: '50%', top: '80%' });

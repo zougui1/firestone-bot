@@ -1,11 +1,16 @@
 import axios from 'axios';
-import { sleep } from 'radash';
+import { Effect, pipe } from 'effect';
 
-export const press = async (options: PressOptions) => {
-  await axios.get('http://127.0.0.1:8000/press', {
-    params: { key: options.key },
-  });
-  await sleep(5000);
+export const press = (options: PressOptions) => {
+  return pipe(
+    Effect.tryPromise({
+      try: () => axios.get('http://127.0.0.1:8000/press', {
+        params: { key: options.key },
+      }),
+      catch: error => new Error('Could not simulate click', { cause: error }),
+    }),
+    Effect.flatMap(() => Effect.sleep('5 seconds')),
+  );
 }
 
 export interface PressOptions {

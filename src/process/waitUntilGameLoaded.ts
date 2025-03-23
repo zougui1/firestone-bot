@@ -1,18 +1,20 @@
+import { Console, Effect } from 'effect';
+
 import { findText } from '../api';
-import { checkAborted, repeatUntil } from '../utils'
 
-export const waitUntilGameLoaded = async ({ signal }: { signal: AbortSignal; }) => {
-  await repeatUntil({ delay: 1000 }, async () => {
-    checkAborted(signal);
-    console.log('waiting for game to load');
-
-    const texts = await findText({
-      left: '94%',
-      top: '94%',
-      width: '4.5%',
-      height: '3%',
-    });
-
-    return texts.some(text => text.content.toLowerCase() === 'party');
-  });
+export const waitUntilGameLoaded = () => {
+  return Effect.repeat(
+    Console.log('Waiting for game to load').pipe(
+      Effect.flatMap(() => findText({
+        left: '94%',
+        top: '94%',
+        width: '4.5%',
+        height: '3%',
+      })),
+      Effect.flatMap(texts => Effect.succeed(
+        texts.some(text => text.content.toLowerCase() === 'party')
+      )),
+    ),
+    { until: bool => bool },
+  )
 }

@@ -1,3 +1,5 @@
+import { Console, Effect, pipe } from 'effect';
+
 import { store } from './store';
 import {
   handleCampaignLoot,
@@ -15,65 +17,46 @@ import {
   waitUntilGameLoaded,
 } from './process';
 import { click } from './api';
-import { checkAborted } from './utils';
 
-const closeStartupDialogs = async ({ signal }: { signal: AbortSignal; }) => {
-  for (let iteration = 0; iteration < 5; iteration++) {
-    checkAborted(signal);
-    console.log('Closing any potential startup dialog:', iteration);
-    await click({ left: 1, top: 1 });
-  }
+const closeStartupDialogs = () => {
+  return Effect.loop(1, {
+    while: iteration => iteration <= 5,
+    step: iteration => iteration + 1,
+    body: iteration => pipe(
+      Console.log(`closing any potential startup dialog: ${iteration}`),
+      Effect.andThen(() => click({ left: 1, top: 1 })),
+    ),
+    discard: true,
+  });
 }
 
-export const startBot = async ({ signal }: BotOptions) => {
-  console.log('starting bot');
-  await ensureGameRunning();
-  checkAborted(signal);
-
-  const gameWindow = await findGameWindow();
-  store.trigger.changeWindow(gameWindow);
-  checkAborted(signal);
-
-  await waitUntilGameLoaded({
-    signal: AbortSignal.any([
-      signal,
-      AbortSignal.timeout(30_000),
-    ]),
-  });
-  checkAborted(signal);
-
-  await closeStartupDialogs({ signal });
-  checkAborted(signal);
-
-  while (true) {
-    console.log('bot iteration\n');
-
-    await click({ left: 1, top: 1 });
-    await handleTrainGuardian();
-    checkAborted(signal);
-
-    await handleOracleRituals();
-    checkAborted(signal);
-
-    await handleEngineerTools();
-    checkAborted(signal);
-
-    await handleCampaignLoot();
-    checkAborted(signal);
-
-    await handleGuildExpeditions();
-    checkAborted(signal);
-
-    await handleExperiments();
-    checkAborted(signal);
-
-    await handleMapMissions();
-    checkAborted(signal);
-
-    //! not finished
-    //await handleFirestoneResearch();
-    //checkAborted(signal);
-  }
+export const startBot = () => {
+  return pipe(
+    Console.log('starting bot'),
+    Effect.andThen(ensureGameRunning),
+    Effect.flatMap(findGameWindow),
+    Effect.tap(gameWindow => store.trigger.changeWindow(gameWindow)),
+    Effect.andThen(waitUntilGameLoaded),
+    Effect.timeoutOption('30 seconds'),
+    //Effect.andThen(closeStartupDialogs),
+    Effect.andThen(() => Effect.loop(true, {
+      while: bool => bool,
+      step: () => true,
+      body: () => pipe(
+        Console.log('bot iteration\n'),
+        Effect.andThen(() => click({ left: 1, top: 1 })),
+        Effect.andThen(handleTrainGuardian),
+        Effect.andThen(handleOracleRituals),
+        Effect.andThen(handleEngineerTools),
+        Effect.andThen(handleCampaignLoot),
+        Effect.andThen(handleGuildExpeditions),
+        Effect.andThen(handleExperiments),
+        Effect.andThen(handleMapMissions),
+        //Effect.andThen(handleFirestoneResearch),
+      ),
+      discard: true,
+    }))
+  );
 }
 
 export interface BotOptions {

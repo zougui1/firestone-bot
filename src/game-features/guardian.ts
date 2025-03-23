@@ -1,4 +1,6 @@
-import { goToView } from './view';
+import { Console, Effect, pipe } from 'effect';
+
+import { goTo } from './view';
 import { click } from '../api';
 
 const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
@@ -11,20 +13,20 @@ const guardianCoordinates = {
   Azhar: { left: '60%', top: '90%' },
 } as const;
 
-export const selectGuardian = async (name: GuardianName): Promise<void> => {
-  const guardianCoords = guardianCoordinates[name];
-  await click({ ...guardianCoords });
+export const selectGuardian = (name: GuardianName) => {
+  return pipe(
+    Console.log(`selecting guardian: ${name}`),
+    Effect.andThen(() => click(guardianCoordinates[name])),
+  );
 }
 
-export const handleTrainGuardian = async () => {
-  await goToView('guardians');
-
-  try {
-    console.log('selecting guardian');
-    await selectGuardian('Grace');
-    console.log('training guardian');
-    await click({ left: '60%', top: '72%' });
-  } finally {
-    await goToView('main');
-  }
+export const handleTrainGuardian = () => {
+  return Effect.scoped(pipe(
+    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
+    Effect.andThen(() => goTo.guardians()),
+    Effect.andThen(() => selectGuardian('Grace')),
+    Effect.tap(() => Console.log('training guardian')),
+    Effect.andThen(() => click({ left: '60%', top: '72%' })),
+    Effect.tapError(Console.log),
+  ));
 }

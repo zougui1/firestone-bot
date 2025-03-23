@@ -1,86 +1,86 @@
+import { Console, Effect, pipe } from 'effect';
+
 import { click, press } from '../api';
 import { hotkeys } from '../hotkeys';
 import { store, ViewName } from '../store';
 
-export const navigateViews: Record<ViewName, () => Promise<void>> = {
-  main: async () => {
-    console.log('changing view: main');
-    const { views } = store.getSnapshot().context;
-
-    for (const _ of views) {
-      console.log('changing view: back');
-      await press({ key: hotkeys.escape });
-      store.trigger.popView();
-    }
-  },
-  town: async () => {
-    console.log('changing view: town');
-    await press({ key: hotkeys.town });
-    store.trigger.navigateView({ view: 'town' });
-  },
-  alchemist: async () => {
-    console.log('changing view: alchemist');
-    await press({ key: hotkeys.alchemist });
-    store.trigger.navigateView({ view: 'alchemist' });
-  },
-  oracle: async () => {
-    console.log('changing view: oracle');
-    await press({ key: hotkeys.oracle });
-    store.trigger.navigateView({ view: 'oracle' });
-  },
-  guardians: async () => {
-    console.log('changing view: guardians');
-    await press({ key: hotkeys.guardians });
-    store.trigger.navigateView({ view: 'guardians' });
-  },
-  library: async () => {
-    console.log('changing view: library');
-    await press({ key: hotkeys.library });
-    store.trigger.navigateView({ view: 'library' });
-  },
-  map: async () => {
-    console.log('changing view: map');
-    await press({ key: hotkeys.map });
-    // wait for animation to finish
-    await click({ left: '96%', top: '45%' });
-    store.trigger.navigateView({ view: 'map' });
-  },
-  engineerNavigation: async () => {
-    console.log('changing view: engineerNavigation');
-    await navigateViews.town();
+export const goTo = {
+  main: () => pipe(
+    Console.log('changing view: main'),
+    Effect.as(store.getSnapshot().context),
+    Effect.flatMap(({ views }) => {
+      return Effect.forEach(views, () => pipe(
+        Console.log('changing view: back'),
+        Effect.andThen(press({ key: hotkeys.escape })),
+        Effect.tap(() => store.trigger.popView()),
+      ), { discard: true });
+    }),
+  ),
+  town: () => pipe(
+    Console.log('changing view: town'),
+    Effect.andThen(() => press({ key: hotkeys.town })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'town' })),
+  ),
+  alchemist: () => pipe(
+    Console.log('changing view: alchemist'),
+    Effect.andThen(() => press({ key: hotkeys.alchemist })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'alchemist' })),
+  ),
+  oracle: () => pipe(
+    Console.log('changing view: oracle'),
+    Effect.andThen(() => press({ key: hotkeys.oracle })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'oracle' })),
+  ),
+  guardians: () => pipe(
+    Console.log('changing view: guardians'),
+    Effect.andThen(() => press({ key: hotkeys.guardians })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'guardians' })),
+  ),
+  library: () => pipe(
+    Console.log('changing view: library'),
+    Effect.andThen(() => press({ key: hotkeys.library })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'library' })),
+  ),
+  map: () => pipe(
+    Console.log('changing view: map'),
+    Effect.andThen(() => press({ key: hotkeys.map })),
+    // ensures we're in the map missions and not the campaign
+    Effect.andThen(click({ left: '96%', top: '45%' })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'map' })),
+  ),
+  engineerNavigation: () => pipe(
+    goTo.town(),
+    Effect.tap(() => Console.log('changing view: engineerNavigation')),
     // engineer building button
-    await click({ left: '65%', top: '80%' });
-    store.trigger.navigateView({ view: 'engineerNavigation', isDialog: true });
-  },
-  engineer: async () => {
-    console.log('changing view: engineer');
-    await navigateViews.engineerNavigation();
+    Effect.andThen(click({ left: '65%', top: '80%' })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'engineerNavigation' })),
+  ),
+  engineer: () => pipe(
+    goTo.engineerNavigation(),
+    Effect.tap(() => Console.log('changing view: engineer')),
     // engineer panel button
-    await click({ left: '30%', top: '50%' });
-    store.trigger.navigateView({ view: 'engineer' });
-  },
-  campaign: async () => {
-    console.log('changing view: campaign');
-    await press({ key: hotkeys.map });
-    // wait for animation to finish
-    await click({ left: '96%', top: '55%' });
-    store.trigger.navigateView({ view: 'map' });
-  },
-  guild: async () => {
-    console.log('changing view: guild');
-    // guild icon
-    await click({ left: '97%', top: '42%' });
-    store.trigger.navigateView({ view: 'guild' });
-  },
-  guildExpeditions: async () => {
-    console.log('changing view: guildExpeditions');
-    await navigateViews.guild();
-    // expedition building
-    await click({ left: '20%', top: '32%' });
-    store.trigger.navigateView({ view: 'guildExpeditions' });
-  },
+    Effect.andThen(click({ left: '30%', top: '50%' })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'engineer' })),
+  ),
+  campaign: () => pipe(
+    Console.log('changing view: campaign'),
+    Effect.andThen(() => press({ key: hotkeys.map })),
+    Effect.andThen(click({ left: '96%', top: '55%' })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'campaign' })),
+  ),
+  guild: () => pipe(
+    Console.log('changing view: guild'),
+    Effect.andThen(() => click({ left: '97%', top: '42%' })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'guild' })),
+  ),
+  guildExpeditions: () => pipe(
+    goTo.guild(),
+    Effect.tap(() => Console.log('changing view: guildExpeditions')),
+    Effect.andThen(click({ left: '20%', top: '32%' })),
+    Effect.tap(() => store.trigger.navigateView({ view: 'guildExpeditions' })),
+  ),
 };
 
-export const goToView = async (view: ViewName): Promise<void> => {
-  await navigateViews[view]();
+export const goToView = (view: ViewName) => {
+  return goTo[view]();
 }

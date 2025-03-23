@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { sleep } from 'radash';
+import { Effect, pipe } from 'effect';
 
 import { store } from '../store';
 import { clamp } from '../utils';
 
-export const drag = async (options: DragOptions) => {
+export const drag = (options: DragOptions) => {
   const { window } = store.getSnapshot().context;
   const flags: string[] = [];
 
@@ -36,18 +36,23 @@ export const drag = async (options: DragOptions) => {
   const endLeft = clamp(window.left + endLeftPixels, window.left + 1, window.left + window.width - 1);
   const endTop = clamp(window.top + endTopPixels, window.top + 1, window.top + window.width - 1);
 
-  await axios.get('http://127.0.0.1:8000/drag', {
-    params: {
-      startLeft: Math.round(startLeft),
-      startTop: Math.round(startTop),
-      endLeft: Math.round(endLeft),
-      endTop: Math.round(endTop),
-      duration: options.duration,
-      debug: options.debug,
-    },
-  });
-
-  await sleep(5000);
+  return pipe(
+    Effect.tryPromise({
+      try: (signal) => axios.get('http://127.0.0.1:8000/drag', {
+        params: {
+          startLeft: Math.round(startLeft),
+          startTop: Math.round(startTop),
+          endLeft: Math.round(endLeft),
+          endTop: Math.round(endTop),
+          duration: options.duration,
+          debug: options.debug,
+        },
+        signal,
+      }),
+      catch: error => new Error('Could not simulate mouse drag', { cause: error }),
+    }),
+    Effect.flatMap(() => Effect.sleep('5 seconds')),
+  );
 }
 
 export interface DragOptions {

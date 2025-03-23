@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { sleep } from 'radash';
+import { Effect, pipe } from 'effect';
 
 import { store } from '../store';
 import { clamp } from '../utils';
 
-export const click = async (options: ClickOptions) => {
+export const click = (options: ClickOptions) => {
   const { window } = store.getSnapshot().context;
   const flags: string[] = [];
 
@@ -30,17 +30,21 @@ export const click = async (options: ClickOptions) => {
   const left = clamp(window.left + leftPixels, window.left + 1, window.left + window.width - 1);
   const top = clamp(window.top + topPixels, window.top + 1, window.top + window.height - 1);
 
-  await axios.get('http://127.0.0.1:8000/click', {
-    params: {
-      left: Math.round(left),
-      top: Math.round(top),
-      interval: options.interval,
-      button: options.button,
-      debug: options.debug,
-    },
-  });
-
-  await sleep(5000);
+  return pipe(
+    Effect.tryPromise({
+      try: () => axios.get('http://127.0.0.1:8000/click', {
+        params: {
+          left: Math.round(left),
+          top: Math.round(top),
+          interval: options.interval,
+          button: options.button,
+          debug: options.debug,
+        },
+      }),
+      catch: error => new Error('Could not simulate click', { cause: error }),
+    }),
+    Effect.flatMap(() => Effect.sleep('5 seconds')),
+  );
 }
 
 export interface ClickOptions {

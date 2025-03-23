@@ -4,6 +4,7 @@ import { sleep } from 'radash';
 
 import { store } from '../store';
 import { clamp } from '../utils';
+import { Effect, pipe } from 'effect';
 
 const textSchema = z.object({
   content: z.string(),
@@ -17,7 +18,7 @@ const resultSchema = z.object({
   texts: z.array(textSchema),
 });
 
-export const findText = async (options: FindTextOptions): Promise<z.infer<typeof textSchema>[]> => {
+export const findText = (options: FindTextOptions) => {
   const { window } = store.getSnapshot().context;
 
   const leftPixels = typeof options.left === 'string'
@@ -38,24 +39,23 @@ export const findText = async (options: FindTextOptions): Promise<z.infer<typeof
   const width = clamp(widthPixels, 0, window.width - 2);
   const height = clamp(heightPixels, 0, window.height - 2);
 
-  const response = await axios.get('http://127.0.0.1:8000/find-text', {
-    params: {
-      left: Math.round(left),
-      top: Math.round(top),
-      width: Math.round(width),
-      height: Math.round(height),
-      debug: options.debug,
-    },
-  });
-  await sleep(5000);
-
-  const result = resultSchema.safeParse(response.data);
-
-  if (!result.success) {
-    return [];
-  }
-
-  return result.data.texts;
+  return pipe(
+    Effect.tryPromise({
+      try: () => axios.get('http://127.0.0.1:8000/find-text', {
+        params: {
+          left: Math.round(left),
+          top: Math.round(top),
+          width: Math.round(width),
+          height: Math.round(height),
+          debug: options.debug,
+        },
+      }),
+      catch: error => new Error('Could not find text', { cause: error }),
+    }),
+    Effect.tap(() => Effect.sleep('5 seconds')),
+    Effect.map(response => resultSchema.safeParse(response.data)),
+    Effect.map(result => result.success ? result.data.texts : [])
+  );
 }
 
 export interface FindTextOptions {
