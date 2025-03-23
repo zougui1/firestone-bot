@@ -1,4 +1,4 @@
-import { Effect, Fiber } from 'effect';
+import { Console, Effect, Fiber, pipe } from 'effect';
 import { RuntimeFiber } from 'effect/Fiber';
 import { UnknownException } from 'effect/Cause';
 
@@ -39,8 +39,21 @@ const serverProgram = async () => {
 
   server.io.on('connection', socket => {
     socket.on('kill', async () => {
-      console.log('kill bot');
-      controller.abort('Killed remotely');
+      console.log('kill process');
+
+      if (fiber) {
+        const interruption = Fiber.interrupt(fiber);
+        await Effect.runPromise(pipe(
+          Console.log('stopping bot'),
+          Effect.tap(() => interruption),
+          Effect.mapBoth({
+            onSuccess: () => Console.log('bot stopped'),
+            onFailure: cause => Console.error('Could not stop the bot:', cause),
+          }),
+        ));
+      } else {
+        console.log('bot is not running');
+      }
 
       const { execa } = await import('execa');
       const pidResult = await execa('pgrep', ['Firestone']);
@@ -48,6 +61,8 @@ const serverProgram = async () => {
 
       if (pid) {
         await execa('kill', [pid]);
+        console.log('game killed');
+        socket.emit('killed');
       }
     });
   });
@@ -57,9 +72,14 @@ const serverProgram = async () => {
 
 const clientProgram = async () => {
   const client = new ClientSocket(env.socket);
-  console.log('clientProgram')
   await client.waitStatus();
-  console.log('emit kill')
+
+  client.socket.once('killed', () => {
+    console.log('the game has been killed');
+    client.socket.disconnect();
+  });
+
+  console.log('emit kill');
   client.socket.emit('kill');
 }
 
