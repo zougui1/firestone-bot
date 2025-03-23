@@ -1,6 +1,6 @@
 import leven from 'fast-levenshtein';
 
-import { goToView } from './view';
+import { goTo } from './view';
 import { click, drag, findText } from '../api';
 
 const upgradePriorities = [
@@ -47,7 +47,7 @@ const upgradeSet = new Set(upgradePriorities);
 
 
 export const handleFirestoneResearch = async () => {
-  await goToView('library');
+  await goTo.library();
 
 
   try {
@@ -129,7 +129,7 @@ export const handleFirestoneResearch = async () => {
 
     console.log('upgrades:', prioritizedUpgrades.map(u => u.text))*/
   } finally {
-    //await goToView('main');
+    //await goTo.main();
   }
 }
 

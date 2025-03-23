@@ -1,19 +1,16 @@
-import { sleep } from 'radash';
+import { Console, Effect, pipe } from 'effect';
 
-import { goToView } from './view';
+import { goTo } from './view';
 import { click, findText } from '../api';
 import { repeatUntil } from '../utils';
 
 export const handleCampaignLoot = async () => {
-  await goToView('campaign');
-
-  try {
-    console.log('claiming loots');
-    // claim loots
-    await click({ left: '7%', top: '93%' });
-  } finally {
-    await goToView('main');
-  }
+  return Effect.scoped(pipe(
+    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
+    Effect.andThen(() => goTo.campaign()),
+    Effect.tap(() => Console.log('claiming campaign loots')),
+    Effect.andThen(() => click({ left: '7%', top: '93%' })),
+  ));
 }
 
 const missions = [
