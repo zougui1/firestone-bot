@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { z } from 'zod';
-import { sleep } from 'radash';
 
-import { store } from '../store';
+import { navigation } from '../store';
 import { clamp } from '../utils';
 import { Effect, pipe } from 'effect';
 
@@ -19,7 +18,7 @@ const resultSchema = z.object({
 });
 
 export const findText = (options: FindTextOptions) => {
-  const { window } = store.getSnapshot().context;
+  const { window } = navigation.store.getSnapshot().context;
 
   const leftPixels = typeof options.left === 'string'
     ? Number(options.left.slice(0, -1)) / 100 * window.width

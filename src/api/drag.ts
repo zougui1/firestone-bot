@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { Effect, pipe } from 'effect';
 
-import { store } from '../store';
+import { navigation } from '../store';
 import { clamp } from '../utils';
 
 export const drag = (options: DragOptions) => {
-  const { window } = store.getSnapshot().context;
+  const { window } = navigation.store.getSnapshot().context;
   const flags: string[] = [];
 
   const startPosition = {
