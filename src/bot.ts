@@ -1,6 +1,6 @@
 import { Console, Effect, pipe } from 'effect';
 
-import { store } from './store';
+import { store } from './store/navigation.store';
 import {
   handleCampaignLoot,
   handleEngineerTools,
@@ -38,7 +38,7 @@ export const startBot = () => {
     Effect.tap(gameWindow => store.trigger.changeWindow(gameWindow)),
     Effect.andThen(waitUntilGameLoaded),
     Effect.timeoutOption('30 seconds'),
-    //Effect.andThen(closeStartupDialogs),
+    Effect.andThen(closeStartupDialogs),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
