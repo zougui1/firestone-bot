@@ -21,7 +21,7 @@ export const goTo = {
     Effect.flatMap(() => {
       return Effect.loop(5, {
         while: iteration => iteration > 0,
-        step: iteration => iteration--,
+        step: iteration => iteration - 1,
         body: () => pipe(
           Console.log('changing view: back'),
           Effect.andThen(press({ key: hotkeys.escape })),
