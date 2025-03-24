@@ -1,4 +1,4 @@
-import { Chunk, Console, Context, Effect, Option, pipe, Ref, Stream, StreamEmit } from 'effect';
+import { Console, Context, Effect, pipe, Ref } from 'effect';
 
 import { event, navigation } from './store';
 import {
@@ -97,37 +97,18 @@ const handleGameFeatures = () => {
 const handleActionEvents = () => {
   return pipe(
     Console.log('handling action events'),
-    Effect.flatMap(() => pipe(
-      Stream.async((emit: StreamEmit.Emit<never, never, event.ActionEvent, void>) => {
-        const { actions } = event.store.getSnapshot().context;
-
-        for (const [id, action] of Object.entries(actions)) {
-          event.store.trigger.deleteAction({ id });
-          emit(Effect.succeed(Chunk.of(action)));
-        }
-      }),
-      Stream.runForEach(action => pipe(
-        Console.log('handling action:', action),
-        // TODO handle the action
-        Effect.tap(() => event.store.trigger.deleteAction({ id: action.id })),
-      )),
-      Effect.timeoutOption('30 seconds'),
-    )),
-    Effect.flatMap(option => {
-      if (Option.isNone(option)) {
-        return pipe(
-          Console.log('interrupted handling action events'),
-          Effect.tap(() => goTo.forceMain()),
-        );
-      } else {
-        return Console.log('done handling action events');
-      }
-    }),
-    Effect.tapError(cause => {
-      return pipe(
+    Effect.map(() => Object.values(event.store.getSnapshot().context.actions)),
+    Effect.flatMap(actions => Effect.forEach(actions, action => pipe(
+      Console.log('handling action:', action),
+      // TODO handle the action
+      Effect.tap(() => event.store.trigger.deleteAction({ id: action.id })),
+    ))),
+    Effect.tapBoth({
+      onSuccess: () => Console.log('done handling action events'),
+      onFailure: cause => pipe(
         Console.log('an error occured while handling action events:', cause),
         Effect.tap(() => goTo.forceMain()),
-      );
+      ),
     }),
   );
 }
