@@ -5,7 +5,7 @@ import { goTo } from './view';
 import { click, findText } from '../api';
 import { repeatUntil } from '../utils';
 
-export const handleCampaignLoot = async () => {
+export const handleCampaignLoot = () => {
   return Effect.scoped(pipe(
     Effect.addFinalizer(() => Effect.orDie(goTo.main())),
     Effect.andThen(() => goTo.campaign()),

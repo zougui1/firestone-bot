@@ -19,8 +19,9 @@ const serverProgram = async () => {
       while: bool => bool,
       step: () => true,
       body: () => Effect.gen(function* () {
-        fiber = yield* Effect.fork(startBot());
-        yield* Fiber.await(fiber);
+        const currentFiber = yield* Effect.fork(startBot());
+        fiber = currentFiber;
+        yield* Fiber.await(currentFiber);
         yield* press({ key: hotkeys.escape });
         yield* Effect.sleep('2 minutes');
       }),

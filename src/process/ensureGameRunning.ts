@@ -1,4 +1,5 @@
 import { Console, Effect, pipe } from 'effect';
+
 import { getIsGameRunning } from './getIsGameRunning';
 import { startGame } from './startGame';
 

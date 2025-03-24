@@ -38,6 +38,9 @@ importers:
       immer:
         specifier: ^10.1.1
         version: 10.1.1
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
       node-moving-things-tracker:
         specifier: ^0.9.1
         version: 0.9.1
@@ -457,6 +460,11 @@ packages:
 
   munkres-js@1.2.2:
     resolution: {integrity: sha512-0oF4tBDvzx20CYzQ44tTJMfwTBJWXe7cE73Sa/u7Mz7X8jRtyOXOGE9kJBhCfX7Akku3Iy/WHa0sRgqLRq2xaQ==}
+
+  nanoid@5.1.5:
+    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
 
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -1027,6 +1035,8 @@ snapshots:
   ms@2.1.3: {}
 
   munkres-js@1.2.2: {}
+
+  nanoid@5.1.5: {}
 
   negotiator@0.6.3: {}
 

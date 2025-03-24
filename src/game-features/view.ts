@@ -1,6 +1,6 @@
 import { Console, Effect, pipe } from 'effect';
 
-import { click, press } from '../api';
+import { click, findText, press } from '../api';
 import { hotkeys } from '../hotkeys';
 import { navigation } from '../store';
 
@@ -15,6 +15,24 @@ export const goTo = {
         Effect.tap(() => navigation.store.trigger.popView()),
       ), { discard: true });
     }),
+  ),
+  forceMain: () => pipe(
+    Console.log('forcing to change view: main'),
+    Effect.flatMap(() => {
+      return Effect.loop(5, {
+        while: iteration => iteration > 0,
+        step: iteration => iteration--,
+        body: () => pipe(
+          Console.log('changing view: back'),
+          Effect.andThen(press({ key: hotkeys.escape })),
+        ),
+        discard: true,
+      });
+    }),
+    // click somewhere where there is no buttons to leave the exit dialog
+    // if it's open, or if it's not open not trigger any UI element
+    Effect.tap(() => click({ left: 1, top: '15%' })),
+    Effect.tap(() => navigation.store.trigger.mainScreen()),
   ),
   town: () => pipe(
     Console.log('changing view: town'),

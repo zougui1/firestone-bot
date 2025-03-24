@@ -76,5 +76,12 @@ export const store = createStore({
         draft.isDialog = true;
       });
     },
+
+    mainScreen: (context) => {
+      return produce(context, draft => {
+        draft.views = [];
+        draft.isDialog = false;
+      });
+    },
   },
 });

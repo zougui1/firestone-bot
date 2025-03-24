@@ -1,4 +1,5 @@
 import { Effect } from 'effect';
+
 import { findGameWindow } from './findGameWindow'
 
 export const getIsGameRunning = () => {
