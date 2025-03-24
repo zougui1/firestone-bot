@@ -63,9 +63,6 @@ importers:
       '@types/fast-levenshtein':
         specifier: ^0.0.4
         version: 0.0.4
-      '@types/nanoid':
-        specifier: ^3.0.0
-        version: 3.0.0
       '@types/node':
         specifier: ^22.13.9
         version: 22.13.9
@@ -106,10 +103,6 @@ packages:
 
   '@types/fast-levenshtein@0.0.4':
     resolution: {integrity: sha512-tkDveuitddQCxut1Db8eEFfMahTjOumTJGPHmT9E7KUH+DkVq9WTpVvlfenf3S+uCBeu8j5FP2xik/KfxOEjeA==}
-
-  '@types/nanoid@3.0.0':
-    resolution: {integrity: sha512-UXitWSmXCwhDmAKe7D3hNQtQaHeHt5L8LO1CB8GF8jlYVzOv5cBWDNqiJ+oPEWrWei3i3dkZtHY/bUtd0R/uOQ==}
-    deprecated: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
 
   '@types/node@22.13.9':
     resolution: {integrity: sha512-acBjXdRJ3A6Pb3tqnw9HZmyR3Fiol3aGxRCK1x3d+6CDAMjl7I649wpSd+yNURCjbOUGu9tqtLKnTGxmK6CyGw==}
@@ -699,10 +692,6 @@ snapshots:
       '@types/node': 22.13.9
 
   '@types/fast-levenshtein@0.0.4': {}
-
-  '@types/nanoid@3.0.0':
-    dependencies:
-      nanoid: 2.1.11
 
   '@types/node@22.13.9':
     dependencies:
