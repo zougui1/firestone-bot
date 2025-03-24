@@ -39,12 +39,12 @@ const closeStartupDialogs = () => {
 }
 
 const gameHandlers = {
-  engineerTools: handleEngineerTools,
-  campaignLoot: handleCampaignLoot,
-  guardianTraining: handleTrainGuardian,
-  oracleRitual: handleOracleRituals,
-  guildExpedition: handleGuildExpeditions,
-  alchemyExperiment: handleExperiments,
+  //engineerTools: handleEngineerTools,
+  //campaignLoot: handleCampaignLoot,
+  //guardianTraining: handleTrainGuardian,
+  //oracleRitual: handleOracleRituals,
+  //guildExpedition: handleGuildExpeditions,
+  //alchemyExperiment: handleExperiments,
   mapMission: handleMapMissions,
   //firestoneResearch: handleFirestoneResearch,
 } satisfies Partial<Record<event.ActionType, () => Effect.Effect<unknown, unknown, unknown>>>;
@@ -119,9 +119,9 @@ export const startBot = () => {
     Effect.andThen(ensureGameRunning),
     Effect.flatMap(findGameWindow),
     Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
-    Effect.andThen(waitUntilGameLoaded),
+    //Effect.andThen(waitUntilGameLoaded),
     Effect.timeoutOption('30 seconds'),
-    Effect.andThen(closeStartupDialogs),
+    //Effect.andThen(closeStartupDialogs),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,

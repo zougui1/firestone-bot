@@ -40,7 +40,6 @@ export const handleTrainGuardian = () => {
         id: nanoid(),
         type: 'guardianTraining',
         duration: text?.content ?? '0',
-        data: undefined,
       },
     })),
     Effect.tapError(Console.log),

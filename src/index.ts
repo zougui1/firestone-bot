@@ -9,9 +9,9 @@ Effect.runPromise(pipe(
   findGameWindow(),
   Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
   Effect.flatMap(() => findText({
-    left: '55.5%',
-    top: '74%',
-    width: '8%',
+    left: '52%',
+    top: '72.5%',
+    width: '10%',
     height: '4%',
     debug: true,
   })),
