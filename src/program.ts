@@ -11,7 +11,7 @@ import { hotkeys } from './hotkeys';
 
 const serverProgram = async () => {
   const server = new ServerSocket(env.socket);
-  let fiber: RuntimeFiber<void, UnknownException | Error> | undefined;
+  let fiber: RuntimeFiber<void, unknown> | undefined;
 
   const runBot = async () => {
     const bot = Effect.loop(true, {
