@@ -10,8 +10,8 @@ const views = [
   'library',
   'map',
   'campaign',
-  'engineerNavigation',
   'engineer',
+  'engineerNavigation',
   'guild',
   'guildExpeditions',
 ] as const;

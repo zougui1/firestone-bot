@@ -27,8 +27,8 @@ const startMissions = ({ squads }: { squads: number; }) => {
         return pipe(
           Console.log('opening mission dialog'),
           Effect.andThen(() => click({
-            left: calcPosition(left, 'width') + durations[index].left,
-            top: calcPosition(top, 'height') + durations[index].top,
+            left: durations[index].left,
+            top: durations[index].top,
           })),
           // mission label text
           Effect.flatMap(() => findText({
@@ -128,15 +128,21 @@ const claimMissions = () => {
 
   return pipe(
     Console.log('checking missions to claim'),
-    Effect.flatMap(() => Effect.iterate(Effect.runSync(checkClaimButton()), {
-      while: bool => bool,
-      body: () => pipe(
-        Console.log('claiming mission'),
-        Effect.andThen(() => click({ left, top })),
-        Effect.andThen(() => press({ key: hotkeys.escape })),
-        Effect.flatMap(checkClaimButton),
-      ),
+    Effect.flatMap(() => findText({
+      left,
+      top,
+      width: '8%',
+      height: '5%',
     })),
+    Effect.map(texts => (
+      texts.filter(text => text.content.toLowerCase().includes('claim'))
+    )),
+    Effect.flatMap((claims) => Effect.forEach(claims, () => pipe(
+      Console.log('claiming mission'),
+      Effect.andThen(() => click({ left, top })),
+      Effect.andThen(() => press({ key: hotkeys.escape })),
+      Effect.flatMap(checkClaimButton),
+    ))),
     Effect.tap(() => Console.log('no missions to claim')),
   );
 }

@@ -71,7 +71,10 @@ export const goTo = {
     Effect.tap(() => Console.log('changing view: engineerNavigation')),
     // engineer building button
     Effect.andThen(click({ left: '65%', top: '80%' })),
-    Effect.tap(() => navigation.store.trigger.navigateView({ view: 'engineerNavigation' })),
+    Effect.tap(() => navigation.store.trigger.navigateView({
+      view: 'engineerNavigation',
+      isDialog: true,
+    })),
   ),
   engineer: () => pipe(
     goTo.engineerNavigation(),

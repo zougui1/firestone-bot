@@ -39,8 +39,8 @@ importers:
         specifier: ^10.1.1
         version: 10.1.1
       nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
+        specifier: ^2.1.11
+        version: 2.1.11
       node-moving-things-tracker:
         specifier: ^0.9.1
         version: 0.9.1
@@ -63,6 +63,9 @@ importers:
       '@types/fast-levenshtein':
         specifier: ^0.0.4
         version: 0.0.4
+      '@types/nanoid':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@types/node':
         specifier: ^22.13.9
         version: 22.13.9
@@ -103,6 +106,10 @@ packages:
 
   '@types/fast-levenshtein@0.0.4':
     resolution: {integrity: sha512-tkDveuitddQCxut1Db8eEFfMahTjOumTJGPHmT9E7KUH+DkVq9WTpVvlfenf3S+uCBeu8j5FP2xik/KfxOEjeA==}
+
+  '@types/nanoid@3.0.0':
+    resolution: {integrity: sha512-UXitWSmXCwhDmAKe7D3hNQtQaHeHt5L8LO1CB8GF8jlYVzOv5cBWDNqiJ+oPEWrWei3i3dkZtHY/bUtd0R/uOQ==}
+    deprecated: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
 
   '@types/node@22.13.9':
     resolution: {integrity: sha512-acBjXdRJ3A6Pb3tqnw9HZmyR3Fiol3aGxRCK1x3d+6CDAMjl7I649wpSd+yNURCjbOUGu9tqtLKnTGxmK6CyGw==}
@@ -461,10 +468,8 @@ packages:
   munkres-js@1.2.2:
     resolution: {integrity: sha512-0oF4tBDvzx20CYzQ44tTJMfwTBJWXe7cE73Sa/u7Mz7X8jRtyOXOGE9kJBhCfX7Akku3Iy/WHa0sRgqLRq2xaQ==}
 
-  nanoid@5.1.5:
-    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
+  nanoid@2.1.11:
+    resolution: {integrity: sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==}
 
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -694,6 +699,10 @@ snapshots:
       '@types/node': 22.13.9
 
   '@types/fast-levenshtein@0.0.4': {}
+
+  '@types/nanoid@3.0.0':
+    dependencies:
+      nanoid: 2.1.11
 
   '@types/node@22.13.9':
     dependencies:
@@ -1036,7 +1045,7 @@ snapshots:
 
   munkres-js@1.2.2: {}
 
-  nanoid@5.1.5: {}
+  nanoid@2.1.11: {}
 
   negotiator@0.6.3: {}
 

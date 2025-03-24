@@ -39,10 +39,10 @@ const closeStartupDialogs = () => {
 }
 
 const gameHandlers = {
-  guardianTraining: handleTrainGuardian,
-  oracleRitual: handleOracleRituals,
   engineerTools: handleEngineerTools,
   campaignLoot: handleCampaignLoot,
+  guardianTraining: handleTrainGuardian,
+  oracleRitual: handleOracleRituals,
   guildExpedition: handleGuildExpeditions,
   alchemyExperiment: handleExperiments,
   mapMission: handleMapMissions,
@@ -135,7 +135,6 @@ const handleActionEvents = () => {
 export const startBot = () => {
   return pipe(
     Console.log('starting bot'),
-    Effect.provideServiceEffect(InitializedState, initializedState),
     Effect.andThen(ensureGameRunning),
     Effect.flatMap(findGameWindow),
     Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
@@ -154,7 +153,8 @@ export const startBot = () => {
         Effect.andThen(handleActionEvents),
       ),
       discard: true,
-    }))
+    })),
+    Effect.provideServiceEffect(InitializedState, initializedState),
   );
 }
 

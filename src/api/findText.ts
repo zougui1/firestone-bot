@@ -17,6 +17,8 @@ const resultSchema = z.object({
   texts: z.array(textSchema),
 });
 
+export type OCRTextItem = z.infer<typeof textSchema>;
+
 export const findText = (options: FindTextOptions) => {
   const { window } = navigation.store.getSnapshot().context;
 
@@ -53,7 +55,14 @@ export const findText = (options: FindTextOptions) => {
     }),
     Effect.tap(() => Effect.sleep('5 seconds')),
     Effect.map(response => resultSchema.safeParse(response.data)),
-    Effect.map(result => result.success ? result.data.texts : [])
+    Effect.map(result => result.success ? result.data.texts : []),
+    Effect.flatMap(texts => Effect.forEach(texts, text => (
+      Effect.succeed({
+        ...text,
+        left: leftPixels + text.left,
+        top: topPixels + text.top,
+      })
+    ))),
   );
 }
 

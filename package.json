@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
+    "dev": "ROLE=client nodemon --enable-source-maps dist",
     "start:client": "ROLE=client node --enable-source-maps dist",
     "start:server": "ROLE=server node --enable-source-maps dist",
     "start:py-server": "uvicorn server.server:app --host 127.0.0.1 --port 8000",
@@ -24,7 +25,7 @@
     "execa": "^9.5.2",
     "fast-levenshtein": "^3.0.0",
     "immer": "^10.1.1",
-    "nanoid": "^5.1.5",
+    "nanoid": "^2.1.11",
     "node-moving-things-tracker": "^0.9.1",
     "radash": "^12.1.0",
     "socket.io": "^4.8.1",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "@types/big.js": "^6.2.2",
     "@types/fast-levenshtein": "^0.0.4",
+    "@types/nanoid": "^3.0.0",
     "@types/node": "^22.13.9",
     "nodemon": "^3.1.9",
     "rimraf": "^6.0.1",

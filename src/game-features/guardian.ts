@@ -1,7 +1,9 @@
 import { Console, Effect, pipe } from 'effect';
+import nanoid from 'nanoid';
 
 import { goTo } from './view';
-import { click } from '../api';
+import { click, findText } from '../api';
+import { event } from '../store';
 
 const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
 type GuardianName = typeof guardians[number];
@@ -27,6 +29,20 @@ export const handleTrainGuardian = () => {
     Effect.andThen(() => selectGuardian('Grace')),
     Effect.tap(() => Console.log('training guardian')),
     Effect.andThen(() => click({ left: '60%', top: '72%' })),
+    Effect.flatMap(() => findText({
+      left: '55.5%',
+      top: '74%',
+      width: '8%',
+      height: '4%',
+    })),
+    Effect.tap(([text]) => event.store.trigger.emitAction({
+      action: {
+        id: nanoid(),
+        type: 'guardianTraining',
+        duration: text?.content ?? '0',
+        data: undefined,
+      },
+    })),
     Effect.tapError(Console.log),
   ));
 }

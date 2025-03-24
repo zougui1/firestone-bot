@@ -11,7 +11,6 @@ import { hotkeys } from './hotkeys';
 
 const serverProgram = async () => {
   const server = new ServerSocket(env.socket);
-  let controller = new AbortController();
   let fiber: RuntimeFiber<void, UnknownException | Error> | undefined;
 
   const runBot = async () => {
