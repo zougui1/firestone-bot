@@ -112,20 +112,6 @@ const claimMissions = () => {
   const left = '5%';
   const top = '28%';
 
-  const checkClaimButton = () => {
-    return pipe(
-      findText({
-        left,
-        top,
-        width: '8%',
-        height: '5%',
-      }),
-      Effect.map(texts => (
-        texts.some(text => text.content.toLowerCase().includes('claim'))
-      )),
-    );
-  }
-
   return pipe(
     Console.log('checking missions to claim'),
     Effect.flatMap(() => findText({
@@ -141,7 +127,6 @@ const claimMissions = () => {
       Console.log('claiming mission'),
       Effect.andThen(() => click({ left, top })),
       Effect.andThen(() => press({ key: hotkeys.escape })),
-      Effect.flatMap(checkClaimButton),
     ))),
     Effect.tap(() => Console.log('no missions to claim')),
   );
