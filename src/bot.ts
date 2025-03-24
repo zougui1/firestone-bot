@@ -69,9 +69,9 @@ export const startBot = () => {
     Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
     Effect.tap(() => click({ left: '99%', top: '15%', debug: true })),
     Effect.flatMap(() => Effect.fail('stopped')),
-    //Effect.andThen(waitUntilGameLoaded),
+    Effect.andThen(waitUntilGameLoaded),
     Effect.timeoutOption('30 seconds'),
-    //Effect.andThen(closeStartupDialogs),
+    Effect.andThen(closeStartupDialogs),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
