@@ -36,12 +36,12 @@ const gameHandlers = {
   engineerTools: handleEngineerTools,
   campaignLoot: handleCampaignLoot,
   guardianTraining: handleTrainGuardian,
+  firestoneResearch: handleFirestoneResearch,
   guildExpedition: handleGuildExpeditions,
   oracleRitual: handleOracleRituals,
   pickaxesClaiming: handlePickaxeSupplies,
   //alchemyExperiment: handleExperiments,
   mapMission: handleMapMissions,
-  //firestoneResearch: handleFirestoneResearch,
 } satisfies Partial<Record<event.ActionType, () => Effect.Effect<unknown, unknown, unknown>>>;
 
 const handleGameFeatures = () => {
@@ -66,12 +66,12 @@ const handleGameFeatures = () => {
 export const startBot = () => {
   return pipe(
     Console.log('starting bot'),
-    Effect.andThen(ensureGameRunning),
+    //Effect.andThen(ensureGameRunning),
     Effect.flatMap(findGameWindow),
     Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
-    Effect.andThen(waitUntilGameLoaded),
+    //Effect.andThen(waitUntilGameLoaded),
     Effect.timeoutOption('30 seconds'),
-    Effect.andThen(closeStartupDialogs),
+    //Effect.andThen(closeStartupDialogs),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
@@ -79,11 +79,11 @@ export const startBot = () => {
         Console.log('bot iteration\n'),
         Effect.andThen(() => click({ left: 1, top: 1 })),
         Effect.andThen(handleGameFeatures),
+        Effect.tap(() => Console.log('waiting before next iteration')),
+        Effect.tap(() => Effect.sleep('1 minute')),
       ),
       discard: true,
     })),
-    Effect.tap(() => Console.log('waiting before next iteration')),
-    Effect.tap(() => Effect.sleep('1 minute')),
   );
 }
 

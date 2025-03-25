@@ -43,7 +43,7 @@ export const click = (options: ClickOptions) => {
       }),
       catch: error => new Error('Could not simulate click', { cause: error }),
     }),
-    Effect.flatMap(() => Effect.sleep('5 seconds')),
+    Effect.flatMap(() => Effect.sleep('1 seconds')),
   );
 }
 

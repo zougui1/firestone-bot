@@ -51,7 +51,7 @@ export const drag = (options: DragOptions) => {
       }),
       catch: error => new Error('Could not simulate mouse drag', { cause: error }),
     }),
-    Effect.flatMap(() => Effect.sleep('5 seconds')),
+    Effect.flatMap(() => Effect.sleep('1 second')),
   );
 }
 

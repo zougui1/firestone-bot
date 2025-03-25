@@ -59,6 +59,11 @@ export const goTo = {
     Effect.andThen(() => press({ key: hotkeys.library })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'library' })),
   ),
+  firestoneLibrary: () => pipe(
+    goTo.library(),
+    Effect.tap(() => Console.log('changing view: firestoneLibrary')),
+    Effect.andThen(() => click({ left: '95%', top: '60%' })),
+  ),
   map: () => pipe(
     Console.log('changing view: map'),
     Effect.andThen(() => press({ key: hotkeys.map })),
