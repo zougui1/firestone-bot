@@ -11,6 +11,7 @@ import {
   handleTrainGuardian,
   handleExperiments,
   goTo,
+  handlePickaxeSupplies,
 } from './game-features';
 import {
   findGameWindow,
@@ -37,6 +38,7 @@ const gameHandlers = {
   guardianTraining: handleTrainGuardian,
   guildExpedition: handleGuildExpeditions,
   oracleRitual: handleOracleRituals,
+  pickaxesClaiming: handlePickaxeSupplies,
   //alchemyExperiment: handleExperiments,
   mapMission: handleMapMissions,
   //firestoneResearch: handleFirestoneResearch,
@@ -67,8 +69,6 @@ export const startBot = () => {
     Effect.andThen(ensureGameRunning),
     Effect.flatMap(findGameWindow),
     Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
-    Effect.tap(() => click({ left: '99%', top: '15%', debug: true })),
-    Effect.flatMap(() => Effect.fail('stopped')),
     Effect.andThen(waitUntilGameLoaded),
     Effect.timeoutOption('30 seconds'),
     Effect.andThen(closeStartupDialogs),
@@ -82,6 +82,8 @@ export const startBot = () => {
       ),
       discard: true,
     })),
+    Effect.tap(() => Console.log('waiting before next iteration')),
+    Effect.tap(() => Effect.sleep('1 minute')),
   );
 }
 

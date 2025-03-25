@@ -11,6 +11,7 @@ export const actionTypes = [
   'guardianTraining',
   'guildExpedition',
   'firestoneResearch',
+  'pickaxesClaiming',
 ] as const;
 
 export type ActionType = typeof actionTypes[number];

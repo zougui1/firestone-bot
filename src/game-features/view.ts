@@ -1,6 +1,6 @@
 import { Console, Effect, pipe } from 'effect';
 
-import { click, findText, press } from '../api';
+import { click, press } from '../api';
 import { hotkeys } from '../hotkeys';
 import { navigation } from '../store';
 
@@ -99,6 +99,18 @@ export const goTo = {
     Effect.tap(() => Console.log('changing view: guildExpeditions')),
     Effect.andThen(click({ left: '20%', top: '32%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'guildExpeditions' })),
+  ),
+  arcaneCrystal: () => pipe(
+    goTo.guild(),
+    Effect.tap(() => Console.log('changing view: arcaneCrystal')),
+    Effect.andThen(click({ left: '85%', top: '85%' })),
+    Effect.tap(() => navigation.store.trigger.navigateView({ view: 'arcaneCrystal' })),
+  ),
+  pickaxeSupplies: () => pipe(
+    goTo.arcaneCrystal(),
+    Effect.tap(() => Console.log('changing view: pickaxeSupplies')),
+    Effect.andThen(click({ left: '90%', top: '3%' })),
+    Effect.tap(() => navigation.store.trigger.navigateView({ view: 'pickaxeSupplies' })),
   ),
 };
 

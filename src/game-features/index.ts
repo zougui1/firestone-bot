@@ -7,3 +7,4 @@ export * from './guild';
 export * from './map';
 export * from './library';
 export * from './alchemist';
+export * from './arcaneCrystal';

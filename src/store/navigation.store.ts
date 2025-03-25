@@ -14,6 +14,8 @@ const views = [
   'engineerNavigation',
   'guild',
   'guildExpeditions',
+  'arcaneCrystal',
+  'pickaxeSupplies',
 ] as const;
 
 export type ViewName = typeof views[number];
