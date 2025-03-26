@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Effect, pipe } from 'effect';
 
+import { env } from '../env';
+
 export const press = (options: PressOptions) => {
   return pipe(
     Effect.tryPromise({
@@ -9,7 +11,7 @@ export const press = (options: PressOptions) => {
       }),
       catch: error => new Error('Could not simulate click', { cause: error }),
     }),
-    Effect.flatMap(() => Effect.sleep('5 seconds')),
+    Effect.flatMap(() => Effect.sleep(`${env.postUiInteractionWaitTime} seconds`)),
   );
 }
 

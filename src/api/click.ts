@@ -3,6 +3,7 @@ import { Effect, pipe } from 'effect';
 
 import { navigation } from '../store';
 import { clamp } from '../utils';
+import { env } from '../env';
 
 export const click = (options: ClickOptions) => {
   const { window } = navigation.store.getSnapshot().context;
@@ -43,7 +44,7 @@ export const click = (options: ClickOptions) => {
       }),
       catch: error => new Error('Could not simulate click', { cause: error }),
     }),
-    Effect.flatMap(() => Effect.sleep('1 seconds')),
+    Effect.flatMap(() => Effect.sleep(`${env.postUiInteractionWaitTime} seconds`)),
   );
 }
 
