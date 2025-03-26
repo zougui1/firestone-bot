@@ -1,17 +1,23 @@
 import { Console, Effect, Fiber, pipe } from 'effect';
 import { RuntimeFiber } from 'effect/Fiber';
-import { UnknownException } from 'effect/Cause';
+import { sleep } from 'radash';
 
 import { ServerSocket, ClientSocket } from './socket';
 import { env } from './env';
-import { sleep } from 'radash';
 import { startBot } from './bot';
 import { press } from './api';
 import { hotkeys } from './hotkeys';
+import * as database from './database';
 
-const serverProgram = async () => {
+const botProgram = async () => {
   const server = new ServerSocket(env.socket);
   let fiber: RuntimeFiber<void, unknown> | undefined;
+
+  try {
+    await database.connect();
+  } catch (error) {
+    console.error('database connection error:', error);
+  }
 
   const runBot = async () => {
     const bot = Effect.loop(true, {
@@ -70,7 +76,7 @@ const serverProgram = async () => {
   await runBot();
 }
 
-const clientProgram = async () => {
+const controllerProgram = async () => {
   const client = new ClientSocket(env.socket);
   await client.waitStatus();
 
@@ -84,10 +90,10 @@ const clientProgram = async () => {
 }
 
 const main = async () => {
-  if (env.role === 'server') {
-    await serverProgram();
+  if (env.role === 'bot') {
+    await botProgram();
   } else {
-    await clientProgram();
+    await controllerProgram();
   }
 }
 

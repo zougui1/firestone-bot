@@ -2,11 +2,10 @@ import { Console, Effect, pipe } from 'effect';
 import nanoid from 'nanoid';
 
 import { goTo } from './view';
+import { GuardianName } from './data';
 import { click, findText } from '../api';
+import * as database from '../database';
 import { event } from '../store';
-
-const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
-type GuardianName = typeof guardians[number];
 
 const guardianCoordinates = {
   Vermillion: { left: '40%', top: '90%' },
@@ -25,8 +24,9 @@ export const selectGuardian = (name: GuardianName) => {
 export const handleTrainGuardian = () => {
   return Effect.scoped(pipe(
     Effect.addFinalizer(() => Effect.orDie(goTo.main())),
-    Effect.andThen(() => goTo.guardians()),
-    Effect.andThen(() => selectGuardian('Grace')),
+    Effect.tap(() => goTo.guardians()),
+    Effect.flatMap(database.config.findOne),
+    Effect.andThen(config => selectGuardian(config.features.guardianTraining.guardian)),
     Effect.tap(() => Console.log('training guardian')),
     Effect.andThen(() => click({ left: '60%', top: '72%' })),
     Effect.flatMap(() => findText({

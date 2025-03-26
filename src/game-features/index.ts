@@ -1,3 +1,4 @@
+export * from './data';
 export * from './guardian';
 export * from './view';
 export * from './oracle';

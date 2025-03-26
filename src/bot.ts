@@ -19,6 +19,7 @@ import {
   waitUntilGameLoaded,
 } from './process';
 import { click } from './api';
+import * as database from './database';
 
 const closeStartupDialogs = () => {
   return Effect.loop(1, {
@@ -40,18 +41,28 @@ const gameHandlers = {
   guildExpedition: handleGuildExpeditions,
   oracleRitual: handleOracleRituals,
   pickaxesClaiming: handlePickaxeSupplies,
-  //alchemyExperiment: handleExperiments,
+  alchemyExperiment: handleExperiments,
   mapMission: handleMapMissions,
-} satisfies Partial<Record<event.ActionType, () => Effect.Effect<unknown, unknown, unknown>>>;
+} satisfies Record<event.ActionType, () => Effect.Effect<unknown, unknown, unknown>>;
 
 const handleGameFeatures = () => {
-  const handlerKeys = Object.keys(gameHandlers) as (keyof typeof gameHandlers)[];
-
   return pipe(
-    Console.log('enabled game features:', handlerKeys.join(', ')),
-    Effect.tap(() => Effect.forEach(
-      handlerKeys,
-      handlerKey => gameHandlers[handlerKey](),
+    database.config.findOne(),
+    Effect.map(config => Object
+      .entries(config.features)
+      .filter(([, feature]) => feature.enabled)
+      .map(([name]) => name) as event.ActionType[]
+    ),
+    Effect.tap(features => Console.log('enabled game features:', features.join(', '))),
+    Effect.tap(features => Effect.forEach(
+      features,
+      feature => {
+        if (feature in gameHandlers) {
+          return gameHandlers[feature]();
+        }
+
+        return Console.log(`feature "${feature}" has no handler`);
+      },
       { discard: true },
     )),
     Effect.tapError(cause => {
