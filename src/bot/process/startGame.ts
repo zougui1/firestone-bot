@@ -27,11 +27,7 @@ export const startGame = () => {
     Effect.tap(() => Effect.sleep('10 seconds')),
     Effect.flatMap(() => Effect.exit(findGameWindow())),
     Effect.tap(exit => {
-      if (!Exit.isFailure(exit)) {
-        return Effect.die(new Error('Unknown failure caught while trying to check if game has started'));
-      }
-
-      if (Cause.isDieType(exit.cause)) {
+      if (Exit.isFailure(exit) && Cause.isDieType(exit.cause)) {
         return Effect.die(new Error('The game did not start', { cause: exit.cause.defect }));
       }
     }),
