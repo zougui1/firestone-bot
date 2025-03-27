@@ -7,19 +7,6 @@ import { env } from '../../env';
 
 export const click = (options: ClickOptions) => {
   const { window } = navigation.store.getSnapshot().context;
-  const flags: string[] = [];
-
-  if (options.interval) {
-    flags.push(`--interval=${options.interval}`);
-  }
-
-  if (options.button) {
-    flags.push(`--button=${options.button}`);
-  }
-
-  if (options.debug) {
-    flags.push('--debug');
-  }
 
   const leftPixels = typeof options.left === 'string'
     ? Number(options.left.slice(0, -1)) / 100 * window.width
@@ -33,7 +20,7 @@ export const click = (options: ClickOptions) => {
 
   return pipe(
     Effect.tryPromise({
-      try: () => axios.get('http://127.0.0.1:8000/click', {
+      try: () => (axios as any).et('http://127.0.0.1:8000/click', {
         params: {
           left: Math.round(left),
           top: Math.round(top),
@@ -44,6 +31,7 @@ export const click = (options: ClickOptions) => {
       }),
       catch: error => new Error('Could not simulate click', { cause: error }),
     }),
+    Effect.tapError(cause => Effect.logError(cause)),
     Effect.flatMap(() => Effect.sleep(`${env.postUiInteractionWaitTime} seconds`)),
   );
 }

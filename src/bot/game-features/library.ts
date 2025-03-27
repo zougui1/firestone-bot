@@ -78,8 +78,8 @@ const canClaimResearch = ({ index, left, top }: {
     Effect.flatMap(() => findText({
       left,
       top,
-      width: '8%',
-      height: '10%',
+      width: '6%',
+      height: '7%',
     })),
     Effect.flatMap(buttonTexts => Effect.if(
       (
@@ -309,8 +309,8 @@ export const handleFirestoneResearch = () => {
     Effect.addFinalizer(() => Effect.orDie(goTo.main())),
     Effect.andThen(() => goTo.firestoneLibrary()),
     Effect.flatMap(() => Effect.all([
-      canClaimResearch({ index: 2, left: '61%', top: '86%' }),
-      canClaimResearch({ index: 1, left: '28%', top: '86%' }),
+      canClaimResearch({ index: 2, left: '62.5%', top: '88%' }),
+      canClaimResearch({ index: 1, left: '28%', top: '88%' }),
     ])),
     Effect.tap(claims => Effect.if(claims.includes(true), {
       onTrue: () => pipe(

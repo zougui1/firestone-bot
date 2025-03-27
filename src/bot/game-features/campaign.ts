@@ -114,18 +114,19 @@ const difficultyButtons = {
 } as const;
 
 export const handleCampaignFights = async () => {
-  console.count('fight');
-  await click({ left: '51.5%', top: '85%' });
-  await sleep(180);
+  while (true) {
+    console.count('fight');
+    await Effect.runPromise(click({ left: '52%', top: '77%' }));
 
-  await click({ ...difficultyButtons.easy });
-  await sleep(15000);
+    await Effect.runPromise(click({ ...difficultyButtons.easy }));
+    await sleep(5000);
 
-  /*await repeatUntil({ delay: 200 }, async () => {
-    const texts = await findText({ top: '69.5%', left: '48%', width: '4%', height: '4%' });
-    return texts.some(text => text.content.toLowerCase() === 'ok');
-  });*/
+    await repeatUntil({ delay: 200 }, async () => {
+      const texts = await Effect.runPromise(findText({ top: '69.5%', left: '48%', width: '4%', height: '4%' }));
+      return texts.some(text => text.content.toLowerCase() === 'ok');
+    });
 
-  console.log('end');
-  await click({ left: '50%', top: '80%' });
+    console.log('end');
+    await Effect.runPromise(click({ left: '50%', top: '80%' }));
+  }
 }

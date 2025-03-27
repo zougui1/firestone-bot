@@ -39,5 +39,6 @@ export const findGameWindow = () => {
         height,
       });
     }),
+    Effect.tapError(cause => Effect.logError(Effect.fail(cause))),
   );
 }

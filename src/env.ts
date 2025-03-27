@@ -7,8 +7,11 @@ config({
   path: path.join(__dirname, '../.env'),
 });
 
+const NODE_ENV = envVar.get('NODE_ENV').default('development').asEnum(['development', 'production']);
+
 export const env = {
-  postUiInteractionWaitTime: envVar.get('POST_UI_INTERACTION_WAIT_TIME').required().asIntPositive(),
+  isDev: NODE_ENV === 'development',
+  postUiInteractionWaitTime: envVar.get('POST_UI_INTERACTION_WAIT_TIME').required().asFloatPositive(),
 
   socket: {
     port: envVar.get('SOCKET.PORT').required().asPortNumber(),

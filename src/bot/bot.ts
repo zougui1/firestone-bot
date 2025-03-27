@@ -12,6 +12,7 @@ import {
   handleExperiments,
   goTo,
   handlePickaxeSupplies,
+  handleCampaignFights,
 } from './game-features';
 import {
   findGameWindow,
@@ -76,7 +77,7 @@ const handleGameFeatures = () => {
 
 export const startBot = (options?: BotOptions) => {
   return pipe(
-    Console.log('starting bot'),
+    Effect.log('starting bot'),
     Effect.tap(() => {
       if (options?.disabledPreflightChecks) {
         return Console.log('Pre-flight checks disabled');
@@ -106,15 +107,20 @@ export const startBot = (options?: BotOptions) => {
 
       return closeStartupDialogs();
     }),
+    //Effect.tap(() => Effect.tryPromise(handleCampaignFights)),
+    //Effect.tap(() => Effect.sleep('1 minute')),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
       body: () => pipe(
-        Console.log('bot iteration\n'),
+        Effect.log('Start routine'),
         Effect.andThen(() => click({ left: 1, top: 1 })),
-        Effect.andThen(handleGameFeatures),
-        Effect.tap(() => Console.log('waiting before next iteration')),
-        Effect.tap(() => Effect.sleep('1 minute')),
+        //Effect.andThen(handleGameFeatures),
+        Effect.flatMap(() => Effect.fail('oh no')),
+        Effect.tap(() => Effect.log('Waiting before next iteration')),
+        Effect.tap(() => Effect.sleep('2 second')),
+        Effect.withSpan('routine'),
+        Effect.withLogSpan('routine'),
       ),
       discard: true,
     })),
