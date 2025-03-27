@@ -1,4 +1,5 @@
-import { Effect, pipe } from 'effect';
+import { Cause, Effect, Exit, pipe } from 'effect';
+import { findGameWindow } from './findGameWindow';
 
 export const startGame = () => {
   return pipe(
@@ -24,5 +25,15 @@ export const startGame = () => {
     }))),
     // wait until the game has started
     Effect.tap(() => Effect.sleep('10 seconds')),
+    Effect.flatMap(() => Effect.exit(findGameWindow())),
+    Effect.tap(exit => {
+      if (!Exit.isFailure(exit)) {
+        return Effect.logFatal('Unknown failure caught while trying to check if game has started');
+      }
+
+      if (Cause.isDieType(exit.cause)) {
+        return Effect.logFatal('The game did not start', exit.cause.defect);
+      }
+    }),
   );
 }
