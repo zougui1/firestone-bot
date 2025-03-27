@@ -306,9 +306,8 @@ const startResearches = () => {
 
 export const handleFirestoneResearch = () => {
   return Effect.scoped(pipe(
-    Console.log('research'),
-    //Effect.addFinalizer(() => Effect.orDie(goTo.main())),
-    //Effect.andThen(() => goTo.firestoneLibrary()),
+    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
+    Effect.andThen(() => goTo.firestoneLibrary()),
     Effect.flatMap(() => Effect.all([
       canClaimResearch({ index: 2, left: '61%', top: '86%' }),
       canClaimResearch({ index: 1, left: '28%', top: '86%' }),
