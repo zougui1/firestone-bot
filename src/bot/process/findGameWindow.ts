@@ -1,13 +1,13 @@
 import { Effect, pipe } from 'effect';
 import { isNumber } from 'radash';
 
-export const findGameWindow = () => {
+export const tryFindGameWindow = () => {
   return pipe(
-    Effect.orDie(Effect.tryPromise({
+    Effect.tryPromise({
       try: () => import('execa'),
       catch: cause => new Error('Could not import execa', { cause }),
-    })),
-    Effect.flatMap(({ execa }) => Effect.orDie(Effect.tryPromise({
+    }),
+    Effect.flatMap(({ execa }) => Effect.tryPromise({
       try: async (signal) => {
         const subProcess = execa('bash', [
           '-c',
@@ -24,12 +24,12 @@ export const findGameWindow = () => {
         }
       },
       catch: cause => new Error('Could not find the game\'s window metadata', { cause }),
-    }))),
+    })),
     Effect.flatMap(result => {
       const [left, top, width, height] = result.stdout.split(/ +/).slice(2, 6).map(Number);
 
       if (!isNumber(left) || !isNumber(top) || !isNumber(width) || !isNumber(height)) {
-        return Effect.orDie(Effect.fail(new Error('Invalid window geometry')));
+        return Effect.fail(new Error('Invalid window geometry'));
       }
 
       return Effect.succeed({
@@ -40,4 +40,8 @@ export const findGameWindow = () => {
       });
     }),
   );
+}
+
+export const findGameWindow = () => {
+  return Effect.orDie(tryFindGameWindow());
 }
