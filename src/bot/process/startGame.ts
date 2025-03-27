@@ -28,11 +28,11 @@ export const startGame = () => {
     Effect.flatMap(() => Effect.exit(findGameWindow())),
     Effect.tap(exit => {
       if (!Exit.isFailure(exit)) {
-        return Effect.logFatal('Unknown failure caught while trying to check if game has started');
+        return Effect.die(new Error('Unknown failure caught while trying to check if game has started'));
       }
 
       if (Cause.isDieType(exit.cause)) {
-        return Effect.logFatal('The game did not start', exit.cause.defect);
+        return Effect.die(new Error('The game did not start', { cause: exit.cause.defect }));
       }
     }),
   );
