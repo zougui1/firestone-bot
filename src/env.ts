@@ -8,7 +8,6 @@ config({
 });
 
 export const env = {
-  role: envVar.get('ROLE').required().asEnum(['bot', 'controller']),
   postUiInteractionWaitTime: envVar.get('POST_UI_INTERACTION_WAIT_TIME').required().asIntPositive(),
 
   socket: {

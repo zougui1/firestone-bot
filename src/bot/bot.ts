@@ -74,15 +74,38 @@ const handleGameFeatures = () => {
   );
 }
 
-export const startBot = () => {
+export const startBot = (options?: BotOptions) => {
   return pipe(
     Console.log('starting bot'),
-    Effect.andThen(ensureGameRunning),
+    Effect.tap(() => {
+      if (options?.disabledPreflightChecks) {
+        return Console.log('Pre-flight checks disabled');
+      }
+    }),
+    Effect.tap(() => {
+      if (options?.disabledPreflightChecks) {
+        return Console.log('ensuring game is running: skipped');
+      }
+
+      return ensureGameRunning();
+    }),
     Effect.flatMap(findGameWindow),
     Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
-    Effect.andThen(waitUntilGameLoaded),
+    Effect.tap(() => {
+      if (options?.disabledPreflightChecks) {
+        return Console.log('waiting until game is loaded: skipped');
+      }
+
+      return waitUntilGameLoaded();
+    }),
     Effect.timeoutOption('30 seconds'),
-    Effect.andThen(closeStartupDialogs),
+    Effect.tap(() => {
+      if (options?.disabledPreflightChecks) {
+        return Console.log('closing any potential startup dialog: skipped');
+      }
+
+      return closeStartupDialogs();
+    }),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
@@ -99,5 +122,5 @@ export const startBot = () => {
 }
 
 export interface BotOptions {
-  signal: AbortSignal;
+  disabledPreflightChecks?: boolean;
 }

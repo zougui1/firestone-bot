@@ -1,5 +1,6 @@
 import { createStore } from '@xstate/store';
 import { produce } from 'immer';
+
 import { durationToSeconds } from '../utils';
 
 export const actionTypes = [

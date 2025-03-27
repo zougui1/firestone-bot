@@ -4,7 +4,7 @@ import { schema, types } from 'papr';
 import { papr } from './database';
 import { guardians } from '../game-features';
 import { event } from '../store';
-import { defaultConfig } from '../defaultConfig';
+import { defaultConfig } from '../../defaultConfig';
 
 export const ConfigModel = papr.model('configs', schema({
   features: types.object({

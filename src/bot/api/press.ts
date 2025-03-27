@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Effect, pipe } from 'effect';
 
-import { env } from '../env';
+import { env } from '../../env';
 
 export const press = (options: PressOptions) => {
   return pipe(

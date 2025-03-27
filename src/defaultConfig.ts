@@ -1,4 +1,4 @@
-import type * as database from './database';
+import type * as database from './bot/database';
 
 export const defaultConfig: database.config.ConfigType = {
   features: {

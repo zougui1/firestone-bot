@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import Papr from 'papr';
 
-import { env } from '../env';
+import { env } from '../../env';
 
 export const papr = new Papr();
 let client: MongoClient | undefined;
