@@ -19,8 +19,8 @@ export const click = (options: ClickOptions) => {
   const top = clamp(window.top + topPixels, window.top + 1, window.top + window.height - 1);
 
   return pipe(
-    Effect.tryPromise({
-      try: () => (axios as any).et('http://127.0.0.1:8000/click', {
+    Effect.orDie(Effect.tryPromise({
+      try: () => axios.get('http://127.0.0.1:8000/click', {
         params: {
           left: Math.round(left),
           top: Math.round(top),
@@ -29,9 +29,8 @@ export const click = (options: ClickOptions) => {
           debug: options.debug,
         },
       }),
-      catch: error => new Error('Could not simulate click', { cause: error }),
-    }),
-    Effect.tapError(cause => Effect.logError(cause)),
+      catch: cause => new Error('Could not simulate a click', { cause }),
+    })),
     Effect.flatMap(() => Effect.sleep(`${env.postUiInteractionWaitTime} seconds`)),
   );
 }

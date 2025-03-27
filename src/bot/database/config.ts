@@ -1,4 +1,4 @@
-import { Console, Effect, pipe } from 'effect';
+import { Effect, pipe } from 'effect';
 import { schema, types } from 'papr';
 
 import { papr } from './database';
@@ -43,7 +43,7 @@ export type ConfigType = Omit<typeof ConfigModel['schema'], '_id'>;
 
 export const findOne = () => {
   return pipe(
-    Console.log('finding config'),
+    Effect.logDebug('Finding config'),
     Effect.flatMap(() => Effect.tryPromise({
       try: async () => {
         const config = await ConfigModel.findOne({});
@@ -51,8 +51,8 @@ export const findOne = () => {
       },
       catch: cause => new Error('could not find the config', { cause }),
     })),
-    Effect.tapError(cause => Console.log(cause, '\nusing the default config as fallback')),
+    Effect.onError(cause => Effect.logError('Could not retrieve the config. Using the default config as fallback', cause)),
     Effect.orElseSucceed(() => defaultConfig),
-    Effect.tap(config => Console.log('config:', config)),
+    Effect.tap(config => Effect.logDebug('config:', config)),
   );
 }

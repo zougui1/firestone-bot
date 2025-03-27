@@ -1,4 +1,4 @@
-import { Console, Effect, pipe } from 'effect';
+import { Effect, pipe } from 'effect';
 import { sleep } from 'radash';
 
 import { goTo } from './view';
@@ -7,10 +7,13 @@ import { repeatUntil } from '../utils';
 
 export const handleCampaignLoot = () => {
   return Effect.scoped(pipe(
-    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
-    Effect.andThen(() => goTo.campaign()),
-    Effect.tap(() => Console.log('claiming campaign loots')),
-    Effect.andThen(() => click({ left: '7%', top: '93%' })),
+    Effect.addFinalizer(() => goTo.main()),
+    Effect.tap(() => goTo.campaign()),
+    Effect.tap(() => Effect.logDebug('Claiming campaign loots')),
+    Effect.tap(() => click({ left: '7%', top: '93%' })),
+    Effect.tap(() => Effect.log('Claimed campaign loots')),
+    Effect.withSpan('campaignLoots'),
+    Effect.withLogSpan('campaignLoots'),
   ));
 }
 

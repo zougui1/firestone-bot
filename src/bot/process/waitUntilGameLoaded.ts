@@ -1,10 +1,10 @@
-import { Console, Effect } from 'effect';
+import { Effect } from 'effect';
 
 import { findText } from '../api';
 
 export const waitUntilGameLoaded = () => {
   return Effect.repeat(
-    Console.log('Waiting for game to load').pipe(
+    Effect.log('Waiting for game to load').pipe(
       Effect.flatMap(() => findText({
         left: '94%',
         top: '94%',

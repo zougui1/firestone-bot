@@ -1,9 +1,9 @@
-import { Console, Effect, pipe } from 'effect';
+import { Effect, pipe } from 'effect';
 
 import { goTo } from './view';
 import { click, findText } from '../api';
 
-const claimAndRestart = ({ left }: { left: `${number}%`; }) => {
+const claimAndRestart = ({ name, left }: { name: string; left: `${number}%`; }) => {
   return pipe(
     findText({
       left,
@@ -14,13 +14,13 @@ const claimAndRestart = ({ left }: { left: `${number}%`; }) => {
     Effect.flatMap(texts => Effect.if(
       texts.some(text => text.content.toLowerCase() === 'speed up'),
       {
-        onTrue: () => Console.log('ignored'),
+        onTrue: () => Effect.logDebug(`Experiment ${name} has not yet finished`),
         onFalse: () => pipe(
-          Console.log('claiming'),
-          Effect.andThen(click({ left, top: '75%' })),
-          Effect.tap(() => Console.log('starting new')),
-          Effect.andThen(click({ left, top: '75%' })),
-          Effect.flatMap(() => Effect.void),
+          Effect.logDebug(`Claiming experiment ${name}`),
+          Effect.tap(() => click({ left, top: '75%' })),
+          Effect.tap(() => Effect.logDebug(`Starting experiment ${name}`)),
+          Effect.tap(() => click({ left, top: '75%' })),
+          Effect.tap(() => Effect.log(`Handled experiment ${name}`)),
         ),
       },
     )),
@@ -28,15 +28,14 @@ const claimAndRestart = ({ left }: { left: `${number}%`; }) => {
 }
 
 export const handleExperiments = () => {
-  return Effect.void;
-  /*return Effect.scoped(pipe(
-    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
-    Effect.andThen(() => goTo.alchemist()),
+  return Effect.scoped(pipe(
+    Effect.addFinalizer(() => goTo.main()),
+    Effect.tap(() => goTo.alchemist()),
 
-    Effect.tap(() => Console.log('experiment: blood')),
-    Effect.andThen(() => claimAndRestart({ left: '45%' })),
+    Effect.tap(() => claimAndRestart({ name: 'blood', left: '45%' })),
+    Effect.tap(() => claimAndRestart({ name: 'exotic coins', left: '81%' })),
 
-    //Effect.tap(() => Console.log('experiment: exotic coins')),
-    //Effect.andThen(() => claimAndRestart({ left: '81%' })),
-  ));*/
+    Effect.withSpan('experiments'),
+    Effect.withLogSpan('experiments'),
+  ));
 }

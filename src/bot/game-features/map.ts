@@ -1,4 +1,4 @@
-import { Console, Effect, pipe } from 'effect';
+import { Effect, pipe } from 'effect';
 import { omit } from 'radash';
 
 import { goTo } from './view';
@@ -24,7 +24,7 @@ const startMissions = ({ squads }: { squads: number; }) => {
 
       body: ({ index, remainingSquads }) => {
         return pipe(
-          Console.log('opening mission dialog'),
+          Effect.logDebug('Opening mission dialog'),
           Effect.andThen(() => click({
             left: durations[index].left,
             top: durations[index].top,
@@ -51,12 +51,12 @@ const startMissions = ({ squads }: { squads: number; }) => {
                   texts.some(text => text.content.toLowerCase().includes('start')),
                   {
                     onTrue: () => pipe(
-                      Console.log('starting mission'),
+                      Effect.log('Starting mission'),
                       Effect.andThen(() => click({ left: '51%', top: '81%' })),
                       Effect.as(true),
                     ),
                     onFalse: () => pipe(
-                      Console.log('mission already running'),
+                      Effect.log('mission already running'),
                       // click outside the dialog to close it
                       // where there is no button
                       // in case the dialog was no open
@@ -67,7 +67,7 @@ const startMissions = ({ squads }: { squads: number; }) => {
                 )),
               ),
               onFalse: () => pipe(
-                Console.log('invalid mission'),
+                Effect.log('Invalid mission'),
                 // click outside the dialog to close it
                 // where there is no button
                 // in case the dialog was no open
@@ -84,7 +84,7 @@ const startMissions = ({ squads }: { squads: number; }) => {
       },
     })),
     Effect.tap(({ remainingSquads }) => (
-      Console.log(`missions started: ${squads - remainingSquads}; remaining squads: ${remainingSquads}`)
+      Effect.logDebug(`Missions started: ${squads - remainingSquads}; remaining squads: ${remainingSquads}`)
     )),
     Effect.map(result => omit(result, ['index'])),
   );
@@ -92,25 +92,19 @@ const startMissions = ({ squads }: { squads: number; }) => {
 
 const handleBottomMap = ({ squads }: { squads: number; }) => {
   return Effect.scoped(pipe(
-    Effect.addFinalizer(() => Effect.orElseSucceed(
-      drag({ top: '-20%', x: '99%' }),
-      () => ({ remainingSquads: 0 }),
-    )),
-    Effect.tap(() => Console.log('bottom map')),
-    Effect.andThen(() => drag({ top: '20%', x: '99%' })),
-    Effect.andThen(() => startMissions({ squads })),
+    Effect.addFinalizer(() => drag({ top: '-20%', x: '99%' })),
+    Effect.tap(() => Effect.logDebug('Map bottom')),
+    Effect.tap(() => drag({ top: '20%', x: '99%' })),
+    Effect.flatMap(() => startMissions({ squads })),
   ));
 }
 
 const handleTopMap = ({ squads }: { squads: number; }) => {
   return Effect.scoped(pipe(
-    Effect.addFinalizer(() => Effect.orElseSucceed(
-      drag({ top: '20%', x: '99%' }),
-      () => ({ remainingSquads: 0 }),
-    )),
-    Effect.tap(() => Console.log('top map')),
-    Effect.andThen(() => drag({ top: '-20%', x: '99%' })),
-    Effect.andThen(() => startMissions({ squads })),
+    Effect.addFinalizer(() => drag({ top: '20%', x: '99%' })),
+    Effect.tap(() => Effect.logDebug('Map top')),
+    Effect.tap(() => drag({ top: '-20%', x: '99%' })),
+    Effect.flatMap(() => startMissions({ squads })),
   ));
 }
 
@@ -119,7 +113,7 @@ const claimMissions = () => {
   const top = '28%';
 
   return pipe(
-    Console.log('checking missions to claim'),
+    Effect.log('Checking missions to claim'),
     Effect.flatMap(() => findText({
       left,
       top,
@@ -130,19 +124,19 @@ const claimMissions = () => {
       texts.filter(text => text.content.toLowerCase().includes('claim'))
     )),
     Effect.flatMap((claims) => Effect.forEach(claims, () => pipe(
-      Console.log('claiming mission'),
-      Effect.andThen(() => click({ left, top })),
-      Effect.andThen(() => press({ key: hotkeys.escape })),
+      Effect.log('Claiming mission'),
+      Effect.tap(() => click({ left, top })),
+      Effect.tap(() => press({ key: hotkeys.escape })),
     ))),
-    Effect.tap(() => Console.log('no missions to claim')),
+    Effect.tap(() => Effect.log('No missions to claim')),
   );
 }
 
 export const handleMapMissions = () => {
   return Effect.scoped(pipe(
-    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
-    Effect.andThen(() => goTo.map()),
-    Effect.andThen(claimMissions),
+    Effect.addFinalizer(() => goTo.main()),
+    Effect.tap(() => goTo.map()),
+    Effect.tap(claimMissions),
     Effect.flatMap(() => findText({
       left: '60%',
       top: '2%',
@@ -150,7 +144,7 @@ export const handleMapMissions = () => {
       height: '3%',
     })),
     Effect.map(([text]) => text?.content.split('/').map(Number)[0]),
-    Effect.tap((squads) => Console.log(`squads: ${squads}`)),
+    Effect.tap((squads) => Effect.log(`Squads: ${squads}`)),
     Effect.flatMap(squads => Effect.if(squads > 0, {
       onTrue: () => handleBottomMap({ squads }),
       onFalse: () => Effect.succeed({ remainingSquads: 0 }),
@@ -159,5 +153,8 @@ export const handleMapMissions = () => {
       onTrue: () => handleTopMap({ squads: remainingSquads }),
       onFalse: () => Effect.void,
     })),
+    Effect.tap(() => Effect.log('Done handling map missions')),
+    Effect.withSpan('mapMissions'),
+    Effect.withLogSpan('mapMissions'),
   ));
 }

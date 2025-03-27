@@ -6,20 +6,11 @@ import { clamp } from '../utils';
 
 export const drag = (options: DragOptions) => {
   const { window } = navigation.store.getSnapshot().context;
-  const flags: string[] = [];
 
   const startPosition = {
     left: options.left ?? options.x ?? 1,
     top: options.top ?? options.y ?? 1,
   };
-
-  if (options.duration) {
-    flags.push(`--duration=${options.duration}`);
-  }
-
-  if (options.debug) {
-    flags.push('--debug');
-  }
 
   const startLeftPixels = typeof startPosition.left === 'string'
     ? Number(startPosition.left.slice(0, -1)) / 100 * window.width
@@ -37,7 +28,7 @@ export const drag = (options: DragOptions) => {
   const endTop = clamp(window.top + endTopPixels, window.top + 1, window.top + window.width - 1);
 
   return pipe(
-    Effect.tryPromise({
+    Effect.orDie(Effect.tryPromise({
       try: (signal) => axios.get('http://127.0.0.1:8000/drag', {
         params: {
           startLeft: Math.round(startLeft),
@@ -49,8 +40,8 @@ export const drag = (options: DragOptions) => {
         },
         signal,
       }),
-      catch: error => new Error('Could not simulate mouse drag', { cause: error }),
-    }),
+      catch: cause => new Error('Could not simulate a mouse drag', { cause }),
+    })),
     Effect.flatMap(() => Effect.sleep('1 second')),
   );
 }

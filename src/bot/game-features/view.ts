@@ -1,4 +1,4 @@
-import { Console, Effect, pipe } from 'effect';
+import { Effect, pipe } from 'effect';
 
 import { click, press } from '../api';
 import { hotkeys } from '../hotkeys';
@@ -6,24 +6,24 @@ import { navigation } from '../store';
 
 export const goTo = {
   main: () => pipe(
-    Console.log('changing view: main'),
+    Effect.log('Changing view: main'),
     Effect.as(navigation.store.getSnapshot().context),
     Effect.flatMap(({ views }) => {
       return Effect.forEach(views, () => pipe(
-        Console.log('changing view: back'),
+        Effect.log('Changing view: back'),
         Effect.andThen(press({ key: hotkeys.escape })),
         Effect.tap(() => navigation.store.trigger.popView()),
       ), { discard: true });
     }),
   ),
   forceMain: () => pipe(
-    Console.log('forcing to change view: main'),
+    Effect.log('Corcing to change view: main'),
     Effect.flatMap(() => {
       return Effect.loop(5, {
         while: iteration => iteration > 0,
         step: iteration => iteration - 1,
         body: () => pipe(
-          Console.log('changing view: back'),
+          Effect.log('Changing view: back'),
           Effect.andThen(press({ key: hotkeys.escape })),
         ),
         discard: true,
@@ -35,37 +35,37 @@ export const goTo = {
     Effect.tap(() => navigation.store.trigger.mainScreen()),
   ),
   town: () => pipe(
-    Console.log('changing view: town'),
+    Effect.log('changing view: town'),
     Effect.andThen(() => press({ key: hotkeys.town })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'town' })),
   ),
   alchemist: () => pipe(
-    Console.log('changing view: alchemist'),
+    Effect.log('changing view: alchemist'),
     Effect.andThen(() => press({ key: hotkeys.alchemist })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'alchemist' })),
   ),
   oracle: () => pipe(
-    Console.log('changing view: oracle'),
+    Effect.log('changing view: oracle'),
     Effect.andThen(() => press({ key: hotkeys.oracle })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'oracle' })),
   ),
   guardians: () => pipe(
-    Console.log('changing view: guardians'),
+    Effect.log('changing view: guardians'),
     Effect.andThen(() => press({ key: hotkeys.guardians })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'guardians' })),
   ),
   library: () => pipe(
-    Console.log('changing view: library'),
+    Effect.log('changing view: library'),
     Effect.andThen(() => press({ key: hotkeys.library })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'library' })),
   ),
   firestoneLibrary: () => pipe(
     goTo.library(),
-    Effect.tap(() => Console.log('changing view: firestoneLibrary')),
+    Effect.tap(() => Effect.log('changing view: firestoneLibrary')),
     Effect.andThen(() => click({ left: '95%', top: '60%' })),
   ),
   map: () => pipe(
-    Console.log('changing view: map'),
+    Effect.log('changing view: map'),
     Effect.andThen(() => press({ key: hotkeys.map })),
     // ensures we're in the map missions and not the campaign
     Effect.andThen(click({ left: '96%', top: '45%' })),
@@ -73,7 +73,7 @@ export const goTo = {
   ),
   engineerNavigation: () => pipe(
     goTo.town(),
-    Effect.tap(() => Console.log('changing view: engineerNavigation')),
+    Effect.tap(() => Effect.log('changing view: engineerNavigation')),
     // engineer building button
     Effect.andThen(click({ left: '65%', top: '80%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({
@@ -83,37 +83,37 @@ export const goTo = {
   ),
   engineer: () => pipe(
     goTo.engineerNavigation(),
-    Effect.tap(() => Console.log('changing view: engineer')),
+    Effect.tap(() => Effect.log('changing view: engineer')),
     // engineer panel button
     Effect.andThen(click({ left: '30%', top: '50%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'engineer' })),
   ),
   campaign: () => pipe(
-    Console.log('changing view: campaign'),
+    Effect.log('changing view: campaign'),
     Effect.andThen(() => press({ key: hotkeys.map })),
     Effect.andThen(click({ left: '96%', top: '55%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'campaign' })),
   ),
   guild: () => pipe(
-    Console.log('changing view: guild'),
+    Effect.log('changing view: guild'),
     Effect.andThen(() => click({ left: '97%', top: '42%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'guild' })),
   ),
   guildExpeditions: () => pipe(
     goTo.guild(),
-    Effect.tap(() => Console.log('changing view: guildExpeditions')),
+    Effect.tap(() => Effect.log('changing view: guildExpeditions')),
     Effect.andThen(click({ left: '20%', top: '32%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'guildExpeditions' })),
   ),
   arcaneCrystal: () => pipe(
     goTo.guild(),
-    Effect.tap(() => Console.log('changing view: arcaneCrystal')),
+    Effect.tap(() => Effect.log('changing view: arcaneCrystal')),
     Effect.andThen(click({ left: '85%', top: '85%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'arcaneCrystal' })),
   ),
   pickaxeSupplies: () => pipe(
     goTo.arcaneCrystal(),
-    Effect.tap(() => Console.log('changing view: pickaxeSupplies')),
+    Effect.tap(() => Effect.log('changing view: pickaxeSupplies')),
     Effect.andThen(click({ left: '90%', top: '3%' })),
     Effect.tap(() => navigation.store.trigger.navigateView({ view: 'pickaxeSupplies' })),
   ),

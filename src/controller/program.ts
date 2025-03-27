@@ -6,10 +6,17 @@ export const program = async () => {
   await client.waitStatus();
 
   client.socket.once('killed', () => {
-    console.log('the game has been killed');
+    console.log('The bot has been killed');
+    client.socket.removeAllListeners();
     client.socket.disconnect();
   });
 
-  console.log('emit kill');
+  client.socket.on('bot-not-running', () => {
+    console.log('The bot is not running');
+    client.socket.removeAllListeners();
+    client.socket.disconnect();
+  });
+
+  console.log('Request kill');
   client.socket.emit('kill');
 }

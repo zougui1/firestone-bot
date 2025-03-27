@@ -41,7 +41,7 @@ export const findText = (options: FindTextOptions) => {
   const height = clamp(heightPixels, 0, window.height - 2);
 
   return pipe(
-    Effect.tryPromise({
+    Effect.orDie(Effect.tryPromise({
       try: () => axios.get('http://127.0.0.1:8000/find-text', {
         params: {
           left: Math.round(left),
@@ -51,8 +51,8 @@ export const findText = (options: FindTextOptions) => {
           debug: options.debug,
         },
       }),
-      catch: error => new Error('Could not find text', { cause: error }),
-    }),
+      catch: cause => new Error('Could not find text', { cause }),
+    })),
     Effect.tap(() => Effect.sleep('5 seconds')),
     Effect.map(response => resultSchema.safeParse(response.data)),
     Effect.map(result => result.success ? result.data.texts : []),

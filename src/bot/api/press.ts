@@ -5,12 +5,12 @@ import { env } from '../../env';
 
 export const press = (options: PressOptions) => {
   return pipe(
-    Effect.tryPromise({
+    Effect.orDie(Effect.tryPromise({
       try: () => axios.get('http://127.0.0.1:8000/press', {
         params: { key: options.key },
       }),
-      catch: error => new Error('Could not simulate click', { cause: error }),
-    }),
+      catch: cause => new Error('Could not simulate a key press', { cause }),
+    })),
     Effect.flatMap(() => Effect.sleep(`${env.postUiInteractionWaitTime} seconds`)),
   );
 }

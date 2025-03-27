@@ -1,11 +1,9 @@
-import { Console, Effect, pipe } from 'effect';
-import nanoid from 'nanoid';
+import { Effect, pipe } from 'effect';
 
 import { goTo } from './view';
 import { GuardianName } from './data';
-import { click, findText } from '../api';
+import { click } from '../api';
 import * as database from '../database';
-import { event } from '../store';
 
 const guardianCoordinates = {
   Vermillion: { left: '40%', top: '90%' },
@@ -16,32 +14,22 @@ const guardianCoordinates = {
 
 export const selectGuardian = (name: GuardianName) => {
   return pipe(
-    Console.log(`selecting guardian: ${name}`),
-    Effect.andThen(() => click(guardianCoordinates[name])),
+    Effect.logDebug(`Selecting guardian: ${name}`),
+    Effect.tap(() => click(guardianCoordinates[name])),
   );
 }
 
 export const handleTrainGuardian = () => {
   return Effect.scoped(pipe(
-    Effect.addFinalizer(() => Effect.orDie(goTo.main())),
+    Effect.addFinalizer(() => goTo.main()),
     Effect.tap(() => goTo.guardians()),
     Effect.flatMap(database.config.findOne),
-    Effect.andThen(config => selectGuardian(config.features.guardianTraining.guardian)),
-    Effect.tap(() => Console.log('training guardian')),
-    Effect.andThen(() => click({ left: '60%', top: '72%' })),
-    Effect.flatMap(() => findText({
-      left: '55.5%',
-      top: '74%',
-      width: '8%',
-      height: '4%',
-    })),
-    Effect.tap(([text]) => event.store.trigger.emitAction({
-      action: {
-        id: nanoid(),
-        type: 'guardianTraining',
-        duration: text?.content ?? '0',
-      },
-    })),
-    Effect.tapError(Console.log),
+    Effect.map(config => config.features.guardianTraining.guardian),
+    Effect.tap(guardian => selectGuardian(guardian)),
+    Effect.tap(guardian => Effect.logDebug(`Training guardian ${guardian}`)),
+    Effect.tap(() => click({ left: '60%', top: '72%' })),
+    Effect.tap(guardian => Effect.log(`Trained guardian ${guardian}`)),
+    Effect.withSpan('trainingGuardian'),
+    Effect.withLogSpan('trainingGuardian'),
   ));
 }
