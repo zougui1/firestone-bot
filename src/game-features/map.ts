@@ -84,7 +84,7 @@ const startMissions = ({ squads }: { squads: number; }) => {
       },
     })),
     Effect.tap(({ remainingSquads }) => (
-      Console.log(`missions startd: ${squads - remainingSquads}; remaining squads: ${remainingSquads}`)
+      Console.log(`missions started: ${squads - remainingSquads}; remaining squads: ${remainingSquads}`)
     )),
     Effect.map(result => omit(result, ['index'])),
   );
