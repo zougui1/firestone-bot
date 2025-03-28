@@ -95,7 +95,7 @@ export const program = async (options?: BotOptions) => {
       const [pid] = pidResult.stdout.split('\n');
 
       if (pid) {
-        //await execa('kill', [pid]);
+        await execa('kill', [pid]);
         console.log('game killed');
         socket.emit('killed');
       }
