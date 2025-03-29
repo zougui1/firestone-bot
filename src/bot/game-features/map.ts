@@ -56,7 +56,7 @@ const startMissions = ({ squads }: { squads: number; }) => {
                       Effect.as(true),
                     ),
                     onFalse: () => pipe(
-                      Effect.log('mission already running'),
+                      Effect.log('Mission already running'),
                       // click outside the dialog to close it
                       // where there is no button
                       // in case the dialog was no open

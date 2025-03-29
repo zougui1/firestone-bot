@@ -24,7 +24,7 @@ export const startGame = () => {
       catch: cause => new Error('Could not start the game', { cause }),
     }))),
     // wait until the game has started
-    Effect.tap(() => Effect.sleep('10 seconds')),
+    Effect.tap(() => Effect.sleep('30 seconds')),
     Effect.flatMap(() => Effect.exit(findGameWindow())),
     Effect.tap(exit => {
       if (Exit.isFailure(exit) && Cause.isDieType(exit.cause)) {
