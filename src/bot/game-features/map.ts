@@ -113,21 +113,30 @@ const claimMissions = () => {
   const top = '28%';
 
   return pipe(
-    Effect.log('Checking missions to claim'),
-    Effect.flatMap(() => findText({
-      left,
-      top,
-      width: '8%',
-      height: '5%',
-    })),
-    Effect.map(texts => (
-      texts.filter(text => text.content.toLowerCase().includes('claim'))
-    )),
-    Effect.flatMap((claims) => Effect.forEach(claims, () => pipe(
-      Effect.log('Claiming mission'),
-      Effect.tap(() => click({ left, top })),
-      Effect.tap(() => press({ key: hotkeys.escape })),
-    ))),
+    Effect.iterate(true, {
+      while: bool => bool,
+      body: () => pipe(
+        Effect.log('Checking for a mission to claim'),
+        Effect.flatMap(() => findText({
+          left,
+          top,
+          width: '8%',
+          height: '5%',
+        })),
+        Effect.flatMap(texts => Effect.if(
+          texts.some(text => text.content.toLowerCase().includes('claim')),
+          {
+            onTrue: () => pipe(
+              Effect.log('Claiming mission'),
+              Effect.tap(() => click({ left, top })),
+              Effect.tap(() => press({ key: hotkeys.escape })),
+              Effect.as(true),
+            ),
+            onFalse: () => Effect.succeed(false),
+          }
+        )),
+      ),
+    }),
     Effect.tap(() => Effect.log('No missions to claim')),
   );
 }
