@@ -31,10 +31,10 @@ const startMissions = ({ squads }: { squads: number; }) => {
           })),
           // mission label text
           Effect.flatMap(() => findText({
-            left: '22%',
-            top: '20%',
-            width: '25%',
-            height: '5%',
+            left: '51%',
+            top: '80.5%',
+            width: '12%',
+            height: '4.5%',
           })),
           Effect.flatMap(texts => Effect.if(
             texts.some(text => text.content.toLowerCase().includes('mission')),
