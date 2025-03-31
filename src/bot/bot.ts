@@ -92,9 +92,11 @@ export const startBot = (options?: BotOptions) => {
         return Effect.log('Waiting until game is loaded: skipped');
       }
 
-      return waitUntilGameLoaded();
+      return pipe(
+        waitUntilGameLoaded(),
+        Effect.timeoutOption('30 seconds'),
+      );
     }),
-    Effect.timeoutOption('30 seconds'),
     Effect.tap(() => {
       if (options?.disabledPreflightChecks) {
         return Effect.log('Closing any potential startup dialog: skipped');
