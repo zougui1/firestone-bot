@@ -1,7 +1,8 @@
 import { createStore } from '@xstate/store';
 import { produce } from 'immer';
-
-import { durationToSeconds } from '../utils';
+import nanoid from 'nanoid';
+import Emittery from 'emittery';
+import { type SetOptional } from 'type-fest';
 
 export const actionTypes = [
   'campaignLoot',
@@ -20,72 +21,85 @@ export type ActionType = typeof actionTypes[number];
 export interface ActionEvent {
   id: string;
   type: ActionType;
-  duration: string;
+  seconds: number;
 }
 
 export interface State {
+  ready: boolean;
   actions: Record<string, ActionEvent>;
   pendingActions: Record<string, ActionEvent>;
-  invalidActions: Record<string, ActionEvent>;
 }
 
 const initialState: State = {
+  ready: false,
   actions: {},
   pendingActions: {},
-  invalidActions: {},
 };
+
+export interface Emitter {
+  resolvedAction: ActionEvent;
+}
+
+const emitter = new Emittery<Emitter>();
 
 export const store = createStore({
   context: initialState,
 
   on: {
-    emitAction: (context, event: { action: ActionEvent; }, enqueue) => {
-      const duration = durationToSeconds(event.action.duration);
+    ready: (context, event, enqueue) => {
+      const newContext = {
+        ...context,
+        ready: true,
+        actions: context.pendingActions,
+        pendingActions: {},
+      };
 
-      if (!duration) {
-        console.log('added invalid action:', event.action);
+      enqueue.effect(() => {
+        for (const action of Object.values(newContext.actions)) {
+          console.log('timeoutAction')
+          setTimeout(() => {
+            emitter.emit('resolvedAction', action);
+          }, action.seconds * 1000);
+        }
+      });
+
+      return newContext;
+    },
+
+    addAction: (context, event: { action: SetOptional<ActionEvent, 'id'>; }, enqueue) => {
+      const action = {
+        ...event.action,
+        id: event.action.id ?? nanoid(),
+      };
+
+      if (!context.ready) {
         return produce(context, draft => {
-          draft.invalidActions[event.action.id] = event.action;
+          draft.pendingActions[action.id] = action;
         });
       }
 
-      //! if the action is valid
       enqueue.effect(() => {
         setTimeout(() => {
-          store.trigger.fullfillActionTimeout(event.action);
-        }, duration * 1000);
+          emitter.emit('resolvedAction', action);
+        }, action.seconds * 1000);
       });
 
-      console.log('added pending action:', event.action);
       return produce(context, draft => {
-        draft.pendingActions[event.action.id] = event.action;
-      });
-    },
-
-    addInvalidAction: (context, event: { action: ActionEvent; }, enqueue) => {
-      console.log('added invalid action:', event.action);
-      return produce(context, draft => {
-        draft.invalidActions[event.action.id] = event.action;
-      });
-    },
-
-    fullfillActionTimeout: (context, event: { id: string }) => {
-      console.log('fullfilled action:', context.pendingActions[event.id]);
-      return produce(context, draft => {
-        if (!draft.pendingActions[event.id]) {
-          return;
-        }
-
-        draft.actions[event.id] = draft.pendingActions[event.id];
-        delete draft.pendingActions[event.id];
+        draft.actions[action.id] = action;
       });
     },
 
     deleteAction: (context, event: { id: string; }) => {
-      console.log('delete action:', context.pendingActions[event.id]);
       return produce(context, draft => {
         delete draft.actions[event.id];
       });
     },
   },
 });
+
+export const on = <E extends keyof Emitter>(event: E, listener: (data: Emitter[E]) => void) => {
+  emitter.on(event, listener);
+}
+export const off = <E extends keyof Emitter>(event: E, listener: (data: Emitter[E]) => void) => {
+  emitter.off(event, listener);
+}

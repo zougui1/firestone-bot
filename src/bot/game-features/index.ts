@@ -1,5 +1,5 @@
 export * from './data';
-export * from './guardian';
+export * as guardian from './guardian';
 export * from './view';
 export * from './oracle';
 export * from './engineer';

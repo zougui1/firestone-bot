@@ -1,7 +1,12 @@
-const reDuration = /^(\d{1,2}[:;,.]){0,2}\d{1,2}$/;
+const reMisreadColon = /[;,.]/g;
+const reDuration = /^(\d{1,2}:){0,2}\d{1,2}$/;
+
+export const normalizeDuration = (duration: string) => {
+  return duration.trim().replaceAll(reMisreadColon, ':');
+}
 
 export const durationToSeconds = (duration: string) => {
-  duration = duration.trim();
+  duration = normalizeDuration(duration);
 
   if (!reDuration.test(duration)) {
     return;

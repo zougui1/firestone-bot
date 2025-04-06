@@ -15,7 +15,7 @@ import { SpanProcessor } from './tracing';
 
 export const program = async (options?: BotOptions) => {
   const server = new ServerSocket(env.socket);
-  let fiber: RuntimeFiber<void, unknown> | undefined;
+  let fiber: RuntimeFiber<unknown, unknown> | undefined;
 
   try {
     await database.connect();

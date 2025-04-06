@@ -73,3 +73,11 @@ export interface FindTextOptions {
   height?: number | `${number}%`;
   debug?: boolean;
 }
+
+export interface TextResult {
+  content: string;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
