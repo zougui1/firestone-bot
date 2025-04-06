@@ -1,29 +1,19 @@
 import { Effect, pipe } from 'effect';
 
 import { goTo } from './view';
-import { click, findText } from '../api';
+import { click } from '../api';
 
 const claimAndRestart = ({ name, left }: { name: string; left: `${number}%`; }) => {
   return pipe(
-    findText({
-      left,
-      top: '70.5%',
-      width: '8%',
-      height: '3.5%',
-    }),
-    Effect.flatMap(texts => Effect.if(
-      texts.some(text => ['free', 'claim'].includes(text.content.toLowerCase())),
-      {
-        onTrue: () => pipe(
-          Effect.logDebug(`Claiming experiment ${name}`),
-          Effect.tap(() => click({ left, top: '75%' })),
-          Effect.tap(() => Effect.logDebug(`Starting experiment ${name}`)),
-          Effect.tap(() => click({ left, top: '75%' })),
-          Effect.tap(() => Effect.log(`Handled experiment ${name}`)),
-        ),
-        onFalse: () => Effect.logDebug(`Experiment ${name} has not yet finished`),
-      },
-    )),
+    Effect.logDebug(`Claiming experiment ${name}`),
+    Effect.tap(() => click({ left, top: '75%' })),
+    // close in case the gem confirmation dialog was opened
+    Effect.tap(() => click({ left: 1, top: 1 })),
+    Effect.tap(() => Effect.logDebug(`Starting experiment ${name}`)),
+    Effect.tap(() => click({ left, top: '75%' })),
+    // close in case the gem confirmation dialog was opened
+    Effect.tap(() => click({ left: 1, top: 1 })),
+    Effect.tap(() => Effect.log(`Handled experiment ${name}`)),
   );
 }
 
