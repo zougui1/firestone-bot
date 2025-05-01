@@ -7,6 +7,7 @@ import { event } from '../store';
 import { defaultConfig } from '../../defaultConfig';
 
 export const ConfigModel = papr.model('configs', schema({
+  sessionId: types.string({ required: true }),
   features: types.object({
     engineerTools: types.object({
       enabled: types.boolean({ required: true }),
@@ -20,6 +21,7 @@ export const ConfigModel = papr.model('configs', schema({
     }, { required: true }),
     firestoneResearch: types.object({
       enabled: types.boolean({ required: true }),
+      treeLevel: types.number({ required: true, minimum: 1 }),
     }, { required: true }),
     guildExpedition: types.object({
       enabled: types.boolean({ required: true }),
@@ -32,6 +34,10 @@ export const ConfigModel = papr.model('configs', schema({
     }, { required: true }),
     alchemyExperiment: types.object({
       enabled: types.boolean({ required: true }),
+      treeLevel: types.number({ required: true, minimum: 1 }),
+      blood: types.boolean({ required: true }),
+      dust: types.boolean({ required: true }),
+      exoticCoins: types.boolean({ required: true }),
     }, { required: true }),
     mapMission: types.object({
       enabled: types.boolean({ required: true }),

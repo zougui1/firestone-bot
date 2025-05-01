@@ -1,6 +1,7 @@
 import type * as database from './bot/database';
 
 export const defaultConfig: database.config.ConfigType = {
+  sessionId: '',
   features: {
     engineerTools: {
       enabled: true,
@@ -14,6 +15,7 @@ export const defaultConfig: database.config.ConfigType = {
     },
     firestoneResearch: {
       enabled: true,
+      treeLevel: 1,
     },
     guildExpedition: {
       enabled: true,
@@ -26,6 +28,10 @@ export const defaultConfig: database.config.ConfigType = {
     },
     alchemyExperiment: {
       enabled: true,
+      treeLevel: 1,
+      blood: true,
+      dust: false,
+      exoticCoins: false,
     },
     mapMission: {
       enabled: true,

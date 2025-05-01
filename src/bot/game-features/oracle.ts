@@ -1,30 +1,30 @@
 import { Effect, pipe } from 'effect';
 
-import { goTo } from './view';
-import { click } from '../api';
+import { sendRequest } from '../api';
 
-const handleRitual = (name: string, coords: { left: `${number}%`; top: `${number}%`; }) => {
-  return pipe(
-    Effect.logDebug(`Claiming ritual: ${name}`),
-    Effect.tap(() => click(coords)),
-    Effect.tap(() => Effect.logDebug(`Starting ritual ${name}`)),
-    Effect.tap(() => click(coords)),
-  );
-}
+const rituals = [
+  'obedience',
+  'serenity',
+  'concentration',
+  'harmony',
+];
 
 export const handleOracleRituals = () => {
-  return Effect.scoped(pipe(
-    Effect.addFinalizer(() => goTo.main()),
-    Effect.tap(() => goTo.oracle()),
-    Effect.tap(() => Effect.log('Going to rituals')),
-    Effect.tap(() => click({ left: '43%', top: '40%' })),
+  return pipe(
+    Effect.log('Claiming ritual'),
+    Effect.tap(() => sendRequest({ type: 'ClaimRitual' })),
 
-    Effect.tap(() => handleRitual('obedience', { left: '61%', top: '81%' })),
-    Effect.tap(() => handleRitual('serenity', { left: '80%', top: '81%' })),
-    Effect.tap(() => handleRitual('harmony', { left: '80%', top: '48%' })),
-    Effect.tap(() => handleRitual('concentration', { left: '61%', top: '48%' })),
-
-    Effect.withSpan('oracleRituals'),
-    Effect.withLogSpan('oracleRituals'),
-  ));
+    Effect.tap(() => Effect.loop(0, {
+      while: index => index < rituals.length,
+      step: index => index + 1,
+      body: index => pipe(
+        Effect.log(`Starting ritual ${rituals[index]}`),
+        Effect.tap(() => sendRequest({
+          type: 'StartRitual',
+          parameters: [index],
+        })),
+      ),
+      discard: true,
+    })),
+  );
 }

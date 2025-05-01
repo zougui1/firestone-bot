@@ -1,6 +1,6 @@
 import { Effect, pipe } from 'effect';
 
-import { event, navigation } from './store';
+import { event, game } from './store';
 import {
   handleCampaignLoot,
   handleEngineerTools,
@@ -12,28 +12,8 @@ import {
   handleExperiments,
   handlePickaxeSupplies,
 } from './game-features';
-import {
-  findGameWindow,
-  ensureGameRunning,
-  waitUntilGameLoaded,
-} from './process';
-import { click } from './api';
 import * as database from './database';
-
-const closeStartupDialogs = () => {
-  return pipe(
-    Effect.log('Closing any potential startup dialogs'),
-    Effect.tap(() => Effect.loop(1, {
-      while: iteration => iteration <= 5,
-      step: iteration => iteration + 1,
-      body: iteration => pipe(
-        Effect.logDebug(`Click ${iteration}`),
-        Effect.tap(() => click({ left: 1, top: 1 })),
-      ),
-      discard: true,
-    })),
-  );
-}
+import { env } from '../env';
 
 const gameHandlers = {
   engineerTools: handleEngineerTools,
@@ -50,6 +30,17 @@ const gameHandlers = {
 const handleGameFeatures = () => {
   return pipe(
     database.config.findOne(),
+    Effect.tap(config => {
+      if (!config.sessionId.trim()) {
+        return Effect.die(new Error('Missing session ID'));
+      }
+
+      game.store.trigger.init({
+        userId: env.firestone.userId,
+        sessionId: config.sessionId,
+        serverName: env.firestone.server,
+      });
+    }),
     Effect.map(config => Object
       .entries(config.features)
       .filter(([, feature]) => feature.enabled)
@@ -70,48 +61,14 @@ const handleGameFeatures = () => {
   );
 }
 
-export const startBot = (options?: BotOptions) => {
+export const startBot = () => {
   return pipe(
     Effect.log('Starting bot'),
-    Effect.tap(() => {
-      if (options?.disabledPreflightChecks) {
-        return Effect.log('Pre-flight checks disabled');
-      }
-    }),
-    Effect.tap(() => {
-      if (options?.disabledPreflightChecks) {
-        return Effect.log('Ensuring game is running: skipped');
-      }
-
-      return ensureGameRunning();
-    }),
-    Effect.flatMap(findGameWindow),
-    Effect.tap(gameWindow => navigation.store.trigger.changeWindow(gameWindow)),
-    Effect.tap(() => {
-      if (options?.disabledPreflightChecks) {
-        return Effect.log('Waiting until game is loaded: skipped');
-      }
-
-      return pipe(
-        waitUntilGameLoaded(),
-        Effect.timeoutOption('30 seconds'),
-      );
-    }),
-    Effect.tap(() => {
-      if (options?.disabledPreflightChecks) {
-        return Effect.log('Closing any potential startup dialog: skipped');
-      }
-
-      return closeStartupDialogs();
-    }),
-    //Effect.tap(() => Effect.tryPromise(handleCampaignFights)),
-    //Effect.tap(() => Effect.sleep('1 minute')),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
       body: () => pipe(
         Effect.log('Starting routine'),
-        Effect.andThen(() => click({ left: 1, top: 1 })),
         Effect.andThen(handleGameFeatures),
         Effect.tap(() => Effect.logDebug('Waiting before next iteration')),
         Effect.tap(() => Effect.sleep('2 second')),
@@ -121,8 +78,4 @@ export const startBot = (options?: BotOptions) => {
       discard: true,
     })),
   );
-}
-
-export interface BotOptions {
-  disabledPreflightChecks?: boolean;
 }

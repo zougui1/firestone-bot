@@ -1,169 +1,135 @@
 import { Effect, pipe } from 'effect';
-import { omit } from 'radash';
 
-import { goTo } from './view';
-import { click, drag, findText, press } from '../api';
-import { hotkeys } from '../hotkeys';
+import { sendRequest } from '../api';
 
-const startMissions = ({ squads }: { squads: number; }) => {
-  const left = '18%';
-  const top = '20%';
+const LoadMapMissionsReply_raw = {
+  Data: [
+    // JSON string
+    {
+      currentMissions: [
+        {
+          T: 23,
+          D: 4067,
+        },
+      ],
+    },
+  ],
+};
+const LoadMapMissionsReply_readable = {
+  id: 23,
+  // original time in seconds; without taking into account mission reduction boosts
+  duration: 4067,
+};
 
-  return pipe(
-    findText({
-      left,
-      top,
-      width: '63%',
-      height: '68%',
-    }),
-    Effect.map((texts) => texts.filter(text => /\d/.test(text.content))),
-    Effect.flatMap(durations => Effect.iterate({ index: 0, remainingSquads: squads }, {
-      while: ({ index, remainingSquads }) => {
-        return remainingSquads > 0 && Boolean(durations[index]);
-      },
+const mapMissions = {
+  'Jungle Terror': 0,
+  'Stop the Pirate Raids': 1,
+  '': 2, // Southern Island or Stormrock Village
+  'Xandor Dock': 3,
+  'The Lost Chapter': 4,
+  'Ambush in the Trees': 5,
+  'Mountain Springs': 6,
+  'Cursed Bay': 7,
+  'Dragon\'s Cave': 8,
+  'Stormspire Accident': 9,
+  ' ': 10,
+  'Visit the Abbey': 11,
+  'Riverside': 12,
+  'Calamindor Ruins': 13,
+  'Talk To The Farmers': 14,
+  'North Sea': 15,
+  '  ': 16,
+  'Irongard\'s Harbor': 17,
+  'Tipsy Wisp Tavern': 18,
+  'The Hombor King': 19,
+  'Dark Cavern': 20,
+  'Snow Wolves': 21,
+  'Visit the Northern Tribes': 22,
+  'Expose the Spy': 23,
+  'Southern Island': 24,
+  'Frostfire Gorge': 25,
+  'Moonglen\'s Festival': 26,
+  'Silverwood\'s Militia': 27,
+  'Dark River': 28,
+  'Forest Rangers': 29,
+  'Protect The Shore': 30,
+  'Find The Librarian': 31,
+  'Collect The Bounty': 32,
+  'The Resistance of Goldfell': 33,
+  'Protect The Fishermen': 34,
+  'Confront The Orcs': 35,
+  'Escort the Merchants': 36,
+  'The Pit': 37,
+  'The Port of Thal Badur': 38,
+  'Sea Monsters': 39,
+  'Orc Lieutenant': 40,
+  '   ': 41,
+  'Explore Hinterlands': 42,
+  'Enemy Border': 43,
+  'Defend Mythshore': 44,
+  'Search The Shipwreck': 45,
+  'Close The Portal': 46,
+  'Train Elf Archers': 47,
+  'Library of Talamer': 48,
+  'Border Patrol': 49,
+  '    ': 50,
+  'Underwater Treasures': 51,
+  'Chase the Monster': 52,
+  'Ships on Fire': 53,
+  'Trade Route': 54,
+  'Free The Prisoners': 55,
+  'Mission To Bayshire': 56,
+  'Retrieve Water Sample': 57,
+  'Firestone Power': 58,
+  'Search For Survivors': 59,
+  'Dreadland Shore': 60,
+  'Hydra': 61,
+};
 
-      body: ({ index, remainingSquads }) => {
-        return pipe(
-          Effect.logDebug('Opening mission dialog'),
-          Effect.andThen(() => click({
-            left: durations[index].left,
-            top: durations[index].top,
-          })),
-          // mission label text
-          Effect.flatMap(() => findText({
-            left: '22%',
-            top: '20%',
-            width: '25%',
-            height: '5%',
-          })),
-          Effect.flatMap(texts => Effect.if(
-            texts.some(text => text.content.toLowerCase().includes('mission')),
-            {
-              onTrue: () => pipe(
-                // left button text
-                findText({
-                  left: '51%',
-                  top: '80.5%',
-                  width: '12%',
-                  height: '4.5%',
-                }),
-                Effect.flatMap(texts => Effect.if(
-                  texts.some(text => text.content.toLowerCase().includes('start')),
-                  {
-                    onTrue: () => pipe(
-                      Effect.log('Starting mission'),
-                      Effect.andThen(() => click({ left: '51%', top: '81%' })),
-                      Effect.as(true),
-                    ),
-                    onFalse: () => pipe(
-                      Effect.log('Mission already running'),
-                      // click outside the dialog to close it
-                      // where there is no button
-                      // in case the dialog was no open
-                      Effect.tap(() => click({ left: '99%', top: '15%' })),
-                      Effect.as(false),
-                    ),
-                  },
-                )),
-              ),
-              onFalse: () => pipe(
-                Effect.log('Invalid mission'),
-                // click outside the dialog to close it
-                // where there is no button
-                // in case the dialog was no open
-                Effect.tap(() => click({ left: '99%', top: '15%' })),
-                Effect.as(false),
-              ),
-            },
-          )),
-          Effect.map(hasMissionStarted => ({
-            index: index + 1,
-            remainingSquads: remainingSquads - Number(hasMissionStarted),
-          })),
-        );
-      },
-    })),
-    Effect.tap(({ remainingSquads }) => (
-      Effect.logDebug(`Missions started: ${squads - remainingSquads}; remaining squads: ${remainingSquads}`)
-    )),
-    Effect.map(result => omit(result, ['index'])),
-  );
-}
+const missions = Object.keys(mapMissions);
 
-const handleBottomMap = ({ squads }: { squads: number; }) => {
-  return Effect.scoped(pipe(
-    Effect.addFinalizer(() => drag({ top: '-20%', x: '99%' })),
-    Effect.tap(() => Effect.logDebug('Map bottom')),
-    Effect.tap(() => drag({ top: '20%', x: '99%' })),
-    Effect.flatMap(() => startMissions({ squads })),
-  ));
-}
-
-const handleTopMap = ({ squads }: { squads: number; }) => {
-  return Effect.scoped(pipe(
-    Effect.addFinalizer(() => drag({ top: '20%', x: '99%' })),
-    Effect.tap(() => Effect.logDebug('Map top')),
-    Effect.tap(() => drag({ top: '-20%', x: '99%' })),
-    Effect.flatMap(() => startMissions({ squads })),
-  ));
-}
-
-const claimMissions = () => {
-  const left = '5%';
-  const top = '28%';
-
-  return pipe(
-    Effect.iterate(true, {
-      while: bool => bool,
-      body: () => pipe(
-        Effect.log('Checking for a mission to claim'),
-        Effect.flatMap(() => findText({
-          left,
-          top,
-          width: '8%',
-          height: '5%',
-        })),
-        Effect.flatMap(texts => Effect.if(
-          texts.some(text => text.content.toLowerCase().includes('claim')),
-          {
-            onTrue: () => pipe(
-              Effect.log('Claiming mission'),
-              Effect.tap(() => click({ left, top })),
-              Effect.tap(() => press({ key: hotkeys.escape })),
-              Effect.as(true),
-            ),
-            onFalse: () => Effect.succeed(false),
-          }
-        )),
-      ),
-    }),
-    Effect.tap(() => Effect.log('No missions to claim')),
-  );
+const loopMissions = <A, E, R>(func: (index: number) => Effect.Effect<A, E, R>) => {
+  return Effect.loop(0, {
+    while: index => index < missions.length,
+    step: index => index + 1,
+    body: func,
+    discard: true,
+  });
 }
 
 export const handleMapMissions = () => {
-  return Effect.scoped(pipe(
-    Effect.addFinalizer(() => goTo.main()),
-    Effect.tap(() => goTo.map()),
-    Effect.tap(claimMissions),
-    Effect.flatMap(() => findText({
-      left: '60%',
-      top: '2%',
-      width: '5%',
-      height: '3%',
+  return pipe(
+    Effect.log('Refreshing map missions'),
+    Effect.tap(() => sendRequest({
+      type: 'DoMapMissionsRefresh',
+      parameters: [0],
     })),
-    Effect.map(([text]) => text?.content.split('/').map(Number)[0]),
-    Effect.tap((squads) => Effect.log(`Squads: ${squads}`)),
-    Effect.flatMap(squads => Effect.if(squads > 0, {
-      onTrue: () => handleBottomMap({ squads }),
-      onFalse: () => Effect.succeed({ remainingSquads: 0 }),
-    })),
-    Effect.flatMap(({ remainingSquads }) => Effect.if(remainingSquads > 0, {
-      onTrue: () => handleTopMap({ squads: remainingSquads }),
-      onFalse: () => Effect.void,
-    })),
-    Effect.tap(() => Effect.log('Done handling map missions')),
-    Effect.withSpan('mapMissions'),
-    Effect.withLogSpan('mapMissions'),
-  ));
+
+    Effect.tap(() => Effect.log('Speeding up missions')),
+    Effect.tap(() => loopMissions(index => pipe(
+      Effect.logDebug(`Speeding up mission ${missions[index]}`),
+      Effect.tap(() => sendRequest({
+        type: 'DoMapMissionSpeedUp',
+        parameters: [index, 0],
+      })),
+    ))),
+
+    Effect.tap(() => Effect.log('Claiming missions')),
+    Effect.tap(() => loopMissions(index => pipe(
+      Effect.logDebug(`Claiming mission ${missions[index]}`),
+      Effect.tap(() => sendRequest({
+        type: 'CompleteMapMission',
+        parameters: [index],
+      })),
+    ))),
+
+    Effect.tap(() => Effect.log('Starting missions')),
+    Effect.tap(() => loopMissions(index => pipe(
+      Effect.logDebug(`Starting mission ${missions[index]}`),
+      Effect.tap(() => sendRequest({
+        type: 'StartMapMission',
+        parameters: [index],
+      })),
+    ))),
+  );
 }

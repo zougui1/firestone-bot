@@ -1,21 +1,25 @@
 import { Effect, pipe } from 'effect';
 
-import { goTo } from './view';
-import { click } from '../api';
+import { sendRequest } from '../api';
+
+const expeditionCount = 5;
 
 export const handleGuildExpeditions = () => {
-  return Effect.scoped(pipe(
-    Effect.addFinalizer(() => goTo.main()),
-    Effect.andThen(() => goTo.guildExpeditions()),
-    Effect.tap(() => Effect.logDebug('Claiming expedition')),
-    Effect.tap(() => click({ left: '68%', top: '28%' })),
-    Effect.tap(() => Effect.log('Claimed expedition')),
+  return pipe(
+    Effect.log('Claiming expedition'),
+    Effect.tap(() => sendRequest({ type: 'ClaimExpedition' })),
 
-    Effect.tap(() => Effect.logDebug('Starting expedition')),
-    Effect.tap(() => click({ left: '68%', top: '28%' })),
-    Effect.tap(() => Effect.log('Started expedition')),
-
-    Effect.withSpan('guildExpediitions'),
-    Effect.withLogSpan('guildExpediitions'),
-  ));
+    Effect.tap(() => Effect.loop(0, {
+      while: index => index < expeditionCount,
+      step: index => index + 1,
+      body: index => pipe(
+        Effect.log(`Starting expedition index: ${index}`),
+        Effect.tap(() => sendRequest({
+          type: 'StartExpedition',
+          parameters: [`GUEXP00${index}`],
+        })),
+      ),
+      discard: true,
+    })),
+  );
 }

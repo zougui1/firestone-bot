@@ -1,35 +1,25 @@
 import { Effect, pipe } from 'effect';
 
-import { goTo } from './view';
-import { GuardianName } from './data';
-import { click } from '../api';
 import * as database from '../database';
+import { sendRequest } from '../api';
 
-const guardianCoordinates = {
-  Vermillion: { left: '40%', top: '90%' },
-  Grace: { left: '45%', top: '90%' },
-  Ankaa: { left: '55%', top: '90%' },
-  Azhar: { left: '60%', top: '90%' },
+const guardianIds = {
+  Vermillion: 0,
+  Grace: 1,
+  Ankaa: 2,
+  Azhar: 3,
 } as const;
 
-export const selectGuardian = (name: GuardianName) => {
-  return pipe(
-    Effect.logDebug(`Selecting guardian: ${name}`),
-    Effect.tap(() => click(guardianCoordinates[name])),
-  );
-}
+export const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
 
 export const handleTrainGuardian = () => {
-  return Effect.scoped(pipe(
-    Effect.addFinalizer(() => goTo.main()),
-    Effect.tap(() => goTo.guardians()),
-    Effect.flatMap(database.config.findOne),
+  return pipe(
+    database.config.findOne(),
     Effect.map(config => config.features.guardianTraining.guardian),
-    Effect.tap(guardian => selectGuardian(guardian)),
-    Effect.tap(guardian => Effect.logDebug(`Training guardian ${guardian}`)),
-    Effect.tap(() => click({ left: '60%', top: '72%' })),
-    Effect.tap(guardian => Effect.log(`Trained guardian ${guardian}`)),
-    Effect.withSpan('trainingGuardian'),
-    Effect.withLogSpan('trainingGuardian'),
-  ));
+    Effect.tap(guardian => Effect.log(`Training guardian ${guardian}`)),
+    Effect.tap(guardian => sendRequest({
+      type: 'GuardianTraining',
+      parameters: [guardianIds[guardian]],
+    })),
+  );
 }

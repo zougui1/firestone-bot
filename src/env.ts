@@ -22,4 +22,13 @@ export const env = {
     uri: envVar.get('DATABASE.URI').required().asString(),
     databaseName: envVar.get('DATABASE.DATABASE_NAME').required().asString(),
   },
+
+  firestone: {
+    userId: envVar.get('FIRESTONE.USER_ID').required().asString(),
+    server: envVar.get('FIRESTONE.SERVER').required().asString(),
+
+    socket: {
+      uri: envVar.get('FIRESTONE.SOCKET.URI').required().asUrlString(),
+    },
+  },
 };

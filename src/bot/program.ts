@@ -4,16 +4,14 @@ import { sleep } from 'radash';
 import { NodeSdk } from '@effect/opentelemetry';
 import { InMemorySpanExporter } from '@opentelemetry/sdk-trace-base';
 
-import { type BotOptions, startBot } from './bot';
-import { press } from './api';
-import { hotkeys } from './hotkeys';
+import { startBot } from './bot';
 import * as database from './database';
 import { ServerSocket } from '../socket';
 import { env } from '../env';
 import { logger } from './logger';
 import { SpanProcessor } from './tracing';
 
-export const program = async (options?: BotOptions) => {
+export const program = async () => {
   const server = new ServerSocket(env.socket);
   let fiber: RuntimeFiber<void, unknown> | undefined;
 
@@ -35,7 +33,7 @@ export const program = async (options?: BotOptions) => {
       step: () => true,
       body: () => Effect
         .gen(function* () {
-          const botEffect = startBot(options);
+          const botEffect = startBot();
           const currentFiber = yield* Effect.fork(botEffect);
           fiber = currentFiber;
           const exit = yield* Fiber.await(currentFiber);
@@ -52,7 +50,6 @@ export const program = async (options?: BotOptions) => {
               onSequential: () => Effect.log('Bot terminated'),
             }),
           });
-          yield* press({ key: hotkeys.escape });
           yield* Effect.sleep('2 minutes');
         })
         .pipe(Effect.withSpan('firebot'))
