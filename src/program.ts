@@ -7,9 +7,7 @@ program.name('firebot');
 program
   .command('bot')
   .description('Runs the firestone bot')
-  .option('--disable-preflight-checks', 'disable the checks normally run before the bot starts its routines')
-  .action(async (options) => {
-    console.log('bot options:', options);
+  .action(async () => {
     const { program } = await import('./bot');
     await program();
   });

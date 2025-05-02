@@ -3,10 +3,10 @@ import WebSocket from 'ws';
 let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
-const userId = '';
-const sessionId = '';
-const serverName = '';
-const uri = '';
+const userId = '8S19Jpu9obJN';
+const sessionId = 'zxYV7sc8tR';
+const serverName = 'Elmbrook';
+const uri = 'wss://ws11.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
 
 const stringifyRequest = (request: FirestoneRequest) => {
@@ -138,7 +138,7 @@ const processCampaignBattleResponse = async (payload: string) => {
   console.log('Battle lost');
 
   if (battleAttempts < maxBattleAttempts) {
-    //await sleep(500);
+    await sleep(1500);
     startCampaignBattle(global);
   } else {
     battleAttempts = 0;
@@ -161,7 +161,7 @@ socket.on('open', async () => {
 
 socket.on('message', async message => {
   const payload = message.toString('utf-8');
-  //console.log('payload:', payload)
+  console.log('payload:', JSON.parse(payload))
 
   try {
     await processCampaignBattleResponse(payload);

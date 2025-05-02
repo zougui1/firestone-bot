@@ -10,8 +10,6 @@ const guardianIds = {
   Azhar: 3,
 } as const;
 
-export const guardians = ['Vermillion', 'Grace', 'Ankaa', 'Azhar'] as const;
-
 export const handleTrainGuardian = () => {
   return pipe(
     database.config.findOne(),

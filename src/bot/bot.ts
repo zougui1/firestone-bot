@@ -13,6 +13,7 @@ import {
   handlePickaxeSupplies,
 } from './game-features';
 import * as database from './database';
+import * as api from './api';
 import { env } from '../env';
 
 const gameHandlers = {
@@ -27,7 +28,7 @@ const gameHandlers = {
   mapMission: handleMapMissions,
 } satisfies Record<event.ActionType, () => Effect.Effect<unknown, unknown, unknown>>;
 
-const handleGameFeatures = () => {
+const init = () => {
   return pipe(
     database.config.findOne(),
     Effect.tap(config => {
@@ -41,6 +42,12 @@ const handleGameFeatures = () => {
         serverName: env.firestone.server,
       });
     }),
+  );
+}
+
+const handleGameFeatures = () => {
+  return pipe(
+    init(),
     Effect.map(config => Object
       .entries(config.features)
       .filter(([, feature]) => feature.enabled)
@@ -64,6 +71,10 @@ const handleGameFeatures = () => {
 export const startBot = () => {
   return pipe(
     Effect.log('Starting bot'),
+    //Effect.tap(() => init()),
+    //Effect.flatMap(() => api.startCampaignBattle({ mission: 57, difficulty: 1 })),
+    //Effect.tap(([, , { battleLogEntries }]) => Effect.log('entries:', battleLogEntries.length)),
+    //Effect.flatMap(() => Effect.void),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,

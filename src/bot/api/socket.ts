@@ -1,12 +1,14 @@
 import WebSocket from 'ws';
 import { Effect, pipe } from 'effect';
+import { z } from 'zod';
 
 import { env } from '../../env';
 import { game } from '../store';
+import { catchError } from '../../utils';
 
 const socket = new WebSocket(env.firestone.socket.uri);
 
-const stringifyRequest = (request: InternalFirestoneRequest) => {
+const stringifyRequest = (request: InternalFirestoneRequestData) => {
   const firstPart = [
     request.type,
     request.userId,
@@ -41,7 +43,7 @@ const ensureConnection = async () => {
   }
 }
 
-export const sendRequest = (request: FirestoneRequest) => {
+export const sendRequest = (request: FirestoneRequestData) => {
   return pipe(
     game.getSession(),
     Effect.map(session => stringifyRequest({ ...request, ...session })),
@@ -55,12 +57,101 @@ export const sendRequest = (request: FirestoneRequest) => {
   );
 }
 
-export interface FirestoneRequest {
+const genericResponseSchema = z.object({
+  Data: z.array(z.unknown()),
+  Function: z.string(),
+  SubFunction: z.string().optional(),
+});
+
+export const waitResponse = <T extends z.ZodSchema>(
+  specificResponseSchema: z.ZodObject<{ Function: z.ZodLiteral<string>; SubFunction?: z.ZodLiteral<string>; }>,
+  schema: T,
+) => {
+  return Effect.async<z.infer<T>, Error>(resume => {
+    const errors: Error[] = [];
+
+    const timeout = setTimeout(() => {
+      cleanup();
+
+      if (errors.length) {
+        resume(Effect.fail(new AggregateError(errors, `Response timed out with ${errors.length} error${errors.length === 1 ? '' : 's'}`)));
+      } else {
+        resume(Effect.fail(new Error('Response timed out')));
+      }
+    }, 10_000);
+
+    const cleanup = () => {
+      clearTimeout(timeout);
+      socket.off('message', onMessage);
+      socket.off('error', onError);
+    }
+
+    const onMessage = (message: WebSocket.RawData) => {
+      const payload = message.toString('utf-8');
+      const [jsonError, json] = catchError(() => JSON.parse(payload));
+
+      if (jsonError) {
+        return errors.push(Error('Could not parse JSON response', { cause: jsonError }));
+      }
+
+      const genericResponseResult = genericResponseSchema.safeParse(json);
+
+      if (!genericResponseResult.success) {
+        return errors.push(Error('Invalid response', { cause: genericResponseResult.error }));
+      }
+
+      if (genericResponseResult.data.Function === 'UserOnMultipleInstances') {
+        cleanup();
+        return resume(Effect.die(new Error(`The user is running another instance of the game`)));
+      }
+
+      const specificResponseResult = specificResponseSchema.safeParse(genericResponseResult.data);
+
+      if (!specificResponseResult.success) {
+        return errors.push(Error('Invalid response type', { cause: specificResponseResult.error }));
+      }
+
+      const dataResult = schema.safeParse(genericResponseResult.data.Data);
+
+      if (!dataResult.success) {
+        cleanup();
+        return resume(Effect.fail(Error('Invalid data in response', { cause: dataResult.error })));
+      }
+
+      cleanup();
+      resume(Effect.succeed(dataResult.data));
+    }
+
+    const onError = (error: Error) => {
+      cleanup();
+      resume(Effect.die(Error('WebSocket error: Could not get a response', { cause: error })));
+    }
+
+    socket.on('message', onMessage);
+    socket.on('error', onError);
+  });
+}
+
+// TODO test this
+export const request = <T extends z.ZodSchema>(request: FirestoneRequest<T>) => {
+  return pipe(
+    sendRequest(request),
+    Effect.tap(() => Effect.logDebug('Waiting for response...')),
+    Effect.flatMap(() => waitResponse(request.responseSchema, request.dataSchema)),
+  );
+}
+
+export interface FirestoneRequest<T extends z.ZodSchema> extends FirestoneRequestData {
+  responseSchema: z.ZodObject<{ Function: z.ZodLiteral<string>; SubFunction?: z.ZodLiteral<string>; }>;
+  dataSchema: T;
+}
+
+export interface FirestoneRequestData {
   type: string;
   parameters?: (string | number)[];
 }
 
-export interface InternalFirestoneRequest extends FirestoneRequest {
+export interface InternalFirestoneRequestData extends FirestoneRequestData {
   type: string;
   userId: string;
   sessionId: string;
