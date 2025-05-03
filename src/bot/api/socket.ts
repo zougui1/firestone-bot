@@ -2,11 +2,15 @@ import WebSocket from 'ws';
 import { Effect, pipe } from 'effect';
 import { z } from 'zod';
 
-import { env } from '../../env';
 import { game } from '../store';
+import { env } from '../../env';
 import { catchError } from '../../utils';
 
 const socket = new WebSocket(env.firestone.socket.uri);
+
+socket.on('message', message => {
+  console.log('message:', message.toString('utf-8'));
+});
 
 const stringifyRequest = (request: InternalFirestoneRequestData) => {
   const firstPart = [
@@ -64,20 +68,24 @@ const genericResponseSchema = z.object({
   SubFunction: z.string().optional(),
 });
 
+export class TimeoutError extends AggregateError {
+  readonly _tag = 'TimeoutError';
+}
+
 export const waitResponse = <T extends z.ZodSchema>(
   specificResponseSchema: z.ZodObject<{ Function: z.ZodLiteral<string>; SubFunction?: z.ZodLiteral<string>; }>,
   schema: T,
 ) => {
-  return Effect.async<z.infer<T>, Error>(resume => {
+  return Effect.async<z.infer<T>, TimeoutError | Error>(resume => {
     const errors: Error[] = [];
 
     const timeout = setTimeout(() => {
       cleanup();
 
       if (errors.length) {
-        resume(Effect.fail(new AggregateError(errors, `Response timed out with ${errors.length} error${errors.length === 1 ? '' : 's'}`)));
+        resume(Effect.fail(new TimeoutError(errors, `Response timed out with ${errors.length} error${errors.length === 1 ? '' : 's'}`)));
       } else {
-        resume(Effect.fail(new Error('Response timed out')));
+        resume(Effect.fail(new TimeoutError([], 'Response timed out')));
       }
     }, 10_000);
 

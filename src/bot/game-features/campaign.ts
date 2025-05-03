@@ -2,6 +2,8 @@ import { Effect, pipe } from 'effect';
 
 import { sendRequest } from '../api';
 
+//! missing claim
+
 export const handleCampaignLoot = () => {
   return pipe(
     Effect.log('Claiming campaign loots'),

@@ -2,6 +2,13 @@ import { Effect, pipe } from 'effect';
 
 import { sendRequest } from '../api';
 
+//! missions refresh
+//* {"Function":"MapMissionsReplies","SubFunction":"StartMapMissionReply","Data":[54]}
+//* {"Function":"MapMissionsReplies","SubFunction":"CompleteMapMissionReply","Data":[36,"{\"rewards\":[{\"itemType\":\"CUR001\",\"quantity\":10},{\"itemType\":\"CUR005\",\"quantity\":1},{\"itemType\":\"CUR009\",\"quantity\":5}]}"]}
+//* {"Function":"BuyPremiumProductReplies","SubFunction":"DoMapMissionSpeedUpReply","Data":[5,"{\"rewards\":[{\"itemType\":\"CB002\",\"quantity\":1},{\"itemType\":\"CUR005\",\"quantity\":4},{\"itemType\":\"CUR009\",\"quantity\":20}]}"]}
+
+const missionPerCycle = 26;
+
 const LoadMapMissionsReply_raw = {
   Data: [
     // JSON string
@@ -21,6 +28,19 @@ const LoadMapMissionsReply_readable = {
   duration: 4067,
 };
 
+interface MissionState {
+  id: number;
+  startDate: Date;
+  durationSeconds: number;
+  squads: number;
+}
+
+interface LocalState {
+  squads: number;
+  cycleStartDate?: Date;
+  missions: Record<number, MissionState>;
+}
+
 const mapMissions = {
   'Jungle Terror': 0,
   'Stop the Pirate Raids': 1,
@@ -38,7 +58,7 @@ const mapMissions = {
   'Calamindor Ruins': 13,
   'Talk To The Farmers': 14,
   'North Sea': 15,
-  '  ': 16,
+  'Lake\'s Terror': 16,
   'Irongard\'s Harbor': 17,
   'Tipsy Wisp Tavern': 18,
   'The Hombor King': 19,
@@ -84,6 +104,54 @@ const mapMissions = {
   'Search For Survivors': 59,
   'Dreadland Shore': 60,
   'Hydra': 61,
+};
+
+const missionsM = {
+  naval: [
+    mapMissions['Trade Route'],
+  ],
+
+  monster: [
+    mapMissions['Lake\'s Terror'],
+  ],
+
+  dragon: [
+    mapMissions['Frostfire Gorge'],
+    mapMissions['Dragon\'s Cave'],
+  ],
+
+  war: [
+    mapMissions['Train Elf Archers'],
+    mapMissions['Ambush in the Trees'],
+    mapMissions['Confront The Orcs'],
+    mapMissions['Moonglen\'s Festival'],
+    mapMissions['Chase the Monster'],
+    mapMissions['Tipsy Wisp Tavern'],
+    mapMissions['North Sea'],
+    //mapMissions['Recruit Soldiers'],
+  ],
+
+  adventure: [
+    mapMissions['Underwater Treasures'],
+    mapMissions['Close The Portal'],
+    mapMissions['The Resistance of Goldfell'],
+    mapMissions['Silverwood\'s Militia'],
+    mapMissions['Cursed Bay'],
+    mapMissions['The Lost Chapter'],
+    mapMissions['Southern Island'],
+  ],
+
+  scout: [
+    mapMissions['Border Patrol'],
+    mapMissions['Search The Shipwreck'],
+    mapMissions['Enemy Border'],
+    mapMissions['Dark River'],
+    mapMissions['Find The Librarian'],
+    mapMissions['The Port of Thal Badur'],
+    mapMissions['Escort the Merchants'],
+    mapMissions['Mountain Springs'],
+    mapMissions['Jungle Terror'],
+  ],
 };
 
 const missions = Object.keys(mapMissions);

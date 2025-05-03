@@ -1,39 +1,166 @@
-export const upgradeMap = {
-  'prestigious': { id: -1 },
-  'trainer skills': { id: -1 },
-  'meteorite hunter': { id: -1 },
-  'expeditioner': { id: -1 },
-  'skip stage': { id: -1 },
-  'skip wave': { id: -1 },
-  'medal of honor': { id: -1 },
-  'critical loot bonus': { id: -1 },
-  'critical loot chance': { id: -1 },
+const upgradesObject = {
+  /*'prestigious': {
+    name: 'prestigious',
+    id: -1,
+    maxLevel: 40,
+  },
+  'trainer skills': {
+    name: 'trainer skills',
+    id: -1,
+    maxLevel: 25,
+  },
+  'meteorite hunter': {
+    name: 'meteorite hunter',
+    id: -1,
+    maxLevel: 15,
+  },
+  'expeditioner': {
+    name: 'expeditioner',
+    id: -1,
+    maxLevel: 20,
+  },
+  'skip stage': {
+    name: 'skip stage',
+    id: -1,
+    maxLevel: 20,
+  },
+  'skip wave': {
+    name: 'skip wave',
+    id: -1,
+    maxLevel: 25,
+  },
+  'medal of honor': {
+    name: 'medal of honor',
+    id: -1,
+    maxLevel: 12,
+  },
+  'critical loot bonus': {
+    name: 'critical loot bonus',
+    id: -1,
+    maxLevel: 30,
+  },
+  'critical loot chance': {
+    name: 'critical loot chance',
+    id: -1,
+    maxLevel: 20,
+  },*/
 
-  'raining gold': { id: -1 },
+  'raining gold': {
+    name: 'raining gold',
+    id: -1,
+    maxLevel: 60,
+  },
 
-  'damage specialization': { id: 28 },
-  'attribute damage': { id: 0 },
-  'energy heroes': { id: -1 },
-  'precision': { id: -1 },
-  'leadership': { id: -1 },
-  'all main attributes': { id: 20 },
+  'damage specialization': {
+    name: 'damage specialization',
+    id: 28,
+    maxLevel: 55,
+  },
+  'attribute damage': {
+    name: 'attribute damage',
+    id: 0,
+    maxLevel: 60,
+  },
+  'energy heroes': {
+    name: 'energy heroes',
+    id: -1,
+    maxLevel: 60,
+  },
+  'precision': {
+    name: 'precision',
+    id: -1,
+    maxLevel: 55,
+  },
+  'leadership': {
+    name: 'leadership',
+    id: 30,
+    maxLevel: 60,
+  },
+  'all main attributes': {
+    name: 'all main attributes',
+    id: 20,
+    maxLevel: 60,
+  },
 
-  'attribute armor': { id: 2 },
-  'attribute health': { id: 1 },
-  'expose weakness': { id: 10 },
-  'powerless enemy': { id: -1 },
-  'weaklings': { id: 9 },
-  'hero level up cost': { id: -1 },
-  'firestone effect': { id: 24 },
-  'powerless boss': { id: -1 },
+  'attribute armor': {
+    name: 'attribute armor',
+    id: 2,
+    maxLevel: 60,
+  },
+  'attribute health': {
+    name: 'attribute health',
+    id: 1,
+    maxLevel: 60,
+  },
+  'expose weakness': {
+    name: 'expose weakness',
+    id: 10,
+    maxLevel: 30,
+  },
+  'powerless enemy': {
+    name: 'powerless enemy',
+    id: -1,
+    maxLevel: 30,
+  },
+  'weaklings': {
+    name: 'weaklings',
+    id: 9,
+    maxLevel: 30,
+  },
+  'firestone effect': {
+    name: 'firestone effect',
+    id: 24,
+    maxLevel: 55,
+  },
+  'powerless boss': {
+    name: 'powerless boss',
+    id: -1,
+    maxLevel: 30,
+  },
 
-  'mana heroes': { id: -1 },
-  'rage heroes': { id: -1 },
-  'fist fight': { id: -1 },
-  'magic spells': { id: -1 },
-  'tank specialization': { id: -1 },
-  'healer specialization': { id: -1 },
+  'mana heroes': {
+    name: 'mana heroes',
+    id: -1,
+    maxLevel: 60,
+  },
+  'rage heroes': {
+    name: 'rage heroes',
+    id: -1,
+    maxLevel: 60,
+  },
+  'fist fight': {
+    name: 'fist fight',
+    id: -1,
+    maxLevel: 55,
+  },
+  'magic spells': {
+    name: 'magic spells',
+    id: -1,
+    maxLevel: 55,
+  },
+  'tank specialization': {
+    name: 'tank specialization',
+    id: -1,
+    maxLevel: 55,
+  },
+  'healer specialization': {
+    name: 'healer specialization',
+    id: -1,
+    maxLevel: 55,
+  },
 
-  'guardian power': { id: -1 },
-  'guardian projectiles': { id: -1 },
+  'guardian power': {
+    name: 'guardian power',
+    id: -1,
+    maxLevel: 60,
+  },
 };
+
+const map = new Map(Object.entries(upgradesObject));
+
+export const upgrades = {
+  ...upgradesObject,
+  get: map.get,
+};
+
+export type Upgrade = typeof upgradesObject['all main attributes'];

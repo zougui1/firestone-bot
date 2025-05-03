@@ -49,13 +49,13 @@ export type ConfigType = Omit<typeof ConfigModel['schema'], '_id'>;
 
 export const findOne = () => {
   return pipe(
-    Effect.logDebug('Finding config'),
+    Effect.logDebug('Querying config'),
     Effect.flatMap(() => Effect.tryPromise({
       try: async () => {
         const config = await ConfigModel.findOne({});
         return config ?? defaultConfig;
       },
-      catch: cause => new Error('could not find the config', { cause }),
+      catch: cause => new Error('Could not find the config', { cause }),
     })),
     Effect.onError(cause => Effect.logError('Could not retrieve the config. Using the default config as fallback', cause)),
     Effect.orElseSucceed(() => defaultConfig),

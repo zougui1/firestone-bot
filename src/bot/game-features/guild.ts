@@ -7,7 +7,7 @@ import { sendRequest } from '../api';
 // start: [id, unknown, unknown, startTimestamp]
 //* {"Function":"GuildMechanismReplies","SubFunction":"StartExpeditionReply","Data":["GUEXP020",600,378,1746177471]
 //* {"Function":"GuildMechanismReplies","SubFunction":"StartExpeditionReply","Data":["GUEXP011",350,221,1746175187]}
-// claim
+// start
 //* {"Function":"GuildMechanismReplies","SubFunction":"StartExpeditionReply","Data":[221,350,1746175187]}
 
 const expeditionCount = 5;

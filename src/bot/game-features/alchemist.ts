@@ -3,6 +3,10 @@ import { Effect, pipe } from 'effect';
 import * as database from '../database';
 import { sendRequest } from '../api';
 
+//! missing experiment speed up
+//* {"Function":"AlchemistReplies","SubFunction":"CompleteAlchemyExperimentReply","Data":[0]}
+//* {"Function":"AlchemistReplies","SubFunction":"StartAlchemyExperimentReply","Data":[0,27,1746271275]}
+
 const experimentSlots = {
   blood: 0,
   dust: 1,

@@ -13,7 +13,6 @@ import {
   handlePickaxeSupplies,
 } from './game-features';
 import * as database from './database';
-import * as api from './api';
 import { env } from '../env';
 
 const gameHandlers = {
@@ -71,10 +70,6 @@ const handleGameFeatures = () => {
 export const startBot = () => {
   return pipe(
     Effect.log('Starting bot'),
-    //Effect.tap(() => init()),
-    //Effect.flatMap(() => api.startCampaignBattle({ mission: 57, difficulty: 1 })),
-    //Effect.tap(([, , { battleLogEntries }]) => Effect.log('entries:', battleLogEntries.length)),
-    //Effect.flatMap(() => Effect.void),
     Effect.andThen(() => Effect.loop(true, {
       while: bool => bool,
       step: () => true,
@@ -82,7 +77,7 @@ export const startBot = () => {
         Effect.log('Starting routine'),
         Effect.andThen(handleGameFeatures),
         Effect.tap(() => Effect.logDebug('Waiting before next iteration')),
-        Effect.tap(() => Effect.sleep('2 second')),
+        Effect.tap(() => Effect.sleep('2 minutes')),
         Effect.withSpan('routine'),
         Effect.withLogSpan('routine'),
       ),

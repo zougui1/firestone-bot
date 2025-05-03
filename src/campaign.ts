@@ -4,7 +4,7 @@ let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
 const userId = '8S19Jpu9obJN';
-const sessionId = 'KCSaCZZpK5';
+const sessionId = 'gGpsZXpGW9';
 const serverName = 'Elmbrook';
 const uri = 'wss://ws11.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
@@ -43,48 +43,16 @@ const sendRequest = async (request: FirestoneRequest) => {
 }
 
 /*const payloads = [
-  `StartCampaignBattle|==|${userId}|==|${sessionId}|==|${mission}|==|${difficulty}|-+-|${serverName}|-+-|829`,
+  //*`StartCampaignBattle|==|${userId}|==|${sessionId}|==|${mission}|==|${difficulty}|-+-|${serverName}|-+-|829`,
   // liberation missions
-  `StartNonCampaignBattle|==|${userId}|==|${sessionId}|==|${`LM${index}`}|-+-|${serverName}|-+-|829`,
+  //*`StartNonCampaignBattle|==|${userId}|==|${sessionId}|==|${`LM${index}`}|-+-|${serverName}|-+-|829`,
   // dungeon missions
-  `StartNonCampaignBattle|==|${userId}|==|${sessionId}|==|${`DM${index}`}|-+-|${serverName}|-+-|829`,
-
-  `StartFirestoneResearch|==|${userId}|==|${sessionId}|==|${tree}|==|${someInternalId}|==|${currentLevel}|-+-|${serverName}|-+-|829`,
-  `CompleteFirestoneResearch|==|${userId}|==|${sessionId}|==|${tree}|==|${slot}|-+-|${serverName}|-+-|829`,
-  //! potentially risky
-  `DoFirestoneResearchSpeedUp|==|${userId}|==|${sessionId}|==|${tree}|==|${researchSlot}|==|${0}|==|${1}|-+-|${serverName}|-+-|829`,
-
-  `StartMapMission|==|${userId}|==|${sessionId}|==|${someInternalId}|-+-|${serverName}|-+-|829`,
-  `CompleteMapMission|==|${userId}|==|${sessionId}|==|${someInternalId}|-+-|${serverName}|-+-|829`,
-  `DoMapMissionSpeedUp|==|${userId}|==|${sessionId}|==|${someInternalId}|==|${0}|-+-|${serverName}|-+-|829`,
-  `DoMapMissionsRefresh|==|${userId}|==|${sessionId}|==|${0}|-+-|${serverName}|-+-|829`,
-
-  `StartAlchemyExperiment|==|${userId}|==|${sessionId}|==|${tree}|==|${slot}|-+-|${serverName}|-+-|829`,
-  `CompleteAlchemyExperiment|==|${userId}|==|${sessionId}|==|${tree}|==|${slot}|-+-|${serverName}|-+-|829`,
-  `DoAlchemyExperimentSpeedUp|==|${userId}|==|${sessionId}|==|${tree}|==|${slot}|==|${0}|-+-|${serverName}|-+-|829`,
-
-
-
-
-  `StartRitual|==|${userId}|==|${sessionId}|==|${ritualIndex}|-+-|${serverName}|-+-|829`,
-  `ClaimRitual|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-
-  `StartExpedition|==|${userId}|==|${sessionId}|==|${`GUEXP00${index}`}|-+-|${serverName}|-+-|829`,
-  `ClaimExpedition|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-
-  `GuardianTraining|==|${userId}|==|${sessionId}|==|${guardianIndex}|-+-|${serverName}|-+-|829`,
-
-  `ClaimFreePickaxes|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-
-  `ClaimWarfrontCampaignLoot|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-
-  `ClaimTools|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-
+  //*`StartNonCampaignBattle|==|${userId}|==|${sessionId}|==|${`DM${index}`}|-+-|${serverName}|-+-|829`,
 
 
   // not useful
-  `AskForMeteorites|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-  `CompleteMeteoriteResearch|==|${userId}|==|${sessionId}|==|${tree}|==|${17}|==|${currentLevel}|==|${1}|-+-|${serverName}|-+-|829`,
+  //*`AskForMeteorites|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
+  //*`CompleteMeteoriteResearch|==|${userId}|==|${sessionId}|==|${tree}|==|${17}|==|${currentLevel}|==|${1}|-+-|${serverName}|-+-|829`,
 ];*/
 
 const socket = new WebSocket(uri);
@@ -114,6 +82,7 @@ const ensureConnection = async () => {
 export const startCampaignBattle = async ({ mission, difficulty }: { mission: number; difficulty: number; }) => {
   global.mission = mission;
   global.difficulty = difficulty;
+  return;
 
   await sendRequest({
     userId,
@@ -161,21 +130,21 @@ socket.on('open', async () => {
     });
     await sleep(1500);
   }*/
-  /*await sendRequest({
+  await sendRequest({
     userId,
     sessionId,
     serverName,
     //type: 'UpdateFreePickaxesStateNew',
     //type: 'LoadFirestoneResearch',
     //parameters: [3, 24, 0],
-    type: 'ClaimTools',
+    type: 'GetAnniversaryEvent',
     parameters: [],
-  });*/
+  });
 });
 
 socket.on('message', async message => {
   const payload = message.toString('utf-8');
-  //console.log('payload:', payload)
+  console.log('payload:', payload)
 
   try {
     await processCampaignBattleResponse(payload);

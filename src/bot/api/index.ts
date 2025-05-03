@@ -1,2 +1,3 @@
 export * from './socket';
 export * from './startCampaignBattle';
+export * as firestoneLibrary from './firestoneLibrary';

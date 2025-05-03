@@ -2,12 +2,18 @@ import { Effect, pipe } from 'effect';
 
 import { sendRequest } from '../api';
 
-const rituals = [
-  'obedience',
-  'serenity',
-  'concentration',
-  'harmony',
-];
+//! missing ritual claim, ritual claim
+//* {"Function":"OracleReplies","SubFunction":"StartOracleMissionReply","Data":["2"]}
+//* {"Function":"OracleReplies","SubFunction":"CompleteOracleMissionReply","Data":["{\"rewards\":[{\"itemType\":\"CCH003\",\"quantity\":1}]}",false]
+
+const ritualMaps = {
+  'obedience': 2,
+  'serenity': 1,
+  'concentration': 3,
+  'harmony': 0,
+};
+
+const rituals = Object.values(ritualMaps);
 
 export const handleOracleRituals = () => {
   return pipe(
