@@ -3,6 +3,9 @@ import { Effect, pipe } from 'effect';
 import * as database from '../database';
 import { sendRequest } from '../api';
 
+// 2 = guardian index
+//* {"Function":"MagicQuarterReplies","SubFunction":"GuardianTrainingReply","Data":[2]}
+
 const guardianIds = {
   Vermillion: 0,
   Grace: 1,

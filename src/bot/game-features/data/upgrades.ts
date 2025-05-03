@@ -20,9 +20,9 @@ export const upgradeMap = {
 
   'attribute armor': { id: 2 },
   'attribute health': { id: 1 },
-  'expose weakness': { id: -1 },
+  'expose weakness': { id: 10 },
   'powerless enemy': { id: -1 },
-  'weaklings': { id: -1 },
+  'weaklings': { id: 9 },
   'hero level up cost': { id: -1 },
   'firestone effect': { id: 24 },
   'powerless boss': { id: -1 },

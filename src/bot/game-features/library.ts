@@ -6,10 +6,10 @@ import { upgradeMap } from './data';
 
 // replies when claiming a research
 // data: [slotIndex, unknown, unknown]
-//const Reply = { "Function": "LibraryReplies", "SubFunction": "CompleteFirestoneResearchReply", "Data": [0, 1, false] };
-//const Reply = { "Function": "LibraryReplies", "SubFunction": "CompleteFirestoneResearchReply", "Data": [1, 1, false] };
+//* { "Function": "LibraryReplies", "SubFunction": "CompleteFirestoneResearchReply", "Data": [0, 1, false] };
+//* { "Function": "LibraryReplies", "SubFunction": "CompleteFirestoneResearchReply", "Data": [1, 1, false] };
 // replies when starting a research; timestamp is the time at which the research started
-// {"Function":"LibraryReplies","SubFunction":"StartFirestoneResearchReply","Data":[0,24,1746118458]}
+//* {"Function":"LibraryReplies","SubFunction":"StartFirestoneResearchReply","Data":[0,24,1746118458]}
 
 const researches = [
   upgradeMap['trainer skills'],

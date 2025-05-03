@@ -4,7 +4,7 @@ let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
 const userId = '8S19Jpu9obJN';
-const sessionId = 'zxYV7sc8tR';
+const sessionId = 'KCSaCZZpK5';
 const serverName = 'Elmbrook';
 const uri = 'wss://ws11.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
@@ -148,20 +148,34 @@ const processCampaignBattleResponse = async (payload: string) => {
 socket.on('open', async () => {
   console.log('Connected to the server');
 
+  /*for (let index = 20; index < 50; index++) {
+    await sendRequest({
+      userId,
+      sessionId,
+      serverName,
+      //type: 'UpdateFreePickaxesStateNew',
+      //type: 'LoadFirestoneResearch',
+      //parameters: [3, 24, 0],
+      type: 'StartExpedition',
+      parameters: [`GUEXP${index.toString().padStart(3, '0')}`],
+    });
+    await sleep(1500);
+  }*/
   /*await sendRequest({
     userId,
     sessionId,
     serverName,
     //type: 'UpdateFreePickaxesStateNew',
     //type: 'LoadFirestoneResearch',
-    type: 'StartFirestoneResearch',
-    parameters: [3, 24, 0],
+    //parameters: [3, 24, 0],
+    type: 'ClaimTools',
+    parameters: [],
   });*/
 });
 
 socket.on('message', async message => {
   const payload = message.toString('utf-8');
-  console.log('payload:', JSON.parse(payload))
+  //console.log('payload:', payload)
 
   try {
     await processCampaignBattleResponse(payload);

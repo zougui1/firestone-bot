@@ -53,6 +53,7 @@ export const sendRequest = (request: FirestoneRequestData) => {
     })),
     Effect.tap(payload => Effect.logDebug(`Sending request: ${payload}`)),
     Effect.tap(payload => socket.send(Buffer.from(payload, 'utf-8'))),
+    Effect.tap(() => Effect.sleep('1.5 second')),
     Effect.flatMap(() => Effect.void),
   );
 }
