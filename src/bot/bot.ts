@@ -47,23 +47,29 @@ const init = () => {
 const handleGameFeatures = () => {
   return pipe(
     init(),
-    Effect.map(config => Object
-      .entries(config.features)
-      .filter(([, feature]) => feature.enabled)
-      .map(([name]) => name) as event.ActionType[]
-    ),
-    Effect.tap(features => Effect.logDebug('Enabled game features:', features.join(', '))),
-    Effect.tap(features => Effect.forEach(
-      features,
-      feature => {
-        if (feature in gameHandlers) {
-          return gameHandlers[feature]();
-        }
+    Effect.tap(config => Effect.if(config.disabled ?? false, {
+      onTrue: () => Effect.log('Bot is paused, skipping routine'),
+      onFalse: () => pipe(
+        Effect.succeed(
+          Object
+            .entries(config.features)
+            .filter(([, feature]) => feature.enabled)
+            .map(([name]) => name) as event.ActionType[]
+        ),
+        Effect.tap(features => Effect.logDebug('Enabled game features:', features.join(', '))),
+        Effect.tap(features => Effect.forEach(
+          features,
+          feature => {
+            if (feature in gameHandlers) {
+              return gameHandlers[feature]();
+            }
 
-        return Effect.logWarning(`feature "${feature}" has no handler`);
-      },
-      { discard: true },
-    )),
+            return Effect.logWarning(`feature "${feature}" has no handler`);
+          },
+          { discard: true },
+        )),
+      ),
+    })),
   );
 }
 
