@@ -42,6 +42,7 @@ export const ConfigModel = papr.model('configs', schema({
     }, { required: true }),
     mapMission: types.object({
       enabled: types.boolean({ required: true }),
+      squads: types.number({ required: true }),
     }, { required: true }),
   } satisfies Record<event.ActionType, unknown>, { required: true }),
 }));

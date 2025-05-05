@@ -26,6 +26,8 @@ export const env = {
   firestone: {
     userId: envVar.get('FIRESTONE.USER_ID').required().asString(),
     server: envVar.get('FIRESTONE.SERVER').required().asString(),
+    freeDurationSeconds: 3 * 60,
+    cycleDurationSeconds: 6 * 60 * 60,
 
     socket: {
       uri: envVar.get('FIRESTONE.SOCKET.URI').required().asUrlString(),

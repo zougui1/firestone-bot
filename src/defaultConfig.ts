@@ -35,6 +35,7 @@ export const defaultConfig: database.config.ConfigType = {
     },
     mapMission: {
       enabled: true,
+      squads: 1,
     },
   },
 };

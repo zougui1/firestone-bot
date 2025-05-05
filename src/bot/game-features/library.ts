@@ -9,6 +9,7 @@ import * as api from '../api';
 // data: [slotIndex, unknown, unknown]
 //* { "Function": "LibraryReplies", "SubFunction": "CompleteFirestoneResearchReply", "Data": [0, 1, false] };
 //* { "Function": "LibraryReplies", "SubFunction": "CompleteFirestoneResearchReply", "Data": [1, 1, false] };
+//* {"Function":"BuyPremiumProductReplies","SubFunction":"DoFirestoneResearchSpeedUpReply","Data":[0,1,false]}
 // replies when starting a research; timestamp is the time at which the research started
 //* {"Function":"LibraryReplies","SubFunction":"StartFirestoneResearchReply","Data":[0,24,1746118458]}
 
@@ -104,10 +105,7 @@ export const handleFirestoneResearch = () => {
       gems: 0,
     }).pipe(
       Effect.tap(() => state.slots[slot].isAvailable = true),
-      Effect.catchTag('TimeoutError', error => pipe(
-        Effect.logError(error),
-        Effect.flatMap(() => Effect.void),
-      )),
+      Effect.catchTag('TimeoutError', Effect.logError),
     );
   }
 
@@ -122,10 +120,7 @@ export const handleFirestoneResearch = () => {
       slot,
     }).pipe(
       Effect.tap(() => state.slots[slot].isAvailable = true),
-      Effect.catchTag('TimeoutError', error => pipe(
-        Effect.logError(error),
-        Effect.flatMap(() => Effect.void),
-      )),
+      Effect.catchTag('TimeoutError', Effect.logError),
     );
   }
 

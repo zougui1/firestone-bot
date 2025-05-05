@@ -1,6 +1,8 @@
 import { Effect, pipe } from 'effect';
 
-import { sendRequest } from '../api';
+import * as api from '../api';
+import { env } from '../../env';
+import { getDateCompletionStatus } from '../utils';
 
 //! missions refresh
 //* {"Function":"MapMissionsReplies","SubFunction":"StartMapMissionReply","Data":[54]}
@@ -30,174 +32,304 @@ const LoadMapMissionsReply_readable = {
 
 interface MissionState {
   id: number;
-  startDate: Date;
+  name: string;
+  startDate?: Date;
+  claimed?: boolean;
   durationSeconds: number;
   squads: number;
+  type: typeof missions[number]['type'];
 }
 
 interface LocalState {
   squads: number;
   cycleStartDate?: Date;
-  missions: Record<number, MissionState>;
+  missions: Record<string, MissionState>;
+  prevMissions: Record<string, MissionState>;
 }
 
-const mapMissions = {
-  'Jungle Terror': 0,
-  'Stop the Pirate Raids': 1,
-  '': 2, // Southern Island or Stormrock Village
-  'Xandor Dock': 3,
-  'The Lost Chapter': 4,
-  'Ambush in the Trees': 5,
-  'Mountain Springs': 6,
-  'Cursed Bay': 7,
-  'Dragon\'s Cave': 8,
-  'Stormspire Accident': 9,
-  ' ': 10,
-  'Visit the Abbey': 11,
-  'Riverside': 12,
-  'Calamindor Ruins': 13,
-  'Talk To The Farmers': 14,
-  'North Sea': 15,
-  'Lake\'s Terror': 16,
-  'Irongard\'s Harbor': 17,
-  'Tipsy Wisp Tavern': 18,
-  'The Hombor King': 19,
-  'Dark Cavern': 20,
-  'Snow Wolves': 21,
-  'Visit the Northern Tribes': 22,
-  'Expose the Spy': 23,
-  'Southern Island': 24,
-  'Frostfire Gorge': 25,
-  'Moonglen\'s Festival': 26,
-  'Silverwood\'s Militia': 27,
-  'Dark River': 28,
-  'Forest Rangers': 29,
-  'Protect The Shore': 30,
-  'Find The Librarian': 31,
-  'Collect The Bounty': 32,
-  'The Resistance of Goldfell': 33,
-  'Protect The Fishermen': 34,
-  'Confront The Orcs': 35,
-  'Escort the Merchants': 36,
-  'The Pit': 37,
-  'The Port of Thal Badur': 38,
-  'Sea Monsters': 39,
-  'Orc Lieutenant': 40,
-  '   ': 41,
-  'Explore Hinterlands': 42,
-  'Enemy Border': 43,
-  'Defend Mythshore': 44,
-  'Search The Shipwreck': 45,
-  'Close The Portal': 46,
-  'Train Elf Archers': 47,
-  'Library of Talamer': 48,
-  'Border Patrol': 49,
-  '    ': 50,
-  'Underwater Treasures': 51,
-  'Chase the Monster': 52,
-  'Ships on Fire': 53,
-  'Trade Route': 54,
-  'Free The Prisoners': 55,
-  'Mission To Bayshire': 56,
-  'Retrieve Water Sample': 57,
-  'Firestone Power': 58,
-  'Search For Survivors': 59,
-  'Dreadland Shore': 60,
-  'Hydra': 61,
+const state: LocalState = {
+  squads: 0,
+  missions: {},
+  prevMissions: {},
 };
 
-const missionsM = {
-  naval: [
-    mapMissions['Trade Route'],
-  ],
-
-  monster: [
-    mapMissions['Lake\'s Terror'],
-  ],
-
-  dragon: [
-    mapMissions['Frostfire Gorge'],
-    mapMissions['Dragon\'s Cave'],
-  ],
-
-  war: [
-    mapMissions['Train Elf Archers'],
-    mapMissions['Ambush in the Trees'],
-    mapMissions['Confront The Orcs'],
-    mapMissions['Moonglen\'s Festival'],
-    mapMissions['Chase the Monster'],
-    mapMissions['Tipsy Wisp Tavern'],
-    mapMissions['North Sea'],
-    //mapMissions['Recruit Soldiers'],
-  ],
-
-  adventure: [
-    mapMissions['Underwater Treasures'],
-    mapMissions['Close The Portal'],
-    mapMissions['The Resistance of Goldfell'],
-    mapMissions['Silverwood\'s Militia'],
-    mapMissions['Cursed Bay'],
-    mapMissions['The Lost Chapter'],
-    mapMissions['Southern Island'],
-  ],
-
-  scout: [
-    mapMissions['Border Patrol'],
-    mapMissions['Search The Shipwreck'],
-    mapMissions['Enemy Border'],
-    mapMissions['Dark River'],
-    mapMissions['Find The Librarian'],
-    mapMissions['The Port of Thal Badur'],
-    mapMissions['Escort the Merchants'],
-    mapMissions['Mountain Springs'],
-    mapMissions['Jungle Terror'],
-  ],
+const missionTypes = {
+  scout: {
+    name: 'scout',
+    averageTimeMinutes: 15,
+    squads: 1,
+  },
+  adventure: {
+    name: 'adventure',
+    averageTimeMinutes: 30,
+    squads: 1,
+  },
+  war: {
+    name: 'war',
+    averageTimeMinutes: 60,
+    squads: 1,
+  },
+  monster: {
+    name: 'monster',
+    averageTimeMinutes: 60 * 3,
+    squads: 2,
+  },
+  dragon: {
+    name: 'dragon',
+    averageTimeMinutes: 60 * 2,
+    squads: 2,
+  },
+  naval: {
+    name: 'naval',
+    averageTimeMinutes: 60 * 3,
+    squads: 2,
+  },
 };
 
-const missions = Object.keys(mapMissions);
+const missions = [
+  // naval missions
+  { id: 54, name: 'Trade Route', type: missionTypes.naval },
+  // monster missions
+  { id: 16, name: 'Lake\'s Terror', type: missionTypes.monster },
+  { id: 40, name: 'Orc Lieutenant', type: missionTypes.monster },
+  // dragon missions
+  { id: 8, name: 'Dragon\'s Cave', type: missionTypes.dragon },
+  { id: 25, name: 'Frostfire Gorge', type: missionTypes.dragon },
+  { id: 53, name: 'Ships on Fire', type: missionTypes.dragon },
+  // war missions
+  { id: 5, name: 'Ambush in the Trees', type: missionTypes.war },
+  { id: 15, name: 'North Sea', type: missionTypes.war },
+  { id: 18, name: 'Tipsy Wisp Tavern', type: missionTypes.war },
+  { id: 26, name: 'Moonglen\'s Festival', type: missionTypes.war },
+  { id: 35, name: 'Confront The Orcs', type: missionTypes.war },
+  { id: 47, name: 'Train Elf Archers', type: missionTypes.war },
+  { id: 52, name: 'Chase the Monster', type: missionTypes.war },
+  // adventure missions
+  { id: 4, name: 'The Lost Chapter', type: missionTypes.adventure },
+  { id: 7, name: 'Cursed Bay', type: missionTypes.adventure },
+  { id: 24, name: 'Southern Island', type: missionTypes.adventure },
+  { id: 27, name: 'Silverwood\'s Militia', type: missionTypes.adventure },
+  { id: 33, name: 'The Resistance of Goldfell', type: missionTypes.adventure },
+  { id: 46, name: 'Close The Portal', type: missionTypes.adventure },
+  { id: 51, name: 'Underwater Treasures', type: missionTypes.adventure },
+  { id: 60, name: 'Dreadland Shore', type: missionTypes.adventure },
+  // scout missions
+  { id: 0, name: 'Jungle Terror', type: missionTypes.scout },
+  { id: 6, name: 'Mountain Springs', type: missionTypes.scout },
+  { id: 12, name: 'Riverside', type: missionTypes.scout },
+  { id: 19, name: 'The Hombor King', type: missionTypes.scout },
+  { id: 28, name: 'Dark River', type: missionTypes.scout },
+  { id: 31, name: 'Find The Librarian', type: missionTypes.scout },
+  { id: 36, name: 'Escort the Merchants', type: missionTypes.scout },
+  { id: 38, name: 'The Port of Thal Badur', type: missionTypes.scout },
+  { id: 43, name: 'Enemy Border', type: missionTypes.scout },
+  { id: 45, name: 'Search The Shipwreck', type: missionTypes.scout },
+  { id: 49, name: 'Border Patrol', type: missionTypes.scout },
+  { id: 57, name: 'Retrieve Water Sample', type: missionTypes.scout },
+  { id: 59, name: 'Search For Survivors', type: missionTypes.scout },
 
-const loopMissions = <A, E, R>(func: (index: number) => Effect.Effect<A, E, R>) => {
-  return Effect.loop(0, {
-    while: index => index < missions.length,
-    step: index => index + 1,
-    body: func,
-    discard: true,
+  // unknown missions
+  { id: 1, name: 'Stop the Pirate Raids', type: missionTypes.scout },
+  { id: 2, name: '', type: missionTypes.scout },
+  { id: 3, name: 'Xandor Dock', type: missionTypes.scout },
+  { id: 9, name: 'Stormspire Accident', type: missionTypes.scout },
+  { id: 10, name: '', type: missionTypes.scout },
+  { id: 11, name: 'Visit the Abbey', type: missionTypes.scout },
+  { id: 13, name: 'Calamindor Ruins', type: missionTypes.scout },
+  { id: 14, name: 'Talk To The Farmers', type: missionTypes.scout },
+  { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
+  { id: 20, name: 'Dark Cavern', type: missionTypes.scout },
+  { id: 21, name: 'Snow Wolves', type: missionTypes.scout },
+  { id: 22, name: 'Visit the Northern Tribes', type: missionTypes.scout },
+  { id: 23, name: 'Expose the Spy', type: missionTypes.scout },
+  { id: 29, name: 'Forest Rangers', type: missionTypes.scout },
+  { id: 30, name: 'Protect The Shore', type: missionTypes.scout },
+  { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
+  { id: 34, name: 'Protect The Fishermen', type: missionTypes.scout },
+  { id: 37, name: 'The Pit', type: missionTypes.scout },
+  { id: 39, name: 'Sea Monsters', type: missionTypes.scout },
+  { id: 41, name: '', type: missionTypes.scout },
+  { id: 42, name: 'Explore Hinterlands', type: missionTypes.scout },
+  { id: 44, name: 'Defend Mythshore', type: missionTypes.scout },
+  { id: 48, name: 'Library of Talamer', type: missionTypes.scout },
+  { id: 50, name: '', type: missionTypes.scout },
+  { id: 55, name: 'Free The Prisoners', type: missionTypes.scout },
+  { id: 56, name: 'Mission To Bayshire', type: missionTypes.scout },
+  { id: 58, name: 'Firestone Power', type: missionTypes.scout },
+  { id: 61, name: 'Hydra', type: missionTypes.scout },
+];
+const missionMap = new Map(missions.map(mission => [mission.id, mission]));
+
+const getCycleStatus = () => {
+  if (!state.cycleStartDate) {
+    return 'unknown';
+  }
+
+  return getDateCompletionStatus(state.cycleStartDate);
+}
+
+const getMissionStatus = (mission: MissionState) => {
+  if (!mission.startDate) {
+    return 'idle';
+  }
+
+  if (mission.claimed) {
+    return 'claimed';
+  }
+
+  return getDateCompletionStatus(mission.startDate.getTime() + mission.durationSeconds * 1000);
+}
+
+const getEnsuredMission = (mission: typeof missions[number]): MissionState => {
+  return state.missions[mission.id] ?? {
+    id: mission.id,
+    name: mission.name,
+    squads: mission.type.squads,
+    durationSeconds: mission.type.averageTimeMinutes * 60,
+    type: mission.type,
+  };
+}
+
+const speedUpMissions = (missionList: typeof missions, missionStore: Record<string, MissionState>) => {
+  return Effect.gen(function* () {
+    for (const mission of missionList) {
+      yield* Effect.logDebug(`Speeding up mission ${mission.name}`);
+      yield* api.mapMissions
+        .speedUp({ id: mission.id, gems: 0 })
+        .pipe(
+          Effect.tap(() => {
+            missionStore[mission.name] = getEnsuredMission(mission);
+            missionStore[mission.name].claimed = true;
+          }),
+          Effect.catchTag('TimeoutError', Effect.logError),
+        );
+    }
+  });
+}
+
+const completeMissions = (missionList: typeof missions, missionStore: Record<string, MissionState>) => {
+  return Effect.gen(function* () {
+    for (const mission of missionList) {
+      yield* Effect.logDebug(`Claiming mission ${mission.name}`);
+      yield* api.mapMissions
+        .complete({ id: mission.id })
+        .pipe(
+          Effect.tap(() => {
+            missionStore[mission.name] = getEnsuredMission(mission);
+            missionStore[mission.name].claimed = true;
+          }),
+          Effect.catchTag('TimeoutError', Effect.logError),
+        );
+    }
   });
 }
 
 export const handleMapMissions = () => {
-  return pipe(
-    Effect.log('Refreshing map missions'),
-    Effect.tap(() => sendRequest({
-      type: 'DoMapMissionsRefresh',
-      parameters: [0],
-    })),
+  return Effect.gen(function* () {
+    yield* Effect.log('Refreshing map missions');
+    const cycleStatus = getCycleStatus();
 
-    Effect.tap(() => Effect.log('Speeding up missions')),
-    Effect.tap(() => loopMissions(index => pipe(
-      Effect.logDebug(`Speeding up mission ${missions[index]}`),
-      Effect.tap(() => sendRequest({
-        type: 'DoMapMissionSpeedUp',
-        parameters: [index, 0],
-      })),
-    ))),
+    if (state.cycleStartDate) {
+      const now = Date.now();
+      const cycleTime = state.cycleStartDate.getTime();
 
-    Effect.tap(() => Effect.log('Claiming missions')),
-    Effect.tap(() => loopMissions(index => pipe(
-      Effect.logDebug(`Claiming mission ${missions[index]}`),
-      Effect.tap(() => sendRequest({
-        type: 'CompleteMapMission',
-        parameters: [index],
-      })),
-    ))),
+      // clear all missions if the last registered cycle is 2 cycles old
+      if ((cycleTime + env.firestone.cycleDurationSeconds * 2 * 1000) >= now) {
+        state.missions = {};
+        state.prevMissions = {};
+      // move all started missions to old missions if last registered cycle is 1 cycle old
+      } else if ((cycleTime + env.firestone.cycleDurationSeconds * 1000) >= now) {
+        state.prevMissions = {};
 
-    Effect.tap(() => Effect.log('Starting missions')),
-    Effect.tap(() => loopMissions(index => pipe(
-      Effect.logDebug(`Starting mission ${missions[index]}`),
-      Effect.tap(() => sendRequest({
-        type: 'StartMapMission',
-        parameters: [index],
-      })),
-    ))),
-  );
+        for (const mission of Object.values(state.missions)) {
+          // keep only started missions that haven't been claimed
+          if (mission.startDate && !mission.claimed) {
+            state.prevMissions[mission.name] = mission;
+          }
+        }
+
+        state.missions = {};
+      }
+    }
+
+    if (cycleStatus !== 'running') {
+      const result = yield* api.mapMissions
+        .refresh({ gems: 0 })
+        .pipe(
+          Effect.tapError(() => Effect.succeed(delete state.cycleStartDate)),
+          Effect.catchTag('TimeoutError', Effect.logError),
+      );
+
+      state.prevMissions = {};
+
+      for (const mission of Object.values(state.missions)) {
+        // keep only started missions
+        if (mission.startDate && !mission.claimed) {
+          state.prevMissions[mission.name] = mission;
+        }
+      }
+
+      state.missions = {};
+
+      for (const newMission of (result && result.missions) ?? []) {
+        const mission = missionMap.get(newMission.id);
+
+        if (!mission) {
+          yield* Effect.logWarning(`There is no mission with ID ${newMission.id}`);
+          continue;
+        }
+
+        state.missions[mission.name] = getEnsuredMission(mission);
+        // real duration is always lower than original duration thanks to various boosts
+        state.missions[mission.name].durationSeconds = newMission.durationSeconds / 2.5;
+      }
+    }
+
+    if (cycleStatus === 'complete' || cycleStatus === 'free-speed-up') {
+      state.cycleStartDate = new Date();
+    }
+
+    yield* Effect.log('Speeding up missions');
+
+    const prevMissionsToSpeedUp = Object.values(state.prevMissions).filter(mission => getMissionStatus(mission) === 'free-speed-up');
+
+    const missionsToSpeedUp = state.cycleStartDate
+      ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'free-speed-up')
+      : missions;
+
+    yield* speedUpMissions(prevMissionsToSpeedUp, state.prevMissions);
+    yield* speedUpMissions(missionsToSpeedUp, state.missions);
+
+
+    yield* Effect.log('Claiming missions');
+
+    const prevMissionsToComplete = Object.values(state.prevMissions).filter(mission => getMissionStatus(mission) === 'complete');
+    const missionsToComplete = state.cycleStartDate
+      ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'complete')
+      : missions;
+
+    yield* completeMissions(prevMissionsToComplete, state.prevMissions);
+    yield* completeMissions(missionsToComplete, state.missions);
+
+    yield* Effect.log('Starting missions');
+
+    const unstartedMissions = state.cycleStartDate
+      ? Object.values(state.missions).filter(mission => !mission.startDate)
+      // if the state of the cycle is unknown then we try to start every mission one by one
+      // except for those that have already been started
+      : missions.filter(mission => !state.missions[mission.name]?.startDate);
+
+    for (const mission of unstartedMissions) {
+      yield* Effect.logDebug(`Starting mission ${mission.name}`);
+      yield* api.mapMissions
+        .start({ id: mission.id })
+        .pipe(
+          Effect.tap(() => {
+            state.missions[mission.id] = getEnsuredMission(mission);
+            state.missions[mission.id].startDate = new Date();
+          }),
+          Effect.catchTag('TimeoutError', Effect.logError),
+        );
+    }
+  });
 }

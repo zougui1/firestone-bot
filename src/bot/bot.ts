@@ -1,6 +1,6 @@
 import { Effect, pipe } from 'effect';
 
-import { event, game } from './store';
+import { event, game, bot } from './store';
 import {
   handleCampaignLoot,
   handleEngineerTools,
@@ -45,32 +45,32 @@ const init = () => {
 }
 
 const handleGameFeatures = () => {
-  return pipe(
-    init(),
-    Effect.tap(config => Effect.if(config.disabled ?? false, {
-      onTrue: () => Effect.log('Bot is paused, skipping routine'),
-      onFalse: () => pipe(
-        Effect.succeed(
-          Object
-            .entries(config.features)
-            .filter(([, feature]) => feature.enabled)
-            .map(([name]) => name) as event.ActionType[]
-        ),
-        Effect.tap(features => Effect.logDebug('Enabled game features:', features.join(', '))),
-        Effect.tap(features => Effect.forEach(
-          features,
-          feature => {
-            if (feature in gameHandlers) {
-              return gameHandlers[feature]();
-            }
+  return Effect.gen(function* () {
+    const config = yield* init();
 
-            return Effect.logWarning(`feature "${feature}" has no handler`);
-          },
-          { discard: true },
-        )),
-      ),
-    })),
-  );
+    if (config.disabled) {
+      bot.store.trigger.pause();
+      yield* Effect.log('Bot is paused, skipping routine');
+      return;
+    };
+
+    bot.store.trigger.resume();
+
+    const features = Object
+      .entries(config.features)
+      .filter(([, feature]) => feature.enabled)
+      .map(([name]) => name) as event.ActionType[];
+
+    yield* Effect.logDebug('Enabled game features:', features.join(', '));
+
+    for (const feature of features) {
+      if (feature in gameHandlers) {
+        yield* gameHandlers[feature]();
+      } else {
+        yield* Effect.logWarning(`feature "${feature}" has no handler`);
+      }
+    }
+  });
 }
 
 export const startBot = () => {
