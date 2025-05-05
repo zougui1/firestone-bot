@@ -24,7 +24,7 @@ const researches = [
   //upgradeMap['meteorite hunter'],
 
   //upgradeMap['prestigious'],
-  //upgradeMap['raining gold'],
+  upgrades['raining gold'],
   //upgradeMap['skip stage'],
   //upgradeMap['skip wave'],
 

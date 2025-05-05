@@ -297,8 +297,8 @@ export const handleMapMissions = () => {
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'free-speed-up')
       : missions;
 
-    //yield* speedUpMissions(prevMissionsToSpeedUp, state.prevMissions);
-    //yield* speedUpMissions(missionsToSpeedUp, state.missions);
+    yield* speedUpMissions(prevMissionsToSpeedUp, state.prevMissions);
+    yield* speedUpMissions(missionsToSpeedUp, state.missions);
 
 
     yield* Effect.log('Claiming missions');
@@ -308,8 +308,8 @@ export const handleMapMissions = () => {
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'complete')
       : missions;
 
-    //yield* completeMissions(prevMissionsToComplete, state.prevMissions);
-    //yield* completeMissions(missionsToComplete, state.missions);
+    yield* completeMissions(prevMissionsToComplete, state.prevMissions);
+    yield* completeMissions(missionsToComplete, state.missions);
 
     yield* Effect.log('Starting missions');
 
