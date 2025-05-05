@@ -7,8 +7,13 @@ import { game } from '../store';
 import { env } from '../../env';
 import { catchError } from '../../utils';
 
-const socket = new WebSocket(env.firestone.socket.uri);
+const socket = new WebSocket(env.firestone.socket.uri, {
+  rejectUnauthorized: false,
+});
 
+socket.on('error', error => {
+  console.error('WebSocket error:', error);
+});
 socket.on('message', message => {
   console.log('message:', message.toString('utf-8'));
 });
