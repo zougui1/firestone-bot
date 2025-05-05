@@ -58,7 +58,7 @@ const handleGameFeatures = () => {
 
     const features = Object
       .entries(config.features)
-      .filter(([, feature]) => feature.enabled)
+      .filter(([name, feature]) => feature.enabled && name === 'mapMission')
       .map(([name]) => name) as event.ActionType[];
 
     yield* Effect.logDebug('Enabled game features:', features.join(', '));

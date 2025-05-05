@@ -97,16 +97,25 @@ const missions = [
   { id: 25, name: 'Frostfire Gorge', type: missionTypes.dragon },
   { id: 53, name: 'Ships on Fire', type: missionTypes.dragon },
   // war missions
+  { id: 1, name: 'Stop the Pirate Raids', type: missionTypes.war },
   { id: 5, name: 'Ambush in the Trees', type: missionTypes.war },
   { id: 15, name: 'North Sea', type: missionTypes.war },
   { id: 18, name: 'Tipsy Wisp Tavern', type: missionTypes.war },
   { id: 26, name: 'Moonglen\'s Festival', type: missionTypes.war },
+  { id: 29, name: 'Forest Rangers', type: missionTypes.war },
+  { id: 30, name: 'Protect The Shore', type: missionTypes.war },
   { id: 35, name: 'Confront The Orcs', type: missionTypes.war },
+  { id: 37, name: 'The Pit', type: missionTypes.war },
+  { id: 39, name: 'Sea Monsters', type: missionTypes.war },
+  { id: 44, name: 'Defend Mythshore', type: missionTypes.war },
   { id: 47, name: 'Train Elf Archers', type: missionTypes.war },
   { id: 52, name: 'Chase the Monster', type: missionTypes.war },
+  { id: 55, name: 'Free The Prisoners', type: missionTypes.war },
+  { id: 56, name: 'Mission To Bayshire', type: missionTypes.war },
   // adventure missions
   { id: 4, name: 'The Lost Chapter', type: missionTypes.adventure },
   { id: 7, name: 'Cursed Bay', type: missionTypes.adventure },
+  { id: 23, name: 'Expose the Spy', type: missionTypes.adventure },
   { id: 24, name: 'Southern Island', type: missionTypes.adventure },
   { id: 27, name: 'Silverwood\'s Militia', type: missionTypes.adventure },
   { id: 33, name: 'The Resistance of Goldfell', type: missionTypes.adventure },
@@ -116,7 +125,9 @@ const missions = [
   // scout missions
   { id: 0, name: 'Jungle Terror', type: missionTypes.scout },
   { id: 6, name: 'Mountain Springs', type: missionTypes.scout },
+  { id: 9, name: 'Stormspire Accident', type: missionTypes.scout },
   { id: 12, name: 'Riverside', type: missionTypes.scout },
+  { id: 14, name: 'Talk To The Farmers', type: missionTypes.scout },
   { id: 19, name: 'The Hombor King', type: missionTypes.scout },
   { id: 28, name: 'Dark River', type: missionTypes.scout },
   { id: 31, name: 'Find The Librarian', type: missionTypes.scout },
@@ -129,32 +140,21 @@ const missions = [
   { id: 59, name: 'Search For Survivors', type: missionTypes.scout },
 
   // unknown missions
-  { id: 1, name: 'Stop the Pirate Raids', type: missionTypes.scout },
   { id: 2, name: '', type: missionTypes.scout },
   { id: 3, name: 'Xandor Dock', type: missionTypes.scout },
-  { id: 9, name: 'Stormspire Accident', type: missionTypes.scout },
   { id: 10, name: '', type: missionTypes.scout },
   { id: 11, name: 'Visit the Abbey', type: missionTypes.scout },
   { id: 13, name: 'Calamindor Ruins', type: missionTypes.scout },
-  { id: 14, name: 'Talk To The Farmers', type: missionTypes.scout },
   { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
   { id: 20, name: 'Dark Cavern', type: missionTypes.scout },
   { id: 21, name: 'Snow Wolves', type: missionTypes.scout },
   { id: 22, name: 'Visit the Northern Tribes', type: missionTypes.scout },
-  { id: 23, name: 'Expose the Spy', type: missionTypes.scout },
-  { id: 29, name: 'Forest Rangers', type: missionTypes.scout },
-  { id: 30, name: 'Protect The Shore', type: missionTypes.scout },
   { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
   { id: 34, name: 'Protect The Fishermen', type: missionTypes.scout },
-  { id: 37, name: 'The Pit', type: missionTypes.scout },
-  { id: 39, name: 'Sea Monsters', type: missionTypes.scout },
   { id: 41, name: '', type: missionTypes.scout },
   { id: 42, name: 'Explore Hinterlands', type: missionTypes.scout },
-  { id: 44, name: 'Defend Mythshore', type: missionTypes.scout },
   { id: 48, name: 'Library of Talamer', type: missionTypes.scout },
   { id: 50, name: '', type: missionTypes.scout },
-  { id: 55, name: 'Free The Prisoners', type: missionTypes.scout },
-  { id: 56, name: 'Mission To Bayshire', type: missionTypes.scout },
   { id: 58, name: 'Firestone Power', type: missionTypes.scout },
   { id: 61, name: 'Hydra', type: missionTypes.scout },
 ];
@@ -297,8 +297,8 @@ export const handleMapMissions = () => {
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'free-speed-up')
       : missions;
 
-    yield* speedUpMissions(prevMissionsToSpeedUp, state.prevMissions);
-    yield* speedUpMissions(missionsToSpeedUp, state.missions);
+    //yield* speedUpMissions(prevMissionsToSpeedUp, state.prevMissions);
+    //yield* speedUpMissions(missionsToSpeedUp, state.missions);
 
 
     yield* Effect.log('Claiming missions');
@@ -308,8 +308,8 @@ export const handleMapMissions = () => {
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'complete')
       : missions;
 
-    yield* completeMissions(prevMissionsToComplete, state.prevMissions);
-    yield* completeMissions(missionsToComplete, state.missions);
+    //yield* completeMissions(prevMissionsToComplete, state.prevMissions);
+    //yield* completeMissions(missionsToComplete, state.missions);
 
     yield* Effect.log('Starting missions');
 

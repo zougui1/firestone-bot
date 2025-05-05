@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import { Effect, pipe } from 'effect';
+import { type DurationInput } from 'effect/Duration';
 import { z } from 'zod';
 
 import { game } from '../store';
@@ -47,7 +48,7 @@ const ensureConnection = async () => {
   }
 }
 
-export const sendRequest = (request: FirestoneRequestData) => {
+export const sendRequest = (request: FirestoneRequestData, options?: FirestoneRequestOptions) => {
   return pipe(
     game.getSession(),
     Effect.map(session => stringifyRequest({ ...request, ...session })),
@@ -57,7 +58,13 @@ export const sendRequest = (request: FirestoneRequestData) => {
     })),
     Effect.tap(payload => Effect.logDebug(`Sending request: ${payload}`)),
     Effect.tap(payload => socket.send(Buffer.from(payload, 'utf-8'))),
-    Effect.tap(() => Effect.sleep('1.5 second')),
+    Effect.tap(() => {
+      const sleep = options?.sleep ?? '1.5 second';
+
+      if (sleep) {
+        return Effect.sleep(sleep);
+      }
+    }),
     Effect.flatMap(() => Effect.void),
   );
 }
@@ -141,12 +148,12 @@ export const waitResponse = <T extends z.ZodSchema>(
   });
 }
 
-// TODO test this
 export const request = <T extends z.ZodSchema>(request: FirestoneRequest<T>) => {
   return pipe(
-    sendRequest(request),
+    sendRequest(request, { sleep: 0 }),
     Effect.tap(() => Effect.logDebug('Waiting for response...')),
     Effect.flatMap(() => waitResponse(request.responseSchema, request.dataSchema)),
+    Effect.tap(() => Effect.sleep('1.5 second')),
   );
 }
 
@@ -158,6 +165,10 @@ export interface FirestoneRequest<T extends z.ZodSchema> extends FirestoneReques
 export interface FirestoneRequestData {
   type: string;
   parameters?: (string | number)[];
+}
+
+export interface FirestoneRequestOptions {
+  sleep?: DurationInput;
 }
 
 export interface InternalFirestoneRequestData extends FirestoneRequestData {

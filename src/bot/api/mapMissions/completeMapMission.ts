@@ -9,8 +9,8 @@ const responseSchema = z.object({
 
 const dataSchema = z.tuple([
   z.number(),
-  z.number(),
-  z.boolean(),
+  // JSON string
+  z.string(),
 ]);
 
 export const completeMapMission = ({ id }: CompleteMapMissionOptions) => {

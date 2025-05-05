@@ -4,7 +4,7 @@ let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
 const userId = '8S19Jpu9obJN';
-const sessionId = 'VkfZFJHFXF';
+const sessionId = 'JNQg7pDQQe';
 const serverName = 'Elmbrook';
 const uri = 'wss://ws11.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
