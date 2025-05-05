@@ -331,5 +331,8 @@ export const handleMapMissions = () => {
           Effect.catchTag('TimeoutError', Effect.logError),
         );
     }
-  });
+  }).pipe(
+    Effect.withLogSpan('mapMissions'),
+    Effect.withSpan('mapMissions'),
+  );
 }
