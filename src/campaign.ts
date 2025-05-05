@@ -4,7 +4,7 @@ let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
 const userId = '8S19Jpu9obJN';
-const sessionId = 'JNQg7pDQQe';
+const sessionId = 'jcuxAY7s2x';
 const serverName = 'Elmbrook';
 const uri = 'wss://ws11.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
@@ -82,7 +82,6 @@ const ensureConnection = async () => {
 export const startCampaignBattle = async ({ mission, difficulty }: { mission: number; difficulty: number; }) => {
   global.mission = mission;
   global.difficulty = difficulty;
-  return;
 
   await sendRequest({
     userId,
@@ -130,7 +129,7 @@ socket.on('open', async () => {
     });
     await sleep(1500);
   }*/
-  await sendRequest({
+  /*await sendRequest({
     userId,
     sessionId,
     serverName,
@@ -139,12 +138,12 @@ socket.on('open', async () => {
     //parameters: [3, 24, 0],
     type: 'GetAnniversaryEvent',
     parameters: [],
-  });
+  });*/
 });
 
 socket.on('message', async message => {
   const payload = message.toString('utf-8');
-  console.log('payload:', payload)
+  //console.log('payload:', payload)
 
   try {
     await processCampaignBattleResponse(payload);
