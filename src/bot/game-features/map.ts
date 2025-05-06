@@ -201,6 +201,7 @@ const speedUpMissions = (missionList: typeof missions, missionStore: Record<stri
           Effect.tap(() => {
             missionStore[mission.name] = getEnsuredMission(mission);
             missionStore[mission.name].claimed = true;
+            state.squads += missionStore[mission.name].squads;
           }),
           Effect.catchTag('TimeoutError', Effect.logError),
         );
@@ -218,6 +219,7 @@ const completeMissions = (missionList: typeof missions, missionStore: Record<str
           Effect.tap(() => {
             missionStore[mission.name] = getEnsuredMission(mission);
             missionStore[mission.name].claimed = true;
+            state.squads += missionStore[mission.name].squads;
           }),
           Effect.catchTag('TimeoutError', Effect.logError),
         );
@@ -321,6 +323,16 @@ export const handleMapMissions = () => {
       : missions.filter(mission => !state.missions[mission.name]?.startDate);
 
     for (const mission of unstartedMissions) {
+      if (state.squads <= 0) {
+        yield* Effect.logDebug('No squads left to start map missions');
+        break;
+      }
+
+      if (state.squads < mission.type.squads) {
+        yield* Effect.logDebug(`Not enough squads left to start map mission ${mission.name} of type ${mission.type.name}`);
+        break;
+      }
+
       yield* Effect.logDebug(`Starting mission ${mission.name}`);
       yield* api.mapMissions
         .start({ id: mission.id })
@@ -328,6 +340,7 @@ export const handleMapMissions = () => {
           Effect.tap(() => {
             state.missions[mission.id] = getEnsuredMission(mission);
             state.missions[mission.id].startDate = new Date();
+            state.squads -= state.missions[mission.id].squads;
           }),
           Effect.catchTag('TimeoutError', Effect.logError),
         );
