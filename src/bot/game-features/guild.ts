@@ -1,6 +1,6 @@
-import { Effect } from 'effect';
+import { Effect, pipe } from 'effect';
 
-import { sendRequest } from '../api';
+import * as api from '../api';
 
 // claim: [unknown, unknown, unknown]
 //* {"Function":"GuildMechanismReplies","SubFunction":"ClaimExpeditionReply","Data":[334,530,false]}
@@ -15,16 +15,28 @@ const largestId = 19;
 export const handleGuildExpeditions = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Claiming expedition');
-    yield* sendRequest({ type: 'ClaimExpedition' });
+    yield* api.guildExpeditions.claimExpedition().pipe(
+      Effect.catchTag('TimeoutError', () => Effect.logError('Request to claim guild expedition timed out')),
+    );
 
     for (let index = 0; index < largestId; index++) {
       const id = `GUEXP${index.toString().padStart(3, '0')}`;
 
       yield* Effect.log(`Starting expedition id: ${id}`);
-      yield* sendRequest({
-        type: 'StartExpedition',
-        parameters: [id],
-      });
+      const { started } = yield* api.guildExpeditions.startExpedition({ id }).pipe(
+        Effect.as({ started: true }),
+        Effect.catchTag('TimeoutError', () => pipe(
+          Effect.logError(`Request to start guild expedition ${id} timed out`),
+          Effect.as({ started: false }),
+        )),
+      );
+
+      if (started) {
+        break;
+      }
     }
-  });
+  }).pipe(
+    Effect.withLogSpan('guildExpedition'),
+    Effect.withSpan('guildExpedition'),
+  );
 }
