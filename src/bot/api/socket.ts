@@ -99,7 +99,7 @@ export const waitResponse = <T extends z.ZodSchema>(
       } else {
         resume(Effect.fail(new TimeoutError([], 'Response timed out')));
       }
-    }, 5_000);
+    }, 3_000);
 
     const cleanup = () => {
       clearTimeout(timeout);

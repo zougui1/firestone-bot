@@ -47,7 +47,7 @@ const upgradesObject = {
 
   'raining gold': {
     name: 'raining gold',
-    id: -1,
+    id: 6,
     maxLevel: 60,
   },
 

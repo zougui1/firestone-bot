@@ -60,8 +60,8 @@ const researches = [
 
 const startFirestoneResearch = (library: database.firestoneLibrary.FirestoneLibraryType, upgrade: Upgrade) => {
   const maxLevel = upgrades.get(upgrade.name)?.maxLevel ?? 60;
-  const persistedLevel = library.upgrades[upgrade.name]?.level;
-  let level = persistedLevel ?? 0;
+  const persistedLevel = library.upgrades[upgrade.name]?.level ?? 0;
+  let level = persistedLevel;
 
   return pipe(
     Effect.retry(
@@ -85,8 +85,8 @@ const startFirestoneResearch = (library: database.firestoneLibrary.FirestoneLibr
       Effect.as({
         // if the level wasn't persisted and it hasn't started then it means
         // the upgrade hasn't been unlocked yet
-        started: !persistedLevel,
-        level: persistedLevel ? maxLevel : 0,
+        started: false,
+        level: persistedLevel,
       }),
     )),
   );
@@ -160,7 +160,7 @@ export const handleFirestoneResearch = () => {
           upgradesToSkip.add(research.name);
 
           if (result.level) {
-            state.upgrades[research.name] = { level: result.level };
+            state.upgrades[research.name] = { level: result.level + 1 };
           }
 
           if (result.started) {

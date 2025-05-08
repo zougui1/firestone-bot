@@ -129,6 +129,7 @@ const missions = [
   { id: 46, name: 'Close The Portal', type: missionTypes.adventure },
   { id: 48, name: 'Library of Talamer', type: missionTypes.adventure },
   { id: 51, name: 'Underwater Treasures', type: missionTypes.adventure },
+  { id: 58, name: 'Firestone Power', type: missionTypes.adventure },
   { id: 60, name: 'Dreadland Shore', type: missionTypes.adventure },
   // scout missions
   { id: 0, name: 'Jungle Terror', type: missionTypes.scout },
@@ -156,7 +157,6 @@ const missions = [
   { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
   { id: 41, name: '', type: missionTypes.scout },
   { id: 50, name: '', type: missionTypes.scout },
-  { id: 58, name: 'Firestone Power', type: missionTypes.scout },
   { id: 61, name: 'Hydra', type: missionTypes.scout },
 ];
 const missionMap = new Map(missions.map(mission => [mission.id, mission]));
