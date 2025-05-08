@@ -160,7 +160,7 @@ const map = new Map(Object.entries(upgradesObject));
 
 export const upgrades = {
   ...upgradesObject,
-  get: map.get,
+  get: map.get.bind(map),
 };
 
 export type Upgrade = typeof upgradesObject['all main attributes'];

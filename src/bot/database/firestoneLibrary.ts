@@ -49,7 +49,7 @@ export const updateUpgrades = (treeLevel: number, upgrades: Record<string, { lev
       try: async () => {
         await FirestoneLibraryModel.updateOne({ treeLevel }, { $set: update as any });
       },
-      catch: cause => new Error(`Could not find the firestone library of level ${treeLevel}`, { cause }),
+      catch: cause => new Error(`Could not update the firestone library of level ${treeLevel}`, { cause }),
     })),
   );
 }
