@@ -89,6 +89,7 @@ const missionTypes = {
 const missions = [
   // naval missions
   { id: 54, name: 'Trade Route', type: missionTypes.naval },
+  { id: 63, name: 'Pirate Cove', type: missionTypes.naval },
   // monster missions
   { id: 16, name: 'Lake\'s Terror', type: missionTypes.monster },
   { id: 40, name: 'Orc Lieutenant', type: missionTypes.monster },
