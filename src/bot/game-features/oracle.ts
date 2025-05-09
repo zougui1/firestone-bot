@@ -1,6 +1,8 @@
 import { Effect, pipe } from 'effect';
 
-import { sendRequest } from '../api';
+import * as api from '../api';
+import * as eventQueue from '../eventQueue';
+import { env } from '../../env';
 
 //! missing ritual claim, ritual claim
 //* {"Function":"OracleReplies","SubFunction":"StartOracleMissionReply","Data":["2"]}
@@ -16,21 +18,45 @@ const ritualMaps = {
 const rituals = Object.values(ritualMaps);
 
 export const handleOracleRituals = () => {
-  return pipe(
-    Effect.log('Claiming ritual'),
-    Effect.tap(() => sendRequest({ type: 'ClaimRitual' })),
+  return Effect.gen(function* () {
+    yield* Effect.log('Claiming ritual');
+    const claimResult = yield* api.oracle.completeRitual().pipe(
+      Effect.as({ done: true }),
+      Effect.catchTag('TimeoutError', () => pipe(
+        Effect.logError('Request to claim ritual timed out'),
+        Effect.as({ done: false }),
+      )),
+    );
 
-    Effect.tap(() => Effect.loop(0, {
-      while: index => index < rituals.length,
-      step: index => index + 1,
-      body: index => pipe(
-        Effect.log(`Starting ritual ${rituals[index]}`),
-        Effect.tap(() => sendRequest({
-          type: 'StartRitual',
-          parameters: [index],
-        })),
-      ),
-      discard: true,
-    })),
-  );
+    if (!claimResult.done) {
+      yield* eventQueue.add({
+        type: 'oracleRitual',
+        timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
+      });
+      return;
+    }
+
+    for (const ritual of rituals) {
+      const { done } = yield* api.oracle.startRitual({ id: ritual }).pipe(
+        Effect.as({ done: true }),
+        Effect.catchTag('TimeoutError', () => pipe(
+          Effect.logError(`Request to start ritual ${ritual} timed out`),
+          Effect.as({ done: false }),
+        )),
+      );
+
+      if (done) {
+        yield* eventQueue.add({
+          type: 'oracleRitual',
+          timeoutMs: 40 * 60 * 1000,
+        });
+        return;
+      }
+    }
+
+    yield* eventQueue.add({
+      type: 'oracleRitual',
+      timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
+    });
+  });
 }

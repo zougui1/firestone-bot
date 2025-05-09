@@ -1,12 +1,15 @@
 import { Effect, pipe } from 'effect';
 
-import { sendRequest } from '../api';
-
-//! missing claim
+import * as api from '../api';
+import * as eventQueue from '../eventQueue';
 
 export const handlePickaxeSupplies = () => {
   return pipe(
     Effect.log('Claiming free pickaxes'),
-    Effect.tap(() => sendRequest({ type: 'ClaimFreePickaxes' })),
+    Effect.tap(() => api.sendRequest({ type: 'ClaimFreePickaxes' })),
+    Effect.tap(() => eventQueue.add({
+      type: 'pickaxesClaiming',
+      timeoutMs: 2 * 60 * 60 * 1000,
+    })),
   );
 }

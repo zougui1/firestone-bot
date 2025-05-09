@@ -7,11 +7,7 @@ const responseSchema = z.object({
   SubFunction: z.literal('ClaimExpeditionReply'),
 });
 
-const dataSchema = z.tuple([
-  z.number(),
-  z.number(),
-  z.boolean(),
-]);
+const dataSchema = z.unknown();
 
 export const claimExpedition = () => {
   return request({

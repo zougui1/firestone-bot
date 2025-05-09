@@ -1,8 +1,9 @@
-import { Effect, pipe } from 'effect';
+import { Effect } from 'effect';
 
 import * as api from '../api';
-import { env } from '../../env';
+import * as eventQueue from '../eventQueue';
 import { getDateCompletionStatus } from '../utils';
+import { env } from '../../env';
 
 //! missions refresh
 //* {"Function":"MapMissionsReplies","SubFunction":"StartMapMissionReply","Data":[54]}
@@ -53,35 +54,39 @@ const state: LocalState = {
   prevMissions: {},
 };
 
+const getMinDurationSeconds = (minutes: number) => {
+  return minutes * 60 - env.firestone.freeDurationSeconds;
+}
+
 const missionTypes = {
   scout: {
     name: 'scout',
-    averageTimeMinutes: 15,
+    minDurationSeconds: getMinDurationSeconds(15),
     squads: 1,
   },
   adventure: {
     name: 'adventure',
-    averageTimeMinutes: 30,
+    minDurationSeconds: getMinDurationSeconds(30),
     squads: 1,
   },
   war: {
     name: 'war',
-    averageTimeMinutes: 60,
+    minDurationSeconds: getMinDurationSeconds(60),
     squads: 1,
   },
   monster: {
     name: 'monster',
-    averageTimeMinutes: 60 * 3,
+    minDurationSeconds: getMinDurationSeconds(60 * 3),
     squads: 2,
   },
   dragon: {
     name: 'dragon',
-    averageTimeMinutes: 60 * 2,
+    minDurationSeconds: getMinDurationSeconds(60 * 2),
     squads: 2,
   },
   naval: {
     name: 'naval',
-    averageTimeMinutes: 60 * 3,
+    minDurationSeconds: getMinDurationSeconds(60 * 3),
     squads: 2,
   },
 };
@@ -93,6 +98,7 @@ const missions = [
   // monster missions
   { id: 16, name: 'Lake\'s Terror', type: missionTypes.monster },
   { id: 40, name: 'Orc Lieutenant', type: missionTypes.monster },
+  { id: 61, name: 'Hydra', type: missionTypes.monster },
   // dragon missions
   { id: 8, name: 'Dragon\'s Cave', type: missionTypes.dragon },
   { id: 25, name: 'Frostfire Gorge', type: missionTypes.dragon },
@@ -158,7 +164,6 @@ const missions = [
   { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
   { id: 41, name: '', type: missionTypes.scout },
   { id: 50, name: '', type: missionTypes.scout },
-  { id: 61, name: 'Hydra', type: missionTypes.scout },
 ];
 const missionMap = new Map(missions.map(mission => [mission.id, mission]));
 
@@ -187,7 +192,7 @@ const getEnsuredMission = (mission: typeof missions[number]): MissionState => {
     id: mission.id,
     name: mission.name,
     squads: mission.type.squads,
-    durationSeconds: mission.type.averageTimeMinutes * 60,
+    durationSeconds: mission.type.minDurationSeconds * 60,
     type: mission.type,
   };
 }
@@ -260,6 +265,10 @@ export const handleMapMissions = () => {
       const result = yield* api.mapMissions
         .refresh({ gems: 0 })
         .pipe(
+          Effect.tap(() => eventQueue.add({
+            type: 'mapMission',
+            timeoutMs: (env.firestone.cycleDurationSeconds - env.firestone.freeDurationSeconds) * 1000,
+          })),
           Effect.tapError(() => Effect.succeed(delete state.cycleStartDate)),
           Effect.catchTag('TimeoutError', Effect.logError),
       );
@@ -343,6 +352,10 @@ export const handleMapMissions = () => {
             state.missions[mission.id].startDate = new Date();
             state.squads -= state.missions[mission.id].squads;
           }),
+          Effect.tap(() => eventQueue.add({
+            type: 'mapMission',
+            timeoutMs: mission.type.minDurationSeconds * 1000,
+          })),
           Effect.catchTag('TimeoutError', Effect.logError),
         );
     }

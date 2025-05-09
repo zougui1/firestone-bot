@@ -39,6 +39,7 @@ export const ConfigModel = papr.model('configs', schema({
       blood: types.boolean({ required: true }),
       dust: types.boolean({ required: true }),
       exoticCoins: types.boolean({ required: true }),
+      durationMinutes: types.number({ required: true }),
     }, { required: true }),
     mapMission: types.object({
       enabled: types.boolean({ required: true }),

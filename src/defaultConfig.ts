@@ -32,6 +32,7 @@ export const defaultConfig: database.config.ConfigType = {
       blood: true,
       dust: false,
       exoticCoins: false,
+      durationMinutes: 60,
     },
     mapMission: {
       enabled: true,

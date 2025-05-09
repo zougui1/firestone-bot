@@ -13,6 +13,7 @@ import {
   handlePickaxeSupplies,
 } from './game-features';
 import * as database from './database';
+import * as eventQueue from './eventQueue';
 import { env } from '../env';
 
 const gameHandlers = {
@@ -44,6 +45,16 @@ const init = () => {
   );
 }
 
+const executeAction = (type: event.ActionType) => {
+  return Effect.gen(function* () {
+    if (type in gameHandlers) {
+      yield* gameHandlers[type]().pipe(Effect.catchAll(Effect.logError));
+    } else {
+      yield* Effect.logWarning(`feature "${type}" has no handler`);
+    }
+  });
+}
+
 const handleGameFeatures = () => {
   return Effect.gen(function* () {
     const config = yield* init();
@@ -64,30 +75,51 @@ const handleGameFeatures = () => {
     yield* Effect.logDebug('Enabled game features:', features.join(', '));
 
     for (const feature of features) {
-      if (feature in gameHandlers) {
-        yield* gameHandlers[feature]();
-      } else {
-        yield* Effect.logWarning(`feature "${feature}" has no handler`);
-      }
+      yield* executeAction(feature);
     }
   });
 }
 
-export const startBot = () => {
-  return pipe(
-    Effect.log('Starting bot'),
-    Effect.andThen(() => Effect.loop(true, {
-      while: bool => bool,
-      step: () => true,
-      body: () => pipe(
-        Effect.log('Starting routine'),
-        Effect.andThen(handleGameFeatures),
-        Effect.tap(() => Effect.logDebug('Waiting before next iteration')),
-        Effect.tap(() => Effect.sleep('2 minutes')),
-        Effect.withSpan('routine'),
-        Effect.withLogSpan('routine'),
-      ),
-      discard: true,
-    })),
+const routine = () => {
+  return Effect.gen(function* () {
+    yield* Effect.log('Starting routine');
+    yield* handleGameFeatures();
+    yield* Effect.logDebug('Waiting before next iteration');
+    yield* Effect.sleep('2 minutes');
+  }).pipe(
+    Effect.withSpan('routine'),
+    Effect.withLogSpan('routine'),
   );
+}
+
+export const startBot = () => {
+  return Effect.gen(function* () {
+    yield* Effect.log('Starting bot');
+    yield* routine();
+
+    yield* eventQueue.process(event => Effect.gen(function* () {
+      yield* Effect.log(`Received event: ${event.type}`);
+      const config = yield* init();
+
+      if (config.disabled) {
+        bot.store.trigger.pause();
+        yield* Effect.log('Bot is paused, ignoring event');
+        return;
+      };
+
+      bot.store.trigger.resume();
+
+      const isEnabled = config.features[event.type].enabled;
+
+      if (!isEnabled) {
+        yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
+        return;
+      }
+
+      yield* executeAction(event.type);
+    }).pipe(
+      Effect.withSpan('event'),
+      Effect.withLogSpan('event'),
+    ));
+  });
 }

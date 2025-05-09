@@ -150,7 +150,7 @@ export const handleFirestoneResearch = () => {
           const persistedUpgrade = library.upgrades[research.name];
           const upgrade = upgrades.get(research.name);
 
-          if (!upgrade || upgradesToSkip.has(research.name)) return false;
+          if (!upgrade || upgradesToSkip.has(research.name) || research.id < 0) return false;
 
           return !persistedUpgrade || persistedUpgrade.level < upgrade.maxLevel;
         });
