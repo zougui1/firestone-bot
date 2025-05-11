@@ -13,18 +13,25 @@ import { env } from '../../env';
 
 const largestId = 19;
 
+interface LocalState {
+  slot: { status: 'idle' | 'running' | 'unknown' };
+}
+
+const state: LocalState = {
+  slot: { status: 'unknown' },
+}
+
 export const handleGuildExpeditions = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Claiming expedition');
-    const claimResult = yield* api.guild.claimExpedition().pipe(
-      Effect.as({ done: true }),
+    yield* api.guild.claimExpedition().pipe(
+      Effect.tap(() => state.slot.status = 'idle'),
       Effect.catchTag('TimeoutError', () => pipe(
         Effect.logError('Request to claim guild expedition timed out'),
-        Effect.as({ done: false }),
       )),
     );
 
-    if (!claimResult.done) {
+    if (state.slot.status === 'running') {
       yield* eventQueue.add({
         type: 'guildExpedition',
         timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
@@ -45,6 +52,8 @@ export const handleGuildExpeditions = () => {
       );
 
       if (startResult.done) {
+        state.slot.status = 'running';
+
         yield* eventQueue.add({
           type: 'guildExpedition',
           timeoutMs: startResult.durationMinutes * 60 * 1000,
