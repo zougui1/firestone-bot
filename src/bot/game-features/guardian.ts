@@ -36,5 +36,8 @@ export const handleTrainGuardian = () => {
       type: 'guardianTraining',
       timeoutMs: timeoutSeconds * 1000,
     });
-  });
+  }).pipe(
+    Effect.withLogSpan('guardianTraning'),
+    Effect.withSpan('guardianTraning'),
+  );
 }

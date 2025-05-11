@@ -23,5 +23,8 @@ export const handleEngineerTools = () => {
       type: 'engineerTools',
       timeoutMs: timeoutSeconds * 1000,
     });
-  });
+  }).pipe(
+    Effect.withLogSpan('engineerTools'),
+    Effect.withSpan('engineerTools'),
+  );
 }

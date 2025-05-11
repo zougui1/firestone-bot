@@ -1,6 +1,6 @@
 import { Effect, pipe } from 'effect';
 
-import { event, game, bot } from './store';
+import { event, game } from './store';
 import {
   handleCampaignLoot,
   handleEngineerTools,
@@ -58,15 +58,6 @@ const executeAction = (type: event.ActionType) => {
 const handleGameFeatures = () => {
   return Effect.gen(function* () {
     const config = yield* init();
-
-    if (config.disabled) {
-      bot.store.trigger.pause();
-      yield* Effect.log('Bot is paused, skipping routine');
-      return;
-    };
-
-    bot.store.trigger.resume();
-
     const features = Object
       .entries(config.features)
       .filter(([, feature]) => feature.enabled)
@@ -100,15 +91,6 @@ export const startBot = () => {
     yield* eventQueue.process(event => Effect.gen(function* () {
       yield* Effect.log(`Received event: ${event.type}`);
       const config = yield* init();
-
-      if (config.disabled) {
-        bot.store.trigger.pause();
-        yield* Effect.log('Bot is paused, ignoring event');
-        return;
-      };
-
-      bot.store.trigger.resume();
-
       const isEnabled = config.features[event.type].enabled;
 
       if (!isEnabled) {

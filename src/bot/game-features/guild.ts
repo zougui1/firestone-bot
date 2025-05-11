@@ -58,7 +58,7 @@ export const handleGuildExpeditions = () => {
       timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
     });
   }).pipe(
-    Effect.withLogSpan('guildExpedition'),
-    Effect.withSpan('guildExpedition'),
+    Effect.withLogSpan('guildExpeditions'),
+    Effect.withSpan('guildExpeditions'),
   );
 }

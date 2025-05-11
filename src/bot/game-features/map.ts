@@ -2,6 +2,7 @@ import { Effect } from 'effect';
 
 import * as api from '../api';
 import * as eventQueue from '../eventQueue';
+import * as database from '../database';
 import { getDateCompletionStatus } from '../utils';
 import { env } from '../../env';
 
@@ -43,6 +44,7 @@ interface MissionState {
 
 interface LocalState {
   squads: number;
+  maxSquads: number;
   cycleStartDate?: Date;
   missions: Record<string, MissionState>;
   prevMissions: Record<string, MissionState>;
@@ -50,6 +52,7 @@ interface LocalState {
 
 const state: LocalState = {
   squads: 0,
+  maxSquads: 0,
   missions: {},
   prevMissions: {},
 };
@@ -235,6 +238,12 @@ const completeMissions = (missionList: typeof missions, missionStore: Record<str
 
 export const handleMapMissions = () => {
   return Effect.gen(function* () {
+    if (state.squads === state.maxSquads) {
+      const config = yield* database.config.findOne();
+      state.squads = config.features.mapMission.squads;
+      state.maxSquads = config.features.mapMission.squads;
+    }
+
     yield* Effect.log('Refreshing map missions');
     const cycleStatus = getCycleStatus();
 
@@ -358,6 +367,13 @@ export const handleMapMissions = () => {
           })),
           Effect.catchTag('TimeoutError', Effect.logError),
         );
+    }
+
+    if (!unstartedMissions.length) {
+      yield* eventQueue.add({
+        type: 'mapMission',
+        timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
+      });
     }
   }).pipe(
     Effect.withLogSpan('mapMissions'),

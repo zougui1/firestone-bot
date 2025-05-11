@@ -58,5 +58,8 @@ export const handleOracleRituals = () => {
       type: 'oracleRitual',
       timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
     });
-  });
+  }).pipe(
+    Effect.withLogSpan('oracleRituals'),
+    Effect.withSpan('oracleRituals'),
+  );
 }

@@ -11,5 +11,8 @@ export const handlePickaxeSupplies = () => {
       type: 'pickaxesClaiming',
       timeoutMs: 2 * 60 * 60 * 1000,
     })),
+  ).pipe(
+    Effect.withLogSpan('freePickaxes'),
+    Effect.withSpan('freePickaxes'),
   );
 }

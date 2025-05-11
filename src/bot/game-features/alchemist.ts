@@ -93,5 +93,8 @@ export const handleExperiments = () => {
     if (alchemy.exoticCoins) {
       yield* claimAndRestart({ name: 'exoticCoins', config: alchemy });
     }
-  });
+  }).pipe(
+    Effect.withLogSpan('alchemyExperiments'),
+    Effect.withSpan('alchemyExperiments'),
+  );
 }

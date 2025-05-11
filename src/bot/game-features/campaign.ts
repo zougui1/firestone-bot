@@ -22,5 +22,8 @@ export const handleCampaignLoot = () => {
       type: 'campaignLoot',
       timeoutMs: timeoutSeconds * 1000,
     });
-  });
+  }).pipe(
+    Effect.withLogSpan('campaignLoot'),
+    Effect.withSpan('campaignLoot'),
+  );
 }
