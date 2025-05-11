@@ -17,18 +17,25 @@ const ritualMaps = {
 
 const rituals = Object.values(ritualMaps);
 
+interface LocalState {
+  slot: { status: 'idle' | 'running' | 'unknown' };
+}
+
+const state: LocalState = {
+  slot: { status: 'unknown' },
+}
+
 export const handleOracleRituals = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Claiming ritual');
-    const claimResult = yield* api.oracle.completeRitual().pipe(
-      Effect.as({ done: true }),
+    yield* api.oracle.completeRitual().pipe(
+      Effect.tap(() => state.slot.status = 'idle'),
       Effect.catchTag('TimeoutError', () => pipe(
         Effect.logError('Request to claim ritual timed out'),
-        Effect.as({ done: false }),
       )),
     );
 
-    if (!claimResult.done) {
+    if (state.slot.status === 'running') {
       yield* eventQueue.add({
         type: 'oracleRitual',
         timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
@@ -46,6 +53,8 @@ export const handleOracleRituals = () => {
       );
 
       if (done) {
+        state.slot.status = 'running';
+
         yield* eventQueue.add({
           type: 'oracleRitual',
           timeoutMs: 40 * 60 * 1000,
