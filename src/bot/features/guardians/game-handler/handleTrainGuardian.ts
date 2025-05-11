@@ -1,12 +1,9 @@
 import { Effect, pipe } from 'effect';
 
-import * as database from '../database';
-import * as api from '../api';
-import * as eventQueue from '../eventQueue';
-import { env } from '../../env';
-
-// 2 = guardian index
-//* {"Function":"MagicQuarterReplies","SubFunction":"GuardianTrainingReply","Data":[2]}
+import * as database from '../../../database';
+import * as api from '../../../api';
+import * as eventQueue from '../../../eventQueue';
+import { env } from '../../../../env';
 
 const guardianIds = {
   Vermillion: 0,

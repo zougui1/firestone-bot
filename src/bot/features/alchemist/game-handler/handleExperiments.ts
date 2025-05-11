@@ -1,9 +1,9 @@
 import { Effect, pipe } from 'effect';
 
-import * as database from '../database';
-import * as api from '../api';
-import * as eventQueue from '../eventQueue';
-import { env } from '../../env';
+import * as database from '../../../database';
+import * as api from '../../../api';
+import * as eventQueue from '../../../eventQueue';
+import { env } from '../../../../env';
 
 //! missing experiment speed up
 //* {"Function":"AlchemistReplies","SubFunction":"CompleteAlchemyExperimentReply","Data":[0]}

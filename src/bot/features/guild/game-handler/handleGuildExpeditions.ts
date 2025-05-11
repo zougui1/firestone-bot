@@ -1,8 +1,9 @@
 import { Effect, pipe } from 'effect';
 
-import * as api from '../api';
-import * as eventQueue from '../eventQueue';
-import { env } from '../../env';
+import { guildStore } from '../guild.store';
+import * as api from '../../../api';
+import * as eventQueue from '../../../eventQueue';
+import { env } from '../../../../env';
 
 // claim: [unknown, unknown, unknown]
 //* {"Function":"GuildMechanismReplies","SubFunction":"ClaimExpeditionReply","Data":[334,530,false]}
@@ -13,23 +14,17 @@ import { env } from '../../env';
 
 const largestId = 19;
 
-interface LocalState {
-  slot: { status: 'idle' | 'running' | 'unknown' };
-}
-
-const state: LocalState = {
-  slot: { status: 'unknown' },
-}
-
 export const handleGuildExpeditions = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Claiming expedition');
     yield* api.guild.claimExpedition().pipe(
-      Effect.tap(() => state.slot.status = 'idle'),
+      Effect.tap(() => guildStore.trigger.updateSlotStatus({ status: 'idle' })),
       Effect.catchTag('TimeoutError', () => pipe(
         Effect.logError('Request to claim guild expedition timed out'),
       )),
     );
+
+    const state = guildStore.getSnapshot().context;
 
     if (state.slot.status === 'running') {
       yield* eventQueue.add({
@@ -52,7 +47,7 @@ export const handleGuildExpeditions = () => {
       );
 
       if (startResult.done) {
-        state.slot.status = 'running';
+        guildStore.trigger.updateSlotStatus({ status: 'running' });
 
         yield* eventQueue.add({
           type: 'guildExpedition',

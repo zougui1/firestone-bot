@@ -1,8 +1,8 @@
 import { Effect, pipe } from 'effect';
 
-import * as api from '../api';
-import * as eventQueue from '../eventQueue';
-import { env } from '../../env';
+import * as api from '../../../api';
+import * as eventQueue from '../../../eventQueue';
+import { env } from '../../../../env';
 
 //! missing ritual claim, ritual claim
 //* {"Function":"OracleReplies","SubFunction":"StartOracleMissionReply","Data":["2"]}

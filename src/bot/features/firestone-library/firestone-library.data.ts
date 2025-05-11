@@ -164,3 +164,43 @@ export const upgrades = {
 };
 
 export type Upgrade = typeof upgradesObject['all main attributes'];
+
+export const researches = [
+  //upgradeMap['trainer skills'],
+  //upgradeMap['expeditioner'],
+  //upgradeMap['meteorite hunter'],
+
+  //upgradeMap['prestigious'],
+  upgrades['raining gold'],
+  //upgradeMap['skip stage'],
+  //upgradeMap['skip wave'],
+
+  upgrades['damage specialization'],
+  upgrades['attribute damage'],
+  upgrades['energy heroes'],
+  upgrades['precision'],
+  upgrades['leadership'],
+  upgrades['all main attributes'],
+
+  //upgradeMap['critical loot bonus'],
+  //upgradeMap['critical loot chance'],
+
+  upgrades['attribute armor'],
+  upgrades['attribute health'],
+  upgrades['expose weakness'],
+  upgrades['powerless enemy'],
+  upgrades['weaklings'],
+  upgrades['firestone effect'],
+  //upgradeMap['medal of honor'],
+  upgrades['powerless boss'],
+
+  upgrades['mana heroes'],
+  upgrades['rage heroes'],
+  upgrades['fist fight'],
+  upgrades['magic spells'],
+  upgrades['tank specialization'],
+  upgrades['healer specialization'],
+
+  upgrades['guardian power'],
+  //upgradeMap['guardian projectiles'],
+];

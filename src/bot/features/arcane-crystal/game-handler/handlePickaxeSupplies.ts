@@ -1,7 +1,7 @@
 import { Effect, pipe } from 'effect';
 
-import * as api from '../api';
-import * as eventQueue from '../eventQueue';
+import * as api from '../../../api';
+import * as eventQueue from '../../../eventQueue';
 
 export const handlePickaxeSupplies = () => {
   return pipe(

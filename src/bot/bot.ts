@@ -1,17 +1,15 @@
 import { Effect, pipe } from 'effect';
 
 import { event, game } from './store';
-import {
-  handleCampaignLoot,
-  handleEngineerTools,
-  handleGuildExpeditions,
-  handleOracleRituals,
-  handleMapMissions,
-  handleFirestoneResearch,
-  handleTrainGuardian,
-  handleExperiments,
-  handlePickaxeSupplies,
-} from './game-features';
+import { handleMapMissions, mapStore } from './features/map';
+import { handleTrainGuardian } from './features/guardians';
+import { handleCampaignLoot } from './features/campaign';
+import { handleEngineerTools } from './features/engineer';
+import { handlePickaxeSupplies } from './features/arcane-crystal';
+import { handleExperiments } from './features/alchemist';
+import { handleOracleRituals } from './features/oracle';
+import { handleGuildExpeditions, guildStore } from './features/guild';
+import { handleFirestoneResearch, firestoneLibraryStore } from './features/firestone-library';
 import * as database from './database';
 import * as eventQueue from './eventQueue';
 import { env } from '../env';
@@ -102,6 +100,12 @@ export const startBot = () => {
     }).pipe(
       Effect.withSpan('event'),
       Effect.withLogSpan('event'),
+      Effect.onExit(() => {
+        mapStore.trigger.reset();
+        guildStore.trigger.reset();
+        firestoneLibraryStore.trigger.reset();
+        return Effect.void;
+      }),
     ));
   });
 }

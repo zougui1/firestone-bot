@@ -2,7 +2,7 @@ import { Effect, pipe } from 'effect';
 import { schema, types } from 'papr';
 
 import { papr } from './database';
-import { guardians } from '../game-features';
+import { guardians } from '../features/guardians';
 import { event } from '../store';
 import { defaultConfig } from '../../defaultConfig';
 

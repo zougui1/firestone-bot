@@ -1,10 +1,8 @@
 import { Effect, pipe } from 'effect';
 
-import * as api from '../api';
-import * as eventQueue from '../eventQueue';
-import { env } from '../../env';
-
-//! missing claim
+import * as api from '../../../api';
+import * as eventQueue from '../../../eventQueue';
+import { env } from '../../../../env';
 
 export const handleCampaignLoot = () => {
   return Effect.gen(function* () {
