@@ -100,9 +100,7 @@ export const startBot = () => {
     const add = (event: Event & { timeoutMs: number; }) => {
       return Effect.gen(function* () {
         yield* Effect.forkDaemon(Effect.gen(function* () {
-          yield* Effect.logDebug(`Waiting to queue event ${event.type}`);
           yield* Effect.sleep(event.timeoutMs);
-          yield* Effect.logDebug(`Enqueueing event ${event.type}`);
           yield* queueMap[event.type].offer({ type: event.type });
         }));
       });
@@ -111,7 +109,6 @@ export const startBot = () => {
     const process = (callback: (event: Event) => Effect.Effect<unknown>) => {
       return Effect.gen(function* () {
         const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
-          yield* Effect.logDebug(`Waiting for event to process`);
           const event = yield* Queue.take(queue);
           yield* callback(event);
         }));
