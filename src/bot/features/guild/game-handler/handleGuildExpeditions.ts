@@ -39,8 +39,9 @@ export const handleGuildExpeditions = () => {
     for (let index = 0; index < largestId; index++) {
       const id = `GUEXP${index.toString().padStart(3, '0')}`;
 
-      yield* Effect.log(`Starting expedition id: ${id}`);
+      yield* Effect.log(`Trying to start expedition id: ${id}`);
       const startResult = yield* api.guild.startExpedition({ id }).pipe(
+        Effect.tap(() => Effect.log(`Started guild expedition ${id}`)),
         Effect.map(result => ({ ...result, done: true }) as const),
         Effect.catchTag('TimeoutError', () => pipe(
           Effect.logError(`Request to start guild expedition ${id} timed out`),
