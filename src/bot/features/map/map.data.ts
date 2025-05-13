@@ -69,6 +69,7 @@ const missionsList = [
   { id: 55, name: 'Free The Prisoners', type: missionTypes.war },
   { id: 56, name: 'Mission To Bayshire', type: missionTypes.war },
   // adventure missions
+  { id: 2, name: 'Stormrock Village', type: missionTypes.adventure },
   { id: 4, name: 'The Lost Chapter', type: missionTypes.adventure },
   { id: 7, name: 'Cursed Bay', type: missionTypes.adventure },
   { id: 11, name: 'Visit the Abbey', type: missionTypes.adventure },
@@ -104,7 +105,6 @@ const missionsList = [
   { id: 59, name: 'Search For Survivors', type: missionTypes.scout },
 
   // unknown missions
-  { id: 2, name: '', type: missionTypes.scout },
   { id: 10, name: '', type: missionTypes.scout },
   { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
   { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
