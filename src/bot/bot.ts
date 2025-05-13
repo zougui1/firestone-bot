@@ -84,28 +84,30 @@ const routine = () => {
 export const startBot = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Starting bot');
-    yield* routine();
 
-    yield* eventQueue.process(event => Effect.gen(function* () {
-      yield* Effect.log(`Received event: ${event.type}`);
-      const config = yield* init();
-      const isEnabled = config.features[event.type].enabled;
+    yield* Effect.all([
+      routine(),
+      eventQueue.process(event => Effect.gen(function* () {
+        yield* Effect.log(`Received event: ${event.type}`);
+        const config = yield* init();
+        const isEnabled = config.features[event.type].enabled;
 
-      if (!isEnabled) {
-        yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
-        return;
-      }
+        if (!isEnabled) {
+          yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
+          return;
+        }
 
-      yield* executeAction(event.type);
-    }).pipe(
-      Effect.withSpan('event'),
-      Effect.withLogSpan('event'),
-      Effect.onExit(() => {
-        mapStore.trigger.reset();
-        guildStore.trigger.reset();
-        firestoneLibraryStore.trigger.reset();
-        return Effect.void;
-      }),
-    ));
+        yield* executeAction(event.type);
+      }).pipe(
+        Effect.withSpan('event'),
+        Effect.withLogSpan('event'),
+        Effect.onExit(() => {
+          mapStore.trigger.reset();
+          guildStore.trigger.reset();
+          firestoneLibraryStore.trigger.reset();
+          return Effect.void;
+        }),
+      )),
+    ], { concurrency: 'unbounded' });
   });
 }
