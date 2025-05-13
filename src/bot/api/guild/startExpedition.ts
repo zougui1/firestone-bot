@@ -4,7 +4,7 @@ import { request } from '../socket'
 
 const responseSchema = z.object({
   Function: z.literal('GuildMechanismReplies'),
-  SubFunction: z.literal('ClaimExpeditionReply'),
+  SubFunction: z.literal('StartExpeditionReply'),
 });
 
 const dataSchema = z.union([
@@ -22,7 +22,7 @@ const dataSchema = z.union([
 
 export const startExpedition = ({ id }: StartExpeditionOptions) => {
   return request({
-    type: 'ClaimExpedition',
+    type: 'StartExpedition',
     parameters: [id],
     responseSchema,
     dataSchema,
