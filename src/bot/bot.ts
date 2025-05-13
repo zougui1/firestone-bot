@@ -46,7 +46,8 @@ const init = () => {
 const executeAction = (type: event.ActionType) => {
   return Effect.gen(function* () {
     if (type in gameHandlers) {
-      yield* gameHandlers[type]().pipe(Effect.catchAll(Effect.logError));
+      const eventQueue = yield* EventQueue;
+      yield* eventQueue.add({ type, timeoutMs: 1 });
     } else {
       yield* Effect.logWarning(`feature "${type}" has no handler`);
     }
