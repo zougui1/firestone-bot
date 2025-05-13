@@ -3,7 +3,7 @@ import { Effect } from 'effect';
 import { missions, type Mission } from '../map.data';
 import { mapStore, type MissionState } from '../map.store';
 import * as api from '../../../api';
-import * as eventQueue from '../../../eventQueue';
+import { EventQueue } from '../../../eventQueue';
 import * as database from '../../../database';
 import { getDateCompletionStatus } from '../../../utils';
 import { env } from '../../../../env';
@@ -72,6 +72,7 @@ const completeMissions = (missionList: Mission[], cycle: 'current' | 'previous')
 
 export const handleMapMissions = () => {
   return Effect.gen(function* () {
+    const eventQueue = yield* EventQueue;
     let state = mapStore.getSnapshot().context;
 
     if (state.squads === state.maxSquads) {

@@ -4,6 +4,8 @@ import { firestoneLibraryStore, FirestoneResearchSlotId } from '../firestone-lib
 import { upgrades, researches, type Upgrade } from '../firestone-library.data';
 import * as database from '../../../database';
 import * as api from '../../../api';
+import { EventQueue } from '../../../eventQueue';
+import { env } from '../../../../env';
 
 // replies when claiming a research
 // data: [slotIndex, unknown, unknown]
@@ -48,7 +50,6 @@ const startFirestoneResearch = (library: database.firestoneLibrary.FirestoneLibr
 }
 
 export const handleFirestoneResearch = () => {
-
   const doFirestoneResearchSpeedUp = ({ tree, slot }: { tree: number, slot: FirestoneResearchSlotId }) => {
     return api.firestoneLibrary.doFirestoneResearchSpeedUp({
       tree,
@@ -84,6 +85,7 @@ export const handleFirestoneResearch = () => {
   }
 
   return Effect.gen(function* () {
+    const eventQueue = yield* EventQueue;
     const config = yield* database.config.findOne();
     const firestoneLibrary = config.features.firestoneResearch;
     const tree = firestoneLibrary.treeLevel - 1;
@@ -101,6 +103,10 @@ export const handleFirestoneResearch = () => {
 
     if (!availableSlots.length) {
       yield* Effect.log('No slots available to start firestone researches');
+      yield* eventQueue.add({
+        type: 'firestoneResearch',
+        timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
+      });
       return;
     }
 
@@ -143,6 +149,14 @@ export const handleFirestoneResearch = () => {
     yield* database.firestoneLibrary
       .updateUpgrades(firestoneLibrary.treeLevel, state.upgrades)
       .pipe(Effect.orElseSucceed(() => undefined));
+
+    const hasStartedResearch = Object.keys(state.upgrades).length > 0;
+    const timeoutSeconds = hasStartedResearch ? (2 * 60 * 60) : env.firestone.blindTimeoutSeconds;
+    yield* eventQueue.add({
+      type: 'firestoneResearch',
+      timeoutMs: timeoutSeconds * 1000,
+    });
+
   }).pipe(
     Effect.withLogSpan('firestoneLibrary'),
     Effect.withSpan('firestoneLibrary'),

@@ -1,4 +1,4 @@
-import { Effect, pipe } from 'effect';
+import { Effect, Option, pipe, Queue } from 'effect';
 
 import { event, game } from './store';
 import { handleMapMissions, mapStore } from './features/map';
@@ -11,7 +11,7 @@ import { handleOracleRituals } from './features/oracle';
 import { handleGuildExpeditions, guildStore } from './features/guild';
 import { handleFirestoneResearch, firestoneLibraryStore } from './features/firestone-library';
 import * as database from './database';
-import * as eventQueue from './eventQueue';
+import { EventQueue, Event } from './eventQueue';
 import { env } from '../env';
 
 const gameHandlers = {
@@ -58,7 +58,7 @@ const handleGameFeatures = () => {
     const config = yield* init();
     const features = Object
       .entries(config.features)
-      .filter(([, feature]) => feature.enabled)
+      .filter(([name, feature]) => feature.enabled && name === 'guardianTraining')
       .map(([name]) => name) as event.ActionType[];
 
     yield* Effect.logDebug('Enabled game features:', features.join(', '));
@@ -85,29 +85,84 @@ export const startBot = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Starting bot');
 
-    yield* Effect.all([
-      routine(),
-      eventQueue.process(event => Effect.gen(function* () {
-        yield* Effect.log(`Received event: ${event.type}`);
-        const config = yield* init();
-        const isEnabled = config.features[event.type].enabled;
+    const queueMap: Record<event.ActionType, Queue.Queue<Event>> = {
+      alchemyExperiment: yield* Queue.unbounded<Event>(),
+      campaignLoot: yield* Queue.unbounded<Event>(),
+      engineerTools: yield* Queue.unbounded<Event>(),
+      firestoneResearch: yield* Queue.unbounded<Event>(),
+      guardianTraining: yield* Queue.unbounded<Event>(),
+      guildExpedition: yield* Queue.unbounded<Event>(),
+      mapMission: yield* Queue.unbounded<Event>(),
+      oracleRitual: yield* Queue.unbounded<Event>(),
+      pickaxesClaiming: yield* Queue.unbounded<Event>(),
+    };
 
-        if (!isEnabled) {
-          yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
-          return;
-        }
+    const add = (event: Event & { timeoutMs: number; }) => {
+      return Effect.gen(function* () {
+        yield* Effect.forkDaemon(Effect.gen(function* () {
+          yield* Effect.logDebug(`Waiting to queue event ${event.type}`);
+          yield* Effect.sleep(event.timeoutMs);
+          yield* Effect.logDebug(`Enqueueing event ${event.type}`);
+          yield* queueMap[event.type].offer({ type: event.type });
+        }));
+      });
+    }
 
-        yield* executeAction(event.type);
-      }).pipe(
-        Effect.withSpan('event'),
-        Effect.withLogSpan('event'),
-        Effect.onExit(() => {
-          mapStore.trigger.reset();
-          guildStore.trigger.reset();
-          firestoneLibraryStore.trigger.reset();
-          return Effect.void;
+    const process = (callback: (event: Event) => Effect.Effect<unknown>) => {
+      return Effect.gen(function* () {
+        const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
+          yield* Effect.logDebug(`Waiting for event to process`);
+
+          while (true) {
+            console.log('polling')
+            const event = yield* Queue.poll(queue);
+
+            if (Option.isSome(event)) {
+              yield* Effect.logDebug(`Processing...`);
+              yield* callback(event.value);
+            }
+
+            yield* Effect.sleep('5 seconds');
+          }
+        }));
+
+        yield* Effect.all(processors, {
+          concurrency: 'unbounded',
+        });
+      });
+    }
+
+    yield* Effect.provideService(
+      Effect.all([
+        routine(),
+        Effect.gen(function* () {
+          const eventQueue = yield* EventQueue;
+
+          yield* eventQueue.process(event => Effect.gen(function* () {
+            yield* Effect.log(`Received event: ${event.type}`);
+            const config = yield* init();
+            const isEnabled = config.features[event.type].enabled;
+
+            if (!isEnabled) {
+              yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
+              return;
+            }
+
+            yield* Effect.provideService(executeAction(event.type), EventQueue, { add, process });
+          }).pipe(
+            Effect.withSpan('event'),
+            Effect.withLogSpan('event'),
+            Effect.onExit(() => {
+              mapStore.trigger.reset();
+              guildStore.trigger.reset();
+              firestoneLibraryStore.trigger.reset();
+              return Effect.void;
+            }),
+          ));
         }),
-      )),
-    ], { concurrency: 'unbounded' });
+      ], { concurrency: 'unbounded' }),
+      EventQueue,
+      { add, process },
+    );
   });
 }

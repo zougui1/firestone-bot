@@ -2,7 +2,7 @@ import { Effect, pipe } from 'effect';
 
 import * as database from '../../../database';
 import * as api from '../../../api';
-import * as eventQueue from '../../../eventQueue';
+import { EventQueue } from '../../../eventQueue';
 import { env } from '../../../../env';
 
 //! missing experiment speed up
@@ -43,6 +43,7 @@ const claimExperiment = ({ tree, slot, name }: { tree: number; slot: number; nam
 
 const claimAndRestart = ({ name, config }: { name: Experiment; config: database.config.ConfigType['features']['alchemyExperiment']; }) => {
   return Effect.gen(function* () {
+    const eventQueue = yield* EventQueue;
     const tree = config.treeLevel - 1;
     const slot = experimentSlots[name];
 

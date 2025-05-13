@@ -1,7 +1,7 @@
 import { Effect, pipe } from 'effect';
 
 import * as api from '../../../api';
-import * as eventQueue from '../../../eventQueue';
+import { EventQueue } from '../../../eventQueue';
 import { env } from '../../../../env';
 
 //! missing ritual claim, ritual claim
@@ -27,6 +27,7 @@ const state: LocalState = {
 
 export const handleOracleRituals = () => {
   return Effect.gen(function* () {
+    const eventQueue = yield* EventQueue;
     yield* Effect.log('Claiming ritual');
     yield* api.oracle.completeRitual().pipe(
       Effect.tap(() => state.slot.status = 'idle'),

@@ -2,7 +2,7 @@ import { Effect, pipe } from 'effect';
 
 import { guildStore } from '../guild.store';
 import * as api from '../../../api';
-import * as eventQueue from '../../../eventQueue';
+import { EventQueue } from '../../../eventQueue';
 import { env } from '../../../../env';
 
 // claim: [unknown, unknown, unknown]
@@ -16,6 +16,8 @@ const largestId = 19;
 
 export const handleGuildExpeditions = () => {
   return Effect.gen(function* () {
+    const eventQueue = yield* EventQueue;
+
     yield* Effect.log('Claiming expedition');
     yield* api.guild.claimExpedition().pipe(
       Effect.tap(() => guildStore.trigger.updateSlotStatus({ status: 'idle' })),

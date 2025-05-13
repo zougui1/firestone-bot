@@ -2,7 +2,7 @@ import { Effect, pipe } from 'effect';
 
 import * as database from '../../../database';
 import * as api from '../../../api';
-import * as eventQueue from '../../../eventQueue';
+import { EventQueue } from '../../../eventQueue';
 import { env } from '../../../../env';
 
 const guardianIds = {
@@ -14,6 +14,7 @@ const guardianIds = {
 
 export const handleTrainGuardian = () => {
   return Effect.gen(function* () {
+    const eventQueue = yield* EventQueue;
     const config = yield* database.config.findOne();
     const { guardian } = config.features.guardianTraining;
 

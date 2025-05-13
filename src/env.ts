@@ -27,7 +27,7 @@ export const env = {
     server: envVar.get('FIRESTONE.SERVER').required().asString(),
     freeDurationSeconds: 3 * 60,
     cycleDurationSeconds: 6 * 60 * 60,
-    blindTimeoutSeconds: 30,
+    blindTimeoutSeconds: 5,
 
     socket: {
       uri: envVar.get('FIRESTONE.SOCKET.URI').required().asUrlString(),
