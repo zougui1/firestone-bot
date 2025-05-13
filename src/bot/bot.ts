@@ -1,4 +1,4 @@
-import { Effect, Option, pipe, Queue } from 'effect';
+import { Effect, pipe, Queue } from 'effect';
 
 import { event, game } from './store';
 import { handleMapMissions, mapStore } from './features/map';
@@ -58,7 +58,7 @@ const handleGameFeatures = () => {
     const config = yield* init();
     const features = Object
       .entries(config.features)
-      .filter(([name, feature]) => feature.enabled && name === 'guardianTraining')
+      .filter(([, feature]) => feature.enabled)
       .map(([name]) => name) as event.ActionType[];
 
     yield* Effect.logDebug('Enabled game features:', features.join(', '));
@@ -112,18 +112,8 @@ export const startBot = () => {
       return Effect.gen(function* () {
         const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
           yield* Effect.logDebug(`Waiting for event to process`);
-
-          while (true) {
-            console.log('polling')
-            const event = yield* Queue.poll(queue);
-
-            if (Option.isSome(event)) {
-              yield* Effect.logDebug(`Processing...`);
-              yield* callback(event.value);
-            }
-
-            yield* Effect.sleep('5 seconds');
-          }
+          const event = yield* Queue.take(queue);
+          yield* callback(event);
         }));
 
         yield* Effect.all(processors, {
