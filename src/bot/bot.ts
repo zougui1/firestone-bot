@@ -46,8 +46,7 @@ const init = () => {
 const executeAction = (type: event.ActionType) => {
   return Effect.gen(function* () {
     if (type in gameHandlers) {
-      const eventQueue = yield* EventQueue;
-      yield* eventQueue.add({ type, timeoutMs: 1 });
+      yield* gameHandlers[type]().pipe(Effect.catchAll(Effect.logError));
     } else {
       yield* Effect.logWarning(`feature "${type}" has no handler`);
     }
@@ -65,7 +64,12 @@ const handleGameFeatures = () => {
     yield* Effect.logDebug('Enabled game features:', features.join(', '));
 
     for (const feature of features) {
-      yield* executeAction(feature);
+      if (feature in gameHandlers) {
+        const eventQueue = yield* EventQueue;
+        yield* eventQueue.add({ type: feature, timeoutMs: 1 });
+      } else {
+        yield* Effect.logWarning(`feature "${feature}" has no handler`);
+      }
     }
   });
 }
@@ -74,8 +78,6 @@ const routine = () => {
   return Effect.gen(function* () {
     yield* Effect.log('Starting routine');
     yield* handleGameFeatures();
-    yield* Effect.logDebug('Waiting before next iteration');
-    yield* Effect.sleep('2 minutes');
   }).pipe(
     Effect.withSpan('routine'),
     Effect.withLogSpan('routine'),
@@ -107,52 +109,31 @@ export const startBot = () => {
       });
     }
 
-    const process = (callback: (event: Event) => Effect.Effect<unknown>) => {
-      return Effect.gen(function* () {
-        const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
-          while (true) {
-            const event = yield* Queue.take(queue);
-            yield* callback(event);
-          }
-        }));
+    yield* Effect.provideService(routine(), EventQueue, { add });
+    const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
+      while (true) {
+        const event = yield* Queue.take(queue);
+        yield* Effect.log(`Received event: ${event.type}`);
+        const config = yield* init();
+        const isEnabled = config.features[event.type].enabled;
 
-        yield* Effect.all(processors, {
-          concurrency: 'unbounded',
-        });
-      });
-    }
+        if (isEnabled) {
+          yield* Effect.provideService(executeAction(event.type), EventQueue, { add });
+        } else {
+          yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
+        }
+      }
+    }));
 
-    yield* Effect.provideService(
-      Effect.all([
-        routine(),
-        Effect.gen(function* () {
-          const eventQueue = yield* EventQueue;
-
-          yield* eventQueue.process(event => Effect.gen(function* () {
-            yield* Effect.log(`Received event: ${event.type}`);
-            const config = yield* init();
-            const isEnabled = config.features[event.type].enabled;
-
-            if (!isEnabled) {
-              yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
-              return;
-            }
-
-            yield* Effect.provideService(executeAction(event.type), EventQueue, { add, process });
-          }).pipe(
-            Effect.withSpan('event'),
-            Effect.withLogSpan('event'),
-            Effect.onExit(() => {
-              mapStore.trigger.reset();
-              guildStore.trigger.reset();
-              firestoneLibraryStore.trigger.reset();
-              return Effect.void;
-            }),
-          ));
-        }),
-      ], { concurrency: 'unbounded' }),
-      EventQueue,
-      { add, process },
+    yield* Effect.all(processors, { concurrency: 'unbounded' }).pipe(
+      Effect.withSpan('event'),
+      Effect.withLogSpan('event'),
+      Effect.onExit(() => {
+        mapStore.trigger.reset();
+        guildStore.trigger.reset();
+        firestoneLibraryStore.trigger.reset();
+        return Effect.void;
+      }),
     );
   });
 }

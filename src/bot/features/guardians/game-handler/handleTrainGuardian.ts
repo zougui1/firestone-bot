@@ -14,6 +14,7 @@ const guardianIds = {
 
 export const handleTrainGuardian = () => {
   return Effect.gen(function* () {
+    console.log('handleTrainGuardian')
     const eventQueue = yield* EventQueue;
     const config = yield* database.config.findOne();
     const { guardian } = config.features.guardianTraining;
