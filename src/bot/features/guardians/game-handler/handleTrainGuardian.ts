@@ -35,7 +35,7 @@ export const handleTrainGuardian = () => {
       timeoutMs: timeoutSeconds * 1000,
     });
   }).pipe(
-    Effect.withLogSpan('guardianTraning'),
-    Effect.withSpan('guardianTraning'),
+    Effect.withLogSpan('guardianTraining'),
+    Effect.withSpan('guardianTraining'),
   );
 }
