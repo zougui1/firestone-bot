@@ -109,8 +109,10 @@ export const startBot = () => {
     const process = (callback: (event: Event) => Effect.Effect<unknown>) => {
       return Effect.gen(function* () {
         const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
-          const event = yield* Queue.take(queue);
-          yield* callback(event);
+          while (true) {
+            const event = yield* Queue.take(queue);
+            yield* callback(event);
+          }
         }));
 
         yield* Effect.all(processors, {
