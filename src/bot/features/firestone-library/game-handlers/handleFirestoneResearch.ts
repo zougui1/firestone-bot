@@ -128,14 +128,12 @@ export const handleFirestoneResearch = () => {
         const result = yield* startFirestoneResearch(library, research);
         upgradesToSkip.add(research.name);
 
-        if (result.level) {
+        if (result.started) {
           firestoneLibraryStore.trigger.updateUpgrade({
             name: research.name,
             level: result.level + 1,
           });
-        }
 
-        if (result.started) {
           Effect.tap(() => firestoneLibraryStore.trigger.updateSlot({
             id: slot.id,
             isAvailable: false,
