@@ -30,18 +30,6 @@ const getMissionStatus = (mission: MissionState) => {
   return getDateCompletionStatus(mission.startDate.getTime() + mission.durationSeconds * 1000);
 }
 
-const getEnsuredMission = (mission: Mission): MissionState => {
-  const state = mapStore.getSnapshot().context;
-
-  return state.missions[mission.id] ?? {
-    id: mission.id,
-    name: mission.name,
-    squads: mission.type.squads,
-    durationSeconds: mission.type.minDurationSeconds * 60,
-    type: mission.type,
-  };
-}
-
 const speedUpMissions = (missionList: Mission[], cycle: 'current' | 'previous') => {
   return Effect.gen(function* () {
     for (const mission of missionList) {
@@ -161,6 +149,7 @@ export const handleMapMissions = () => {
       // if the state of the cycle is unknown then we try to start every mission one by one
       // except for those that have already been started
       : missions.list.filter(mission => !state.missions[mission.name]?.startDate);
+    let hasStartedMissions = false;
 
     for (const mission of unstartedMissions) {
       if (state.squads <= 0) {
@@ -170,23 +159,27 @@ export const handleMapMissions = () => {
 
       if (state.squads < mission.type.squads) {
         yield* Effect.logDebug(`Not enough squads left to start map mission ${mission.name} of type ${mission.type.name}`);
-        break;
+        continue;
       }
 
       yield* Effect.logDebug(`Starting mission ${mission.name}`);
       yield* api.mapMissions
         .start({ id: mission.id })
         .pipe(
-          Effect.tap(() => mapStore.trigger.startMission({ mission })),
-          Effect.tap(() => eventQueue.add({
-            type: 'mapMission',
-            timeoutMs: mission.type.minDurationSeconds * 1000,
-          })),
+          Effect.tap(() => {
+            hasStartedMissions = true;
+
+            mapStore.trigger.startMission({ mission });
+            eventQueue.add({
+              type: 'mapMission',
+              timeoutMs: mission.type.minDurationSeconds * 1000,
+            });
+          }),
           Effect.catchTag('TimeoutError', Effect.logError),
         );
     }
 
-    if (!unstartedMissions.length) {
+    if (!unstartedMissions.length || !hasStartedMissions) {
       yield* eventQueue.add({
         type: 'mapMission',
         timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
