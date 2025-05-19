@@ -54,6 +54,7 @@ const missionsList = [
   { id: 1, name: 'Stop the Pirate Raids', type: missionTypes.war },
   { id: 3, name: 'Xandor Dock', type: missionTypes.war },
   { id: 5, name: 'Ambush in the Trees', type: missionTypes.war },
+  { id: 10, name: 'Recruit Solders', type: missionTypes.war },
   { id: 15, name: 'North Sea', type: missionTypes.war },
   { id: 18, name: 'Tipsy Wisp Tavern', type: missionTypes.war },
   { id: 26, name: 'Moonglen\'s Festival', type: missionTypes.war },
@@ -105,7 +106,6 @@ const missionsList = [
   { id: 59, name: 'Search For Survivors', type: missionTypes.scout },
 
   // unknown missions
-  { id: 10, name: '', type: missionTypes.scout },
   { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
   { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
   { id: 41, name: '', type: missionTypes.scout },
