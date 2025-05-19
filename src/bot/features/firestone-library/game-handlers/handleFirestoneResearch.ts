@@ -40,8 +40,6 @@ const startFirestoneResearch = (library: database.firestoneLibrary.FirestoneLibr
     Effect.catchTag('TimeoutError', () => pipe(
       Effect.logError(`Requests to start research ${upgrade.name} timed out`),
       Effect.as({
-        // if the level wasn't persisted and it hasn't started then it means
-        // the upgrade hasn't been unlocked yet
         started: false,
         level: persistedLevel,
       }),
