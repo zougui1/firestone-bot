@@ -39,6 +39,7 @@ const missionTypes = {
 
 const missionsList = [
   // naval missions
+  { id: 41, name: 'Open Sea', type: missionTypes.naval },
   { id: 54, name: 'Trade Route', type: missionTypes.naval },
   { id: 63, name: 'Pirate Cove', type: missionTypes.naval },
   // monster missions
@@ -108,7 +109,6 @@ const missionsList = [
   // unknown missions
   { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
   { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
-  { id: 41, name: '', type: missionTypes.scout },
   { id: 50, name: '', type: missionTypes.scout },
 ];
 
