@@ -37,7 +37,6 @@ const databaseLogger = Logger.make(async data => {
     await database.log.LogModel.insertOne({
       level: logData.logLevel,
       annotations: Object.keys(logData.annotations).length ? logData.annotations : undefined,
-      fiberId: logData.fiberId,
       spans: logData.spans,
       message: sanitizeLogMessage(logData.message),
       date: data.date,
