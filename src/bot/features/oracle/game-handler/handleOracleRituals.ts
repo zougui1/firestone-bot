@@ -32,7 +32,7 @@ export const handleOracleRituals = () => {
     yield* api.oracle.completeRitual().pipe(
       Effect.tap(() => state.slot.status = 'idle'),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError('Request to claim ritual timed out'),
+        Effect.logWarning('Request to claim ritual timed out'),
       )),
     );
 
@@ -48,7 +48,7 @@ export const handleOracleRituals = () => {
       const { done } = yield* api.oracle.startRitual({ id: ritual }).pipe(
         Effect.as({ done: true }),
         Effect.catchTag('TimeoutError', () => pipe(
-          Effect.logError(`Request to start ritual ${ritual} timed out`),
+          Effect.logWarning(`Request to start ritual ${ritual} timed out`),
           Effect.as({ done: false }),
         )),
       );

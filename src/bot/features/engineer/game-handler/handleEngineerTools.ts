@@ -12,7 +12,7 @@ export const handleEngineerTools = () => {
     const { claimed } = yield* api.engineer.claimTools().pipe(
       Effect.as({ claimed: true }),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError('Request to claim tools timed out'),
+        Effect.logWarning('Request to claim tools timed out'),
         Effect.as({ claimed: false }),
       )),
     );

@@ -22,7 +22,7 @@ export const handleGuildExpeditions = () => {
     yield* api.guild.claimExpedition().pipe(
       Effect.tap(() => guildStore.trigger.updateSlotStatus({ status: 'idle' })),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError('Request to claim guild expedition timed out'),
+        Effect.logWarning('Request to claim guild expedition timed out'),
       )),
     );
 
@@ -39,12 +39,12 @@ export const handleGuildExpeditions = () => {
     for (let index = 0; index < largestId; index++) {
       const id = `GUEXP${index.toString().padStart(3, '0')}`;
 
-      yield* Effect.log(`Trying to start expedition id: ${id}`);
+      yield* Effect.logDebug(`Trying to start expedition id: ${id}`);
       const startResult = yield* api.guild.startExpedition({ id }).pipe(
-        Effect.tap(() => Effect.log(`Started guild expedition ${id}`)),
+        Effect.tap(() => Effect.logDebug(`Started guild expedition ${id}`)),
         Effect.map(result => ({ ...result, done: true }) as const),
         Effect.catchTag('TimeoutError', () => pipe(
-          Effect.logError(`Request to start guild expedition ${id} timed out`),
+          Effect.logWarning(`Request to start guild expedition ${id} timed out`),
           Effect.as({ done: false } as const),
         )),
       );

@@ -113,7 +113,7 @@ export const startBot = () => {
     const processors = Object.values(queueMap).map(queue => Effect.gen(function* () {
       while (true) {
         const event = yield* Queue.take(queue);
-        yield* Effect.log(`Received event: ${event.type}`);
+        yield* Effect.logDebug(`Received event: ${event.type}`);
         const config = yield* init();
         const isEnabled = config.features[event.type].enabled;
 

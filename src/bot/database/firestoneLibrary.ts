@@ -29,7 +29,7 @@ export const findByTreeLevel = (treeLevel: number) => {
 
         return library ?? defaultLibrary;
       },
-      catch: cause => new Error(`Could not find the firestone library of level ${treeLevel}`, { cause }),
+      catch: cause => new Error(`Could not find or create the firestone library of level ${treeLevel}`, { cause }),
     })),
     Effect.onError(cause => Effect.logError(`Could not retrieve the firestone library of level ${treeLevel}. Using empty firestone library as fallback`, cause)),
     Effect.orElseSucceed(() => defaultLibrary),

@@ -14,7 +14,6 @@ const guardianIds = {
 
 export const handleTrainGuardian = () => {
   return Effect.gen(function* () {
-    console.log('handleTrainGuardian')
     const eventQueue = yield* EventQueue;
     const config = yield* database.config.findOne();
     const { guardian } = config.features.guardianTraining;
@@ -25,7 +24,7 @@ export const handleTrainGuardian = () => {
     }).pipe(
       Effect.as({ trained: true }),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError('Request to train guardian timed out'),
+        Effect.logWarning('Request to train guardian timed out'),
         Effect.as({ trained: false }),
       )),
     );

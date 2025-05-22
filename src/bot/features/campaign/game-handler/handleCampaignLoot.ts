@@ -12,7 +12,7 @@ export const handleCampaignLoot = () => {
     const { claimed } = yield* api.campaign.claimLoots().pipe(
       Effect.as({ claimed: true }),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError('Request to claim campaign loots timed out'),
+        Effect.logWarning('Request to claim campaign loots timed out'),
         Effect.as({ claimed: false }),
       )),
     );

@@ -22,7 +22,7 @@ const claimExperiment = ({ tree, slot, name }: { tree: number; slot: number; nam
     const speedUpResult = yield* api.alchemist.speedUpExperiment({ tree, slot, gems: 0 }).pipe(
       Effect.as({ done: true }),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError(`Request to speed up experiment ${name} timed out`),
+        Effect.logWarning(`Request to speed up experiment ${name} timed out`),
         Effect.as({ done: false }),
       )),
     );
@@ -34,7 +34,7 @@ const claimExperiment = ({ tree, slot, name }: { tree: number; slot: number; nam
     return yield* api.alchemist.completeExperiment({ tree, slot }).pipe(
       Effect.as({ done: true }),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError(`Request to complete experiment ${name} timed out`),
+        Effect.logWarning(`Request to complete experiment ${name} timed out`),
         Effect.as({ done: false }),
       )),
     );
@@ -62,7 +62,7 @@ const claimAndRestart = ({ name, config }: { name: Experiment; config: database.
     const { done } = yield* api.alchemist.startExperiment({ tree, slot }).pipe(
       Effect.as({ done: true }),
       Effect.catchTag('TimeoutError', () => pipe(
-        Effect.logError(`Request to start experiment ${name} timed out`),
+        Effect.logWarning(`Request to start experiment ${name} timed out`),
         Effect.as({ done: false }),
       )),
     );

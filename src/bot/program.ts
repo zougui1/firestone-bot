@@ -54,7 +54,7 @@ export const program = async () => {
         })
         .pipe(Effect.withSpan('firebot'))
         .pipe(Effect.provide(Logger.replace(Logger.defaultLogger, logger)))
-        .pipe(Logger.withMinimumLogLevel(LogLevel.All))
+        .pipe(Logger.withMinimumLogLevel(env.isDev ? LogLevel.All : LogLevel.Info))
         //.pipe(Effect.provide(NodeSdkLive)),
     });
 

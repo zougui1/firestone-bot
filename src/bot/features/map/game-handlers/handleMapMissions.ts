@@ -38,7 +38,7 @@ const speedUpMissions = (missionList: Mission[], cycle: 'current' | 'previous') 
         .speedUp({ id: mission.id, gems: 0 })
         .pipe(
           Effect.tap(() => mapStore.trigger.claimMission({ mission, cycle })),
-          Effect.catchTag('TimeoutError', Effect.logError),
+          Effect.catchTag('TimeoutError', Effect.logWarning),
         );
     }
   });
@@ -52,7 +52,7 @@ const completeMissions = (missionList: Mission[], cycle: 'current' | 'previous')
         .complete({ id: mission.id })
         .pipe(
           Effect.tap(() => mapStore.trigger.claimMission({ mission, cycle })),
-          Effect.catchTag('TimeoutError', Effect.logError),
+          Effect.catchTag('TimeoutError', Effect.logWarning),
         );
     }
   });
@@ -92,7 +92,7 @@ export const handleMapMissions = () => {
             timeoutMs: (env.firestone.cycleDurationSeconds - env.firestone.freeDurationSeconds) * 1000,
           })),
           Effect.tapError(() => Effect.succeed(mapStore.trigger.removeCycleStartDate())),
-          Effect.catchTag('TimeoutError', Effect.logError),
+          Effect.catchTag('TimeoutError', Effect.logWarning),
       );
 
       for (const newMission of (result && result.missions) ?? []) {
@@ -175,7 +175,7 @@ export const handleMapMissions = () => {
               timeoutMs: mission.type.minDurationSeconds * 1000,
             });
           }),
-          Effect.catchTag('TimeoutError', Effect.logError),
+          Effect.catchTag('TimeoutError', Effect.logWarning),
         );
     }
 
