@@ -26,6 +26,10 @@ const sanitizeLogMessage = (message: unknown): unknown => {
   return message;
 }
 
+const optionalObject = <T extends Record<string, unknown>>(obj: T): T | undefined => {
+  return Object.keys(obj).length ? obj : undefined;
+}
+
 const consoleLogger = Logger.prettyLogger({
   colors: env.isDev,
 });
@@ -36,8 +40,8 @@ const databaseLogger = Logger.make(async data => {
   try {
     await database.log.LogModel.insertOne({
       level: logData.logLevel,
-      annotations: Object.keys(logData.annotations).length ? logData.annotations : undefined,
-      spans: logData.spans,
+      annotations: optionalObject(logData.annotations),
+      spans: optionalObject(logData.spans),
       message: sanitizeLogMessage(logData.message),
       date: data.date,
       cause: Cause.match(data.cause, {
