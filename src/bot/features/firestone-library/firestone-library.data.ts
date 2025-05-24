@@ -151,7 +151,7 @@ const upgradesObject = {
 
   'guardian power': {
     name: 'guardian power',
-    id: -1,
+    id: 4,
     maxLevel: 60,
   },
 };
