@@ -44,6 +44,7 @@ const missionsList = [
   { id: 63, name: 'Pirate Cove', type: missionTypes.naval },
   // monster missions
   { id: 16, name: 'Lake\'s Terror', type: missionTypes.monster },
+  { id: 32, name: 'Collect The Bounty', type: missionTypes.monster },
   { id: 40, name: 'Orc Lieutenant', type: missionTypes.monster },
   { id: 61, name: 'Hydra', type: missionTypes.monster },
   // dragon missions
@@ -108,7 +109,6 @@ const missionsList = [
 
   // unknown missions
   { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
-  { id: 32, name: 'Collect The Bounty', type: missionTypes.scout },
   { id: 50, name: '', type: missionTypes.scout },
 ];
 
