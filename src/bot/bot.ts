@@ -38,6 +38,7 @@ const init = () => {
         userId: env.firestone.userId,
         sessionId: config.sessionId,
         serverName: env.firestone.server,
+        requestSuffix: config.requestSuffix,
       });
     }),
   );
