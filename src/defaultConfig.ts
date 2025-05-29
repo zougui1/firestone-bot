@@ -2,6 +2,7 @@ import type * as database from './bot/database';
 
 export const defaultConfig: database.config.ConfigType = {
   sessionId: '',
+  requestSuffix: '831',
   features: {
     engineerTools: {
       enabled: true,

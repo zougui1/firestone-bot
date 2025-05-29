@@ -4,9 +4,9 @@ let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
 const userId = '8S19Jpu9obJN';
-const sessionId = 'nsgcQFFQQ5';
+const sessionId = 'hxC8hcB75S';
 const serverName = 'Elmbrook';
-const uri = 'wss://ws11.holydaygames.org/';
+const uri = 'wss://ws17.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
 
 const stringifyRequest = (request: FirestoneRequest) => {
@@ -19,7 +19,7 @@ const stringifyRequest = (request: FirestoneRequest) => {
   const wholeRequest = [
     firstPart,
     serverName,
-    829,
+    831,
   ].join('|-+-|');
 
   return wholeRequest;
@@ -143,7 +143,7 @@ socket.on('open', async () => {
 
 socket.on('message', async message => {
   const payload = message.toString('utf-8');
-  //console.log('payload:', payload)
+  console.log('payload:', payload)
 
   try {
     await processCampaignBattleResponse(payload);
