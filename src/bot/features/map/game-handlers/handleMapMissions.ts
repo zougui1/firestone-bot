@@ -30,31 +30,39 @@ const getMissionStatus = (mission: MissionState) => {
   return getDateCompletionStatus(mission.startDate.getTime() + mission.durationSeconds * 1000);
 }
 
+const speedUpMission = (mission: Mission, cycle: 'current' | 'previous') => {
+  return Effect.gen(function* () {
+    yield* Effect.logDebug(`Speeding up mission ${mission.name}`);
+    yield* api.mapMissions
+      .speedUp({ id: mission.id, gems: 0 })
+      .pipe(
+        Effect.tap(() => mapStore.trigger.claimMission({ mission, cycle })),
+        Effect.catchTag('TimeoutError', Effect.logWarning),
+      );
+  });
+}
+
 const speedUpMissions = (missionList: Mission[], cycle: 'current' | 'previous') => {
   return Effect.gen(function* () {
-    for (const mission of missionList) {
-      yield* Effect.logDebug(`Speeding up mission ${mission.name}`);
-      yield* api.mapMissions
-        .speedUp({ id: mission.id, gems: 0 })
-        .pipe(
-          Effect.tap(() => mapStore.trigger.claimMission({ mission, cycle })),
-          Effect.catchTag('TimeoutError', Effect.logWarning),
-        );
-    }
+    yield* Effect.all(missionList.map(mission => speedUpMission(mission, cycle)));
+  });
+}
+
+const completeMission = (mission: Mission, cycle: 'current' | 'previous') => {
+  return Effect.gen(function* () {
+    yield* Effect.logDebug(`Claiming mission ${mission.name}`);
+    yield* api.mapMissions
+      .complete({ id: mission.id })
+      .pipe(
+        Effect.tap(() => mapStore.trigger.claimMission({ mission, cycle })),
+        Effect.catchTag('TimeoutError', Effect.logWarning),
+      );
   });
 }
 
 const completeMissions = (missionList: Mission[], cycle: 'current' | 'previous') => {
   return Effect.gen(function* () {
-    for (const mission of missionList) {
-      yield* Effect.logDebug(`Claiming mission ${mission.name}`);
-      yield* api.mapMissions
-        .complete({ id: mission.id })
-        .pipe(
-          Effect.tap(() => mapStore.trigger.claimMission({ mission, cycle })),
-          Effect.catchTag('TimeoutError', Effect.logWarning),
-        );
-    }
+    yield* Effect.all(missionList.map(mission => completeMission(mission, cycle)));
   });
 }
 
@@ -119,27 +127,24 @@ export const handleMapMissions = () => {
     }
 
     state = mapStore.getSnapshot().context;
-    yield* Effect.log('Speeding up missions');
+    yield* Effect.log('Claiming missions');
 
     const prevMissionsToSpeedUp = Object.values(state.prevMissions).filter(mission => getMissionStatus(mission) === 'free-speed-up');
-
     const missionsToSpeedUp = state.cycleStartDate
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'free-speed-up')
-      : missions.list;
-
-    yield* speedUpMissions(prevMissionsToSpeedUp, 'previous');
-    yield* speedUpMissions(missionsToSpeedUp, 'current');
-    state = mapStore.getSnapshot().context;
-
-    yield* Effect.log('Claiming missions');
+      : missions.flatList;
 
     const prevMissionsToComplete = Object.values(state.prevMissions).filter(mission => getMissionStatus(mission) === 'complete');
     const missionsToComplete = state.cycleStartDate
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'complete')
-      : missions.list;
+      : missions.flatList;
 
-    yield* completeMissions(prevMissionsToComplete, 'previous');
-    yield* completeMissions(missionsToComplete, 'current');
+      yield* Effect.all([
+      speedUpMissions(prevMissionsToSpeedUp, 'previous'),
+      speedUpMissions(missionsToSpeedUp, 'current'),
+      completeMissions(prevMissionsToComplete, 'previous'),
+      completeMissions(missionsToComplete, 'current'),
+    ]);
     state = mapStore.getSnapshot().context;
 
     yield* Effect.log('Starting missions');
@@ -148,7 +153,7 @@ export const handleMapMissions = () => {
       ? Object.values(state.missions).filter(mission => !mission.startDate)
       // if the state of the cycle is unknown then we try to start every mission one by one
       // except for those that have already been started
-      : missions.list.filter(mission => !state.missions[mission.name]?.startDate);
+      : missions.flatList.filter(mission => !state.missions[mission.name]?.startDate);
     let hasStartedMissions = false;
 
     for (const mission of unstartedMissions) {
