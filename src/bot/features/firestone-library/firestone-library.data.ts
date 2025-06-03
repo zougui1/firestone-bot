@@ -118,6 +118,11 @@ const upgradesObject = {
     maxLevel: 30,
   },
 
+  'team bonus': {
+    name: 'team bonus',
+    id: 31,
+    maxLevel: 60,
+  },
   'mana heroes': {
     name: 'mana heroes',
     id: -1,

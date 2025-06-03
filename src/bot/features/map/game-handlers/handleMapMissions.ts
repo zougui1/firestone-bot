@@ -139,7 +139,7 @@ export const handleMapMissions = () => {
       ? Object.values(state.missions).filter(mission => getMissionStatus(mission) === 'complete')
       : missions.flatList;
 
-      yield* Effect.all([
+    yield* Effect.all([
       speedUpMissions(prevMissionsToSpeedUp, 'previous'),
       speedUpMissions(missionsToSpeedUp, 'current'),
       completeMissions(prevMissionsToComplete, 'previous'),
