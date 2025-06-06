@@ -11,6 +11,7 @@ import { handleOracleRituals } from './features/oracle';
 import { handleGuildExpeditions, guildStore } from './features/guild';
 import { handleFirestoneResearch, firestoneLibraryStore } from './features/firestone-library';
 import * as database from './database';
+import * as api from './api';
 import { EventQueue, Event } from './eventQueue';
 import { env } from '../env';
 
@@ -27,21 +28,36 @@ const gameHandlers = {
 } satisfies Record<event.ActionType, () => Effect.Effect<unknown, unknown, unknown>>;
 
 const init = () => {
-  return pipe(
-    database.config.findOne(),
-    Effect.tap(config => {
-      if (!config.sessionId.trim()) {
-        return Effect.die(new Error('Missing session ID'));
-      }
+  return Effect.gen(function* () {
+    const config = yield* database.config.findOne();
+    const state = game.store.getSnapshot().context;
 
-      game.store.trigger.init({
-        userId: env.firestone.userId,
-        sessionId: config.sessionId,
-        serverName: env.firestone.server,
-        requestSuffix: config.requestSuffix,
-      });
-    }),
-  );
+    if (
+      state.sessionId === config.sessionId &&
+      state.requestSuffix === config.requestSuffix &&
+      state.isSessionValid !== undefined
+    ) {
+      return {
+        ...config,
+        isSessionValid: state.isSessionValid,
+      };
+    }
+
+    game.store.trigger.init({
+      userId: env.firestone.userId,
+      sessionId: config.sessionId,
+      serverName: env.firestone.server,
+      requestSuffix: config.requestSuffix,
+    });
+
+    const isSessionValid = yield* api.checkSessionValidity();
+    game.store.trigger.updateSessionValidity({ isSessionValid });
+
+    return {
+      ...config,
+      isSessionValid,
+    };
+  });
 }
 
 const executeAction = (type: event.ActionType) => {
@@ -119,7 +135,14 @@ export const startBot = () => {
         const isEnabled = config.features[event.type].enabled;
 
         if (isEnabled) {
-          yield* Effect.provideService(executeAction(event.type), EventQueue, { add });
+          if (config.isSessionValid) {
+            yield* Effect.provideService(executeAction(event.type), EventQueue, { add });
+          } else {
+            yield* add({
+              type: event.type,
+              timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
+            });
+          }
         } else {
           yield* Effect.log(`Feature ${event.type} is disabled, ignoring event`);
         }

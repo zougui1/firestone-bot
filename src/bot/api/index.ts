@@ -1,4 +1,5 @@
 export * from './socket';
+export * from './checkSessionValidity';
 export * as firestoneLibrary from './firestoneLibrary';
 export * as mapMissions from './mapMissions';
 export * as guild from './guild';

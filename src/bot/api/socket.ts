@@ -75,7 +75,8 @@ export const sendRequest = (request: FirestoneRequestData, options?: FirestoneRe
 }
 
 const genericResponseSchema = z.object({
-  Data: z.array(z.unknown()),
+  Data: z.array(z.unknown()).optional(),
+  Error: z.unknown().optional(),
   Function: z.string(),
   SubFunction: z.string().optional(),
 });
@@ -84,11 +85,15 @@ export class TimeoutError extends AggregateError {
   readonly _tag = 'TimeoutError';
 }
 
+export class ResponseError extends AggregateError {
+  readonly _tag = 'ResponseError';
+}
+
 export const waitResponse = <T extends z.ZodSchema>(
   specificResponseSchema: z.ZodObject<{ Function: z.ZodLiteral<string>; SubFunction?: z.ZodLiteral<string>; }>,
-  schema: T,
+  dataSchema: T,
 ) => {
-  return Effect.async<z.infer<T>, TimeoutError | Error>(resume => {
+  return Effect.async<z.infer<T>, TimeoutError | ResponseError | Error>(resume => {
     const errors: Error[] = [];
 
     const timeout = setTimeout(() => {
@@ -112,13 +117,13 @@ export const waitResponse = <T extends z.ZodSchema>(
       const [jsonError, json] = catchError(() => JSON.parse(payload));
 
       if (jsonError) {
-        return errors.push(Error('Could not parse JSON response', { cause: jsonError }));
+        return errors.push(new Error('Could not parse JSON response', { cause: jsonError }));
       }
 
       const genericResponseResult = genericResponseSchema.safeParse(json);
 
       if (!genericResponseResult.success) {
-        return errors.push(Error('Invalid response', { cause: genericResponseResult.error }));
+        return errors.push(new Error('Invalid response', { cause: genericResponseResult.error }));
       }
 
       if (genericResponseResult.data.Function === 'UserOnMultipleInstances') {
@@ -129,14 +134,19 @@ export const waitResponse = <T extends z.ZodSchema>(
       const specificResponseResult = specificResponseSchema.safeParse(genericResponseResult.data);
 
       if (!specificResponseResult.success) {
-        return errors.push(Error('Invalid response type', { cause: specificResponseResult.error }));
+        return errors.push(new Error('Invalid response type', { cause: specificResponseResult.error }));
       }
 
-      const dataResult = schema.safeParse(genericResponseResult.data.Data);
+      if (genericResponseResult.data.Error) {
+        cleanup();
+        resume(Effect.fail(new ResponseError([], 'Server returned an error')));
+      }
+
+      const dataResult = dataSchema.safeParse(genericResponseResult.data.Data);
 
       if (!dataResult.success) {
         cleanup();
-        return resume(Effect.fail(Error('Invalid data in response', { cause: dataResult.error })));
+        return resume(Effect.fail(new Error('Invalid data in response', { cause: dataResult.error })));
       }
 
       cleanup();

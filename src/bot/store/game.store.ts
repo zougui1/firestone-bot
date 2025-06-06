@@ -6,6 +6,7 @@ export interface State {
   sessionId?: string;
   serverName?: string;
   requestSuffix?: string;
+  isSessionValid?: boolean;
 }
 
 export const store = createStore({
@@ -20,6 +21,13 @@ export const store = createStore({
         requestSuffix: event.requestSuffix,
       };
     },
+
+    updateSessionValidity: (context, event: { isSessionValid: boolean }) => {
+      return {
+        ...context,
+        isSessionValid: event.isSessionValid,
+      };
+    },
   },
 });
 
@@ -29,6 +37,7 @@ export const getSession = () => {
     sessionId,
     serverName,
     requestSuffix,
+    isSessionValid,
   } = store.getSnapshot().context;
 
   if (!userId) {
@@ -52,5 +61,6 @@ export const getSession = () => {
     sessionId,
     serverName,
     requestSuffix,
+    isSessionValid,
   });
 }
