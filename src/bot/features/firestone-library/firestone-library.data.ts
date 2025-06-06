@@ -99,7 +99,7 @@ const upgradesObject = {
   },
   'powerless enemy': {
     name: 'powerless enemy',
-    id: -1,
+    id: 21,
     maxLevel: 30,
   },
   'weaklings': {
@@ -114,7 +114,7 @@ const upgradesObject = {
   },
   'powerless boss': {
     name: 'powerless boss',
-    id: -1,
+    id: 22,
     maxLevel: 30,
   },
 

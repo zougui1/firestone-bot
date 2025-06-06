@@ -38,7 +38,7 @@ const startFirestoneResearch = (library: database.firestoneLibrary.FirestoneLibr
     ),
     Effect.map(() => ({ started: true, level })),
     Effect.catchTag('TimeoutError', () => pipe(
-      Effect.logError(`Requests to start research ${upgrade.name} timed out`),
+      Effect.logWarning(`Requests to start research ${upgrade.name} timed out`),
       Effect.as({
         started: false,
         level: persistedLevel,
