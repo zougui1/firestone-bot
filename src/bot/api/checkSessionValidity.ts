@@ -4,9 +4,10 @@ import { startBattle } from './campaign';
 
 export const checkSessionValidity = () => {
   return startBattle({ mission: 0, difficulty: 0 }).pipe(
-    Effect.mapBoth({
-      onSuccess: () => true,
-      onFailure: () => false,
+    Effect.as(true),
+    Effect.catchTags({
+      ResponseError: () => Effect.succeed(true),
+      TimeoutError: () => Effect.succeed(false),
     }),
   );
 }

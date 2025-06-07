@@ -63,6 +63,6 @@ export const findOne = () => {
     })),
     Effect.onError(cause => Effect.logError('Could not retrieve the config. Using the default config as fallback', cause)),
     Effect.orElseSucceed(() => defaultConfig),
-    Effect.tap(config => Effect.logDebug('config:', config)),
+    //Effect.tap(config => Effect.logDebug('config:', config)),
   );
 }
