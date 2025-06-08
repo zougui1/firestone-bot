@@ -145,7 +145,7 @@ const upgradesObject = {
   },
   'tank specialization': {
     name: 'tank specialization',
-    id: -1,
+    id: 27,
     maxLevel: 55,
   },
   'healer specialization': {

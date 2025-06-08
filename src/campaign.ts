@@ -4,7 +4,7 @@ let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
 const userId = '8S19Jpu9obJN';
-const sessionId = 'BA3c6tJzBT';
+const sessionId = 'WYM28CSM8Q';
 const serverName = 'Elmbrook';
 const uri = 'wss://ws11.holydaygames.org/';
 const global = { mission: 0, difficulty: 0 };
@@ -106,7 +106,7 @@ const processCampaignBattleResponse = async (payload: string) => {
   console.log('Battle lost');
 
   if (battleAttempts < maxBattleAttempts) {
-    await sleep(1500);
+    await sleep(3000);
     startCampaignBattle(global);
   } else {
     battleAttempts = 0;
