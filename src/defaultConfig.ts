@@ -13,6 +13,7 @@ export const defaultConfig: database.config.ConfigType = {
     guardianTraining: {
       enabled: true,
       guardian: 'Vermillion',
+      cooldownSeconds: 2 * 60 * 60,
     },
     firestoneResearch: {
       enabled: true,

@@ -20,6 +20,7 @@ export const ConfigModel = papr.model('configs', schema({
     guardianTraining: types.object({
       enabled: types.boolean({ required: true }),
       guardian: types.enum(guardians, { required: true }),
+      cooldownSeconds: types.number({ required: true }),
     }, { required: true }),
     firestoneResearch: types.object({
       enabled: types.boolean({ required: true }),

@@ -16,7 +16,7 @@ export const handleTrainGuardian = () => {
   return Effect.gen(function* () {
     const eventQueue = yield* EventQueue;
     const config = yield* database.config.findOne();
-    const { guardian } = config.features.guardianTraining;
+    const { guardian, cooldownSeconds } = config.features.guardianTraining;
 
     yield* Effect.log(`Training guardian ${guardian}`);
     const { trained } = yield* api.guardians.trainGuardian({
@@ -29,7 +29,7 @@ export const handleTrainGuardian = () => {
       )),
     );
 
-    const timeoutSeconds = trained ? (2 * 60 * 60) : env.firestone.blindTimeoutSeconds;
+    const timeoutSeconds = trained ? cooldownSeconds : env.firestone.blindTimeoutSeconds;
     yield* eventQueue.add({
       type: 'guardianTraining',
       timeoutMs: timeoutSeconds * 1000,
