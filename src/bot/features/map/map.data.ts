@@ -49,6 +49,7 @@ const missionsList = [
   ],
   // naval missions
   [
+    { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.naval },
     { id: 41, name: 'Open Sea', type: missionTypes.naval },
     { id: 54, name: 'Trade Route', type: missionTypes.naval },
     { id: 63, name: 'Pirate Cove', type: missionTypes.naval },
@@ -130,7 +131,6 @@ const missionsList = [
 
   // unknown missions
   [
-    { id: 17, name: 'Irongard\'s Harbor', type: missionTypes.scout },
     { id: 50, name: '', type: missionTypes.scout },
   ],
 ];
