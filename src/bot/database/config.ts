@@ -8,7 +8,7 @@ import { defaultConfig } from '../../defaultConfig';
 
 export const ConfigModel = papr.model('configs', schema({
   sessionId: types.string({ required: true }),
-  requestSuffix: types.string({ required: true }),
+  gameVersion: types.string({ required: true }),
   disabled: types.boolean(),
   features: types.object({
     engineerTools: types.object({

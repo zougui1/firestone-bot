@@ -34,7 +34,7 @@ const init = () => {
 
     if (
       state.sessionId === config.sessionId &&
-      state.requestSuffix === config.requestSuffix &&
+      state.gameVersion === config.gameVersion &&
       state.isSessionValid !== undefined
     ) {
       return {
@@ -47,7 +47,7 @@ const init = () => {
       userId: env.firestone.userId,
       sessionId: config.sessionId,
       serverName: env.firestone.server,
-      requestSuffix: config.requestSuffix,
+      gameVersion: config.gameVersion,
     });
 
     const isSessionValid = yield* api.checkSessionValidity();
@@ -62,7 +62,7 @@ const init = () => {
 
 const executeAction = (type: event.ActionType) => {
   return Effect.gen(function* () {
-    if (type in gameHandlers) {
+    if (type in gameHandlers && type) {
       yield* gameHandlers[type]().pipe(Effect.catchAll(Effect.logError));
     } else {
       yield* Effect.logWarning(`feature "${type}" has no handler`);

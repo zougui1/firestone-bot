@@ -29,7 +29,7 @@ const stringifyRequest = (request: InternalFirestoneRequestData) => {
   const wholeRequest = [
     firstPart,
     request.serverName,
-    request.requestSuffix,
+    request.gameVersion,
   ].join('|-+-|');
 
   return wholeRequest;
@@ -190,7 +190,7 @@ export interface InternalFirestoneRequestData extends FirestoneRequestData {
   type: string;
   userId: string;
   sessionId: string;
-  requestSuffix: string;
+  gameVersion: string;
   parameters?: (string | number)[];
   serverName: string;
 }

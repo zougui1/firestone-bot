@@ -5,7 +5,7 @@ export interface State {
   userId?: string;
   sessionId?: string;
   serverName?: string;
-  requestSuffix?: string;
+  gameVersion?: string;
   isSessionValid?: boolean;
 }
 
@@ -18,7 +18,7 @@ export const store = createStore({
         userId: event.userId,
         sessionId: event.sessionId,
         serverName: event.serverName,
-        requestSuffix: event.requestSuffix,
+        gameVersion: event.gameVersion,
       };
     },
 
@@ -36,7 +36,7 @@ export const getSession = () => {
     userId,
     sessionId,
     serverName,
-    requestSuffix,
+    gameVersion,
     isSessionValid,
   } = store.getSnapshot().context;
 
@@ -52,7 +52,7 @@ export const getSession = () => {
     return Effect.die(new Error('Missing Firestone server'));
   }
 
-  if (!requestSuffix) {
+  if (!gameVersion) {
     return Effect.die(new Error('Missing request suffix'));
   }
 
@@ -60,7 +60,7 @@ export const getSession = () => {
     userId,
     sessionId,
     serverName,
-    requestSuffix,
+    gameVersion,
     isSessionValid,
   });
 }
