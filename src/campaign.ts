@@ -1,13 +1,14 @@
 import WebSocket from 'ws';
 
+import { env } from './env';
+
 let battleAttempts = 0;
 
 const maxBattleAttempts = 100000;
-const userId = '8S19Jpu9obJN';
-const sessionId = '8EvASryask';
-const serverName = 'Elmbrook';
-const uri = 'wss://ws11.holydaygames.org/';
-const global = { mission: 0, difficulty: 0 };
+const userId = env.firestone.userId;
+const serverName = env.firestone.server;
+const uri = env.firestone.socket.uri;
+const global = { mission: 0, difficulty: 0, sessionId: '' };
 
 const stringifyRequest = (request: FirestoneRequest) => {
   const firstPart = [
@@ -79,9 +80,10 @@ const ensureConnection = async () => {
   }
 }
 
-export const startCampaignBattle = async ({ mission, difficulty }: { mission: number; difficulty: number; }) => {
+export const startCampaignBattle = async ({ mission, difficulty, sessionId }: { mission: number; difficulty: number; sessionId: string; }) => {
   global.mission = mission;
   global.difficulty = difficulty;
+  global.sessionId = sessionId;
 
   await sendRequest({
     userId,

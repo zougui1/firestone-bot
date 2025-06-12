@@ -25,7 +25,13 @@ program
   .description('Does the campaign battle')
   .option('-m, --mission <number>', 'Mission number', Number)
   .option('-d, --difficulty <number>', 'Difficulty number', Number)
-  .action(async ({ mission, difficulty }) => {
+  .option('-s, --session <sessionID>', 'Session ID')
+  .action(async ({ mission, difficulty, session }) => {
+    if (!session) {
+      console.error('session ID is required');
+      return;
+    }
+
     if (!mission) {
       console.error('mission is required');
       return;
@@ -41,6 +47,7 @@ program
     startCampaignBattle({
       mission: mission - 1,
       difficulty: difficulty - 1,
+      sessionId: session,
     });
   });
 
