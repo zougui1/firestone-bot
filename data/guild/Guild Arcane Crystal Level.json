@@ -1,0 +1,471 @@
+[
+  {
+    "leaderboardRows": [
+      {
+        "id": "ASfb1r0zaZL6",
+        "statValue": 74,
+        "name": "The Fury",
+        "level": 96,
+        "guildBanner": 19,
+        "time": "2025-06-16T16:10:31.000Z",
+        "ranking": 1
+      },
+      {
+        "id": "I6pXWm9mMe9N",
+        "statValue": 58,
+        "name": "Takeover",
+        "level": 70,
+        "guildBanner": 14,
+        "time": "2025-06-18T10:16:39.000Z",
+        "ranking": 2
+      },
+      {
+        "id": "fVOYzCTJHEn3",
+        "statValue": 51,
+        "name": "TowerGuards",
+        "level": 65,
+        "guildBanner": 13,
+        "time": "2025-06-18T14:02:14.000Z",
+        "ranking": 3
+      },
+      {
+        "id": "ieoZN0QNd4MI",
+        "statValue": 49,
+        "name": "Sleepless",
+        "level": 57,
+        "guildBanner": 11,
+        "time": "2025-06-20T19:15:36.000Z",
+        "ranking": 4
+      },
+      {
+        "id": "kT0AcVSdfCX7",
+        "statValue": 45,
+        "name": "Pogueslandia!",
+        "level": 48,
+        "guildBanner": 9,
+        "time": "2025-06-17T09:26:34.000Z",
+        "ranking": 5
+      },
+      {
+        "id": "g0EUExATQjRD",
+        "statValue": 43,
+        "name": "Out From the Ashes",
+        "level": 57,
+        "guildBanner": 7,
+        "time": "2025-06-18T12:52:29.000Z",
+        "ranking": 6
+      },
+      {
+        "id": "k0cANNlELUgt",
+        "statValue": 43,
+        "name": "Scorched Syndicate",
+        "level": 63,
+        "guildBanner": 12,
+        "time": "2025-06-19T13:12:10.000Z",
+        "ranking": 7
+      },
+      {
+        "id": "NI40KyWTqqov",
+        "statValue": 40,
+        "name": "Rabbit Cult",
+        "level": 45,
+        "guildBanner": 9,
+        "time": "2025-06-04T14:14:19.000Z",
+        "ranking": 8
+      },
+      {
+        "id": "nFzKOdnG7RqI",
+        "statValue": 39,
+        "name": "ShadowZone",
+        "level": 38,
+        "guildBanner": 7,
+        "time": "2025-06-15T21:16:33.000Z",
+        "ranking": 9
+      },
+      {
+        "id": "75dGGb6BIFxb",
+        "statValue": 39,
+        "name": "☆★(Cobra Team)★☆",
+        "level": 47,
+        "guildBanner": 9,
+        "time": "2025-06-17T12:39:32.000Z",
+        "ranking": 10
+      },
+      {
+        "id": "bUyzcPPLMn2A",
+        "statValue": 39,
+        "name": "FIRESTONE SLAYERS",
+        "level": 35,
+        "guildBanner": 7,
+        "time": "2025-06-18T18:40:35.000Z",
+        "ranking": 11
+      },
+      {
+        "id": "skl1Fgq4afwh",
+        "statValue": 39,
+        "name": "First Generation",
+        "level": 37,
+        "guildBanner": 7,
+        "time": "2025-06-19T16:46:41.000Z",
+        "ranking": 12
+      },
+      {
+        "id": "RfbHzJAvV2Rs",
+        "statValue": 38,
+        "name": "Europa(EU)",
+        "level": 36,
+        "guildBanner": 7,
+        "time": "2025-06-16T07:41:30.000Z",
+        "ranking": 13
+      },
+      {
+        "id": "sEph1d11cFFk",
+        "statValue": 37,
+        "name": "IMORTAL",
+        "level": 31,
+        "guildBanner": 6,
+        "time": "2025-06-17T08:25:21.000Z",
+        "ranking": 14
+      },
+      {
+        "id": "5WcvUUTEAkYQ",
+        "statValue": 37,
+        "name": "The Guilty Zombie",
+        "level": 32,
+        "guildBanner": 6,
+        "time": "2025-06-18T14:17:30.000Z",
+        "ranking": 15
+      },
+      {
+        "id": "4JVmE0i1sPRD",
+        "statValue": 35,
+        "name": "DragonStorm",
+        "level": 38,
+        "guildBanner": 7,
+        "time": "2025-06-14T16:33:41.000Z",
+        "ranking": 16
+      },
+      {
+        "id": "HqzrvklbMDIP",
+        "statValue": 34,
+        "name": "Styxxx",
+        "level": 33,
+        "guildBanner": 6,
+        "time": "2025-06-18T04:11:27.000Z",
+        "ranking": 17
+      },
+      {
+        "id": "kVG4M2rJ2YrX",
+        "statValue": 34,
+        "name": "Pirate Cove",
+        "level": 32,
+        "guildBanner": 6,
+        "time": "2025-06-21T07:20:56.000Z",
+        "ranking": 18
+      },
+      {
+        "id": "XqtIq8XKPoKO",
+        "statValue": 33,
+        "name": "german",
+        "level": 32,
+        "guildBanner": 6,
+        "time": "2025-06-14T08:06:21.000Z",
+        "ranking": 19
+      },
+      {
+        "id": "63JKjBB4NfyJ",
+        "statValue": 33,
+        "name": "Energon",
+        "level": 41,
+        "guildBanner": 8,
+        "time": "2025-06-20T12:32:48.000Z",
+        "ranking": 20
+      },
+      {
+        "id": "5dCaGwGs59I7",
+        "statValue": 33,
+        "name": "Белые Волки",
+        "level": 32,
+        "guildBanner": 6,
+        "time": "2025-06-21T06:50:31.000Z",
+        "ranking": 21
+      },
+      {
+        "id": "6DvigBz3HY16",
+        "statValue": 32,
+        "name": "The Soul",
+        "level": 36,
+        "guildBanner": 7,
+        "time": "2025-06-18T11:56:45.000Z",
+        "ranking": 22
+      },
+      {
+        "id": "mwqrVXpj2Mma",
+        "statValue": 31,
+        "name": "Совиное гнездо",
+        "level": 26,
+        "guildBanner": 5,
+        "time": "2025-06-21T10:55:53.000Z",
+        "ranking": 23
+      },
+      {
+        "id": "jxDF7xWf0kFt",
+        "statValue": 30,
+        "name": "The Garden",
+        "level": 30,
+        "guildBanner": 6,
+        "time": "2025-06-11T02:20:44.000Z",
+        "ranking": 24
+      },
+      {
+        "id": "UD5JxVngbk4r",
+        "statValue": 26,
+        "name": "Play Your Way",
+        "level": 18,
+        "guildBanner": 3,
+        "time": "2025-06-07T09:49:53.000Z",
+        "ranking": 25
+      },
+      {
+        "id": "CswEsQrLfWXE",
+        "statValue": 25,
+        "name": "Growth Unlimited",
+        "level": 24,
+        "guildBanner": 4,
+        "time": "2025-04-03T05:13:10.000Z",
+        "ranking": 26
+      },
+      {
+        "id": "2qbHyKDNXm8T",
+        "statValue": 25,
+        "name": "666-HEAVY METAL-666",
+        "level": 24,
+        "guildBanner": 4,
+        "time": "2025-05-23T18:14:05.000Z",
+        "ranking": 27
+      },
+      {
+        "id": "orngTA9SDHsL",
+        "statValue": 23,
+        "name": "Albions Round Table",
+        "level": 20,
+        "guildBanner": 4,
+        "time": "2025-06-02T19:27:49.000Z",
+        "ranking": 28
+      },
+      {
+        "id": "FlrJ4pcITzlH",
+        "statValue": 22,
+        "name": "Stuhlkreis",
+        "level": 21,
+        "guildBanner": 0,
+        "time": "2025-04-28T19:18:15.000Z",
+        "ranking": 29
+      },
+      {
+        "id": "2dAMui3x967v",
+        "statValue": 22,
+        "name": "just chiling",
+        "level": 17,
+        "guildBanner": 3,
+        "time": "2025-06-12T11:53:20.000Z",
+        "ranking": 30
+      },
+      {
+        "id": "sXjHsLveb3m8",
+        "statValue": 22,
+        "name": "Mithlond",
+        "level": 23,
+        "guildBanner": 4,
+        "time": "2025-06-20T07:17:57.000Z",
+        "ranking": 31
+      },
+      {
+        "id": "MCub3FvdKOSJ",
+        "statValue": 21,
+        "name": "LocosArgentinos",
+        "level": 24,
+        "guildBanner": 4,
+        "time": "2025-06-09T21:09:57.000Z",
+        "ranking": 32
+      },
+      {
+        "id": "BXxMKK1b7hlG",
+        "statValue": 21,
+        "name": "Abby's followers",
+        "level": 24,
+        "guildBanner": 4,
+        "time": "2025-06-14T18:46:13.000Z",
+        "ranking": 33
+      },
+      {
+        "id": "yT82q57uD5ZC",
+        "statValue": 20,
+        "name": "Narokwi",
+        "level": 26,
+        "guildBanner": 5,
+        "time": "2025-04-10T15:13:54.000Z",
+        "ranking": 34
+      },
+      {
+        "id": "NEiknYMhVEYs",
+        "statValue": 20,
+        "name": "Red Snow",
+        "level": 19,
+        "guildBanner": 3,
+        "time": "2025-04-14T19:49:09.000Z",
+        "ranking": 35
+      },
+      {
+        "id": "cISxA44cyAYS",
+        "statValue": 18,
+        "name": "BlackSun",
+        "level": 22,
+        "guildBanner": 4,
+        "time": "2025-04-14T13:31:02.000Z",
+        "ranking": 36
+      },
+      {
+        "id": "zJIEo82ILe9o",
+        "statValue": 18,
+        "name": "Illuminee",
+        "level": 16,
+        "guildBanner": 3,
+        "time": "2025-05-01T07:44:48.000Z",
+        "ranking": 37
+      },
+      {
+        "id": "2qFW8R5wcBO3",
+        "statValue": 18,
+        "name": "Academy [TG]",
+        "level": 27,
+        "guildBanner": 5,
+        "time": "2025-06-19T17:27:26.000Z",
+        "ranking": 38
+      },
+      {
+        "id": "J3g9exUcYil0",
+        "statValue": 17,
+        "name": "Removal FR",
+        "level": 20,
+        "guildBanner": 4,
+        "time": "2025-06-02T21:38:38.000Z",
+        "ranking": 39
+      },
+      {
+        "id": "9ZAsAnSJXzAT",
+        "statValue": 16,
+        "name": "Écureuils masqués",
+        "level": 20,
+        "guildBanner": 4,
+        "time": "2025-05-12T20:45:01.000Z",
+        "ranking": 40
+      },
+      {
+        "id": "ARs8pFhMc2jq",
+        "statValue": 15,
+        "name": "Owl",
+        "level": 15,
+        "guildBanner": 3,
+        "time": "2025-05-08T15:58:46.000Z",
+        "ranking": 41
+      },
+      {
+        "id": "gfN66ZJavaOc",
+        "statValue": 15,
+        "name": "Darkness Falls",
+        "level": 14,
+        "guildBanner": 2,
+        "time": "2025-06-04T02:35:45.000Z",
+        "ranking": 42
+      },
+      {
+        "id": "rylEpTO1zepd",
+        "statValue": 15,
+        "name": "IdleGuildy",
+        "level": 18,
+        "guildBanner": 3,
+        "time": "2025-06-14T11:57:44.000Z",
+        "ranking": 43
+      },
+      {
+        "id": "ya7P3JRRyH5g",
+        "statValue": 14,
+        "name": "ASGARD",
+        "level": 18,
+        "guildBanner": 3,
+        "time": "2025-03-15T07:31:44.000Z",
+        "ranking": 44
+      },
+      {
+        "id": "AV7kiPnHBhKf",
+        "statValue": 14,
+        "name": "tramp",
+        "level": 15,
+        "guildBanner": 3,
+        "time": "2025-04-28T03:35:08.000Z",
+        "ranking": 45
+      },
+      {
+        "id": "MtcOuRZ90iOp",
+        "statValue": 13,
+        "name": "TÜRK'SANCAĞI",
+        "level": 21,
+        "guildBanner": 4,
+        "time": "2025-03-18T11:46:24.000Z",
+        "ranking": 46
+      },
+      {
+        "id": "l8tOvE99iN6J",
+        "statValue": 13,
+        "name": "Wandering Sword",
+        "level": 17,
+        "guildBanner": 3,
+        "time": "2025-04-24T20:14:44.000Z",
+        "ranking": 47
+      },
+      {
+        "id": "gA98zx7IlP7I",
+        "statValue": 13,
+        "name": "For fun",
+        "level": 9,
+        "guildBanner": 1,
+        "time": "2025-05-31T10:45:02.000Z",
+        "ranking": 48
+      },
+      {
+        "id": "3r5C9ukxeSCU",
+        "statValue": 11,
+        "name": "Relict UA",
+        "level": 25,
+        "guildBanner": 5,
+        "time": "2025-01-28T08:38:00.000Z",
+        "ranking": 49
+      },
+      {
+        "id": "FCdlHZo6fqPJ",
+        "statValue": 11,
+        "name": "Ω※JUST GROW※Ω",
+        "level": 13,
+        "guildBanner": 2,
+        "time": "2025-05-05T19:19:19.000Z",
+        "ranking": 50
+      }
+    ],
+    "region": "Global",
+    "leaderboardID": "Guild Arcane Crystal Level!--!BattleGroup38!--!Live"
+  },
+  {
+    "region": "Global",
+    "leaderboardID": "Guild Arcane Crystal Level!--!BattleGroup38!--!Live",
+    "leaderboardRows": [
+      {
+        "id": "ieoZN0QNd4MI",
+        "ranking": 4,
+        "statValue": 49,
+        "name": "Sleepless",
+        "guildBanner": 11
+      }
+    ]
+  }
+]

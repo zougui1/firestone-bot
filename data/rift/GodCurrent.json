@@ -1,0 +1,298 @@
+[
+  {
+    "region": "Global",
+    "leaderboardID": "GodCurrent",
+    "leaderboardRows": [
+      {
+        "id": "etRUE8QJsh6Q",
+        "statValue": 1086507,
+        "LastHitTime": "2025-06-20T21:08:30.781Z",
+        "ranking": 1,
+        "name": "bellaMmouse",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "GB",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "pEVd3aBG1ot4",
+        "statValue": 851009,
+        "LastHitTime": "2025-06-20T23:04:10.971Z",
+        "ranking": 2,
+        "name": "zenbudda",
+        "avatarId": 715,
+        "avatarBgId": 7,
+        "flagId": "US",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "srD956xeyXU4",
+        "statValue": 781131,
+        "LastHitTime": "2025-06-20T21:22:30.853Z",
+        "ranking": 3,
+        "name": "KerryM2000",
+        "avatarId": 9,
+        "avatarBgId": 5,
+        "flagId": "US",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "AK8YbGhOEaEE",
+        "statValue": 756606,
+        "LastHitTime": "2025-06-21T00:36:47.697Z",
+        "ranking": 4,
+        "name": "jetred19",
+        "avatarId": 4,
+        "avatarBgId": 5,
+        "flagId": "US",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "I0jUe0qAdlmN",
+        "statValue": 588457,
+        "LastHitTime": "2025-06-21T09:41:34.651Z",
+        "ranking": 5,
+        "name": "Doxii",
+        "avatarId": 2,
+        "avatarBgId": 5,
+        "flagId": "AU",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "nuoNqN6tPWN7",
+        "statValue": 463276,
+        "LastHitTime": "2025-06-21T09:10:51.811Z",
+        "ranking": 6,
+        "name": "DrJako",
+        "avatarId": 545,
+        "avatarBgId": 6,
+        "flagId": "CH",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "xRKXvPvMYjsC",
+        "statValue": 420685,
+        "LastHitTime": "2025-06-21T10:03:40.416Z",
+        "ranking": 7,
+        "name": "Rya",
+        "avatarId": 7,
+        "avatarBgId": 5,
+        "flagId": "GO",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "W3UCu5PqQCR0",
+        "statValue": 349906,
+        "LastHitTime": "2025-06-21T09:25:18.814Z",
+        "ranking": 8,
+        "name": "chakyed",
+        "avatarId": 124,
+        "avatarBgId": 5,
+        "flagId": "DK",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "l6FaiDgA3MYi",
+        "statValue": 327275,
+        "LastHitTime": "2025-06-21T09:16:01.389Z",
+        "ranking": 9,
+        "name": "Destiny",
+        "avatarId": 801,
+        "avatarBgId": 8,
+        "flagId": "KR",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "Zvw4cBsD7drv",
+        "statValue": 320588,
+        "LastHitTime": "2025-06-21T09:02:47.867Z",
+        "ranking": 10,
+        "name": "amonraven",
+        "avatarId": 0,
+        "avatarBgId": 6,
+        "flagId": null,
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "b43TnlTfDtfN",
+        "statValue": 267140,
+        "LastHitTime": "2025-06-20T21:50:47.847Z",
+        "ranking": 11,
+        "name": "Hustler",
+        "avatarId": 128,
+        "avatarBgId": 5,
+        "flagId": "EG",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "8l8wzc519nNs",
+        "statValue": 266125,
+        "LastHitTime": "2025-06-21T11:05:21.161Z",
+        "ranking": 12,
+        "name": "Azerous",
+        "avatarId": 140,
+        "avatarBgId": 6,
+        "flagId": null,
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "M2JVFiqkkAaI",
+        "statValue": 225647,
+        "LastHitTime": "2025-06-21T09:02:10.076Z",
+        "ranking": 13,
+        "name": "DrPetr",
+        "avatarId": 570,
+        "avatarBgId": 6,
+        "flagId": "CZ",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "44UcPjOU0gB5",
+        "statValue": 219846,
+        "LastHitTime": "2025-06-21T03:09:57.386Z",
+        "ranking": 14,
+        "name": "Parrydin",
+        "avatarId": 702,
+        "avatarBgId": 5,
+        "flagId": "CA",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "HytoJJ3aWeHA",
+        "statValue": 218700,
+        "LastHitTime": "2025-06-21T09:46:11.242Z",
+        "ranking": 15,
+        "name": "Cypher",
+        "avatarId": 542,
+        "avatarBgId": 6,
+        "flagId": "BE",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "UaoT9h0Nl2Kn",
+        "statValue": 213302,
+        "LastHitTime": "2025-06-21T11:33:56.553Z",
+        "ranking": 16,
+        "name": "omioma",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "c5dzzBRQXfKE",
+        "statValue": 202390,
+        "LastHitTime": "2025-06-21T09:08:14.863Z",
+        "ranking": 17,
+        "name": "[Pogue]JoJo",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "TW",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "gUrQxXQuC6c8",
+        "statValue": 202282,
+        "LastHitTime": "2025-06-21T11:03:08.142Z",
+        "ranking": 18,
+        "name": "jasper89",
+        "avatarId": 8,
+        "avatarBgId": 5,
+        "flagId": "NL",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "kmrFpt1uPIyu",
+        "statValue": 197235,
+        "LastHitTime": "2025-06-21T09:00:13.860Z",
+        "ranking": 19,
+        "name": "Kirmet",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "aHEsu88p5IrQ",
+        "statValue": 195466,
+        "LastHitTime": "2025-06-21T11:00:57.094Z",
+        "ranking": 20,
+        "name": "Diabolos",
+        "avatarId": 139,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "Y1MaSnxm8BZ3",
+        "statValue": 183782,
+        "LastHitTime": "2025-06-21T11:24:48.989Z",
+        "ranking": 21,
+        "name": "White",
+        "avatarId": 564,
+        "avatarBgId": 3,
+        "flagId": "PL",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "Z0wcdVmrywFC",
+        "statValue": 179268,
+        "LastHitTime": "2025-06-21T09:04:41.477Z",
+        "ranking": 22,
+        "name": "Aerzion",
+        "avatarId": 568,
+        "avatarBgId": 2,
+        "flagId": "CA",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "w9RyUujSbr9Y",
+        "statValue": 178570,
+        "LastHitTime": "2025-06-21T10:19:28.128Z",
+        "ranking": 23,
+        "name": "Starkelito",
+        "avatarId": 119,
+        "avatarBgId": 6,
+        "flagId": "SE",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "QYGtYYZkUbJL",
+        "statValue": 175674,
+        "LastHitTime": "2025-06-21T09:09:27.122Z",
+        "ranking": 24,
+        "name": "GetRickt",
+        "avatarId": 308,
+        "avatarBgId": 6,
+        "flagId": "DK",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      },
+      {
+        "id": "ZxxB0oOyTZ2M",
+        "statValue": 173003,
+        "LastHitTime": "2025-06-21T09:10:14.135Z",
+        "ranking": 25,
+        "name": "skinniys",
+        "avatarId": 140,
+        "avatarBgId": 6,
+        "flagId": "LV",
+        "LastUpdateTime": "2025-06-21T11:39:47.344Z"
+      }
+    ]
+  },
+  {
+    "region": "Global",
+    "leaderboardID": "GodCurrent",
+    "leaderboardRows": [
+      {
+        "id": "8S19Jpu9obJN",
+        "ranking": 71,
+        "statValue": 99135,
+        "name": "Zougui",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "GO"
+      }
+    ]
+  }
+]

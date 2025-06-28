@@ -43,19 +43,6 @@ const sendRequest = async (request: FirestoneRequest) => {
   socket.send(data);
 }
 
-/*const payloads = [
-  //*`StartCampaignBattle|==|${userId}|==|${sessionId}|==|${mission}|==|${difficulty}|-+-|${serverName}|-+-|829`,
-  // liberation missions
-  //*`StartNonCampaignBattle|==|${userId}|==|${sessionId}|==|${`LM${index}`}|-+-|${serverName}|-+-|829`,
-  // dungeon missions
-  //*`StartNonCampaignBattle|==|${userId}|==|${sessionId}|==|${`DM${index}`}|-+-|${serverName}|-+-|829`,
-
-
-  // not useful
-  //*`AskForMeteorites|==|${userId}|==|${sessionId}|-+-|${serverName}|-+-|829`,
-  //*`CompleteMeteoriteResearch|==|${userId}|==|${sessionId}|==|${tree}|==|${17}|==|${currentLevel}|==|${1}|-+-|${serverName}|-+-|829`,
-];*/
-
 const socket = new WebSocket(uri);
 
 const sleep = (ms: number) => {
@@ -117,35 +104,10 @@ const processCampaignBattleResponse = async (payload: string) => {
 
 socket.on('open', async () => {
   console.log('Connected to the server');
-
-  /*for (let index = 20; index < 50; index++) {
-    await sendRequest({
-      userId,
-      sessionId,
-      serverName,
-      //type: 'UpdateFreePickaxesStateNew',
-      //type: 'LoadFirestoneResearch',
-      //parameters: [3, 24, 0],
-      type: 'StartExpedition',
-      parameters: [`GUEXP${index.toString().padStart(3, '0')}`],
-    });
-    await sleep(1500);
-  }*/
-  /*await sendRequest({
-    userId,
-    sessionId,
-    serverName,
-    //type: 'UpdateFreePickaxesStateNew',
-    //type: 'LoadFirestoneResearch',
-    //parameters: [3, 24, 0],
-    type: 'GetAnniversaryEvent',
-    parameters: [],
-  });*/
 });
 
 socket.on('message', async message => {
   const payload = message.toString('utf-8');
-  //console.log('payload:', payload)
 
   try {
     await processCampaignBattleResponse(payload);

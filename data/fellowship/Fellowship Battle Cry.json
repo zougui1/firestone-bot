@@ -1,0 +1,370 @@
+[
+  {
+    "leaderboardRows": [
+      {
+        "id": "597491",
+        "statValue": 214008571972,
+        "name": "The Fury",
+        "time": "2025-06-11T18:32:12.000Z",
+        "ranking": 1
+      },
+      {
+        "id": "596179",
+        "statValue": 523388082,
+        "name": "TowerGuards-1",
+        "time": "2025-06-20T10:11:51.000Z",
+        "ranking": 2
+      },
+      {
+        "id": "595726",
+        "statValue": 157314861,
+        "name": "rockonoff",
+        "time": "2025-06-18T18:14:20.000Z",
+        "ranking": 3
+      },
+      {
+        "id": "597981",
+        "statValue": 29377308,
+        "name": "Regulators",
+        "time": "2025-06-20T14:12:50.000Z",
+        "ranking": 4
+      },
+      {
+        "id": "595764",
+        "statValue": 14059571,
+        "name": "Diamond",
+        "time": "2025-06-16T00:32:55.000Z",
+        "ranking": 5
+      },
+      {
+        "id": "595910",
+        "statValue": 12243091,
+        "name": "Dragoon's",
+        "time": "2025-06-21T01:58:18.000Z",
+        "ranking": 6
+      },
+      {
+        "id": "595780",
+        "statValue": 7792201,
+        "name": "Sleepless",
+        "time": "2025-06-20T23:39:58.000Z",
+        "ranking": 7
+      },
+      {
+        "id": "597328",
+        "statValue": 4806668,
+        "name": "Mindfully",
+        "time": "2025-06-06T03:14:53.000Z",
+        "ranking": 8
+      },
+      {
+        "id": "612759",
+        "statValue": 1925189,
+        "name": "Peachy🍑",
+        "time": "2025-06-18T20:34:32.000Z",
+        "ranking": 9
+      },
+      {
+        "id": "596442",
+        "statValue": 1727252,
+        "name": "Dial-A-Warcrime",
+        "time": "2025-06-21T09:09:46.000Z",
+        "ranking": 10
+      },
+      {
+        "id": "597124",
+        "statValue": 1709430,
+        "name": "Deutschland",
+        "time": "2025-06-15T16:28:33.000Z",
+        "ranking": 11
+      },
+      {
+        "id": "598206",
+        "statValue": 1537537,
+        "name": "Reborn",
+        "time": "2025-06-21T08:41:47.000Z",
+        "ranking": 12
+      },
+      {
+        "id": "601378",
+        "statValue": 1118609,
+        "name": "SPTeam",
+        "time": "2025-06-10T10:00:03.000Z",
+        "ranking": 13
+      },
+      {
+        "id": "602107",
+        "statValue": 988134,
+        "name": "Cheese",
+        "time": "2025-06-14T09:49:49.000Z",
+        "ranking": 14
+      },
+      {
+        "id": "598382",
+        "statValue": 880523,
+        "name": "Skibidi",
+        "time": "2025-06-19T13:02:06.000Z",
+        "ranking": 15
+      },
+      {
+        "id": "596875",
+        "statValue": 825177,
+        "name": "DreamTeam",
+        "time": "2025-06-21T10:19:02.000Z",
+        "ranking": 16
+      },
+      {
+        "id": "595724",
+        "statValue": 803495,
+        "name": "Fellowship",
+        "time": "2025-06-21T07:09:08.000Z",
+        "ranking": 17
+      },
+      {
+        "id": "595850",
+        "statValue": 723162,
+        "name": "Europa(EU)",
+        "time": "2025-06-19T19:05:48.000Z",
+        "ranking": 18
+      },
+      {
+        "id": "598372",
+        "statValue": 701083,
+        "name": "chillton",
+        "time": "2025-06-21T10:53:20.000Z",
+        "ranking": 19
+      },
+      {
+        "id": "598747",
+        "statValue": 624032,
+        "name": "Howlooners",
+        "time": "2025-06-19T20:06:18.000Z",
+        "ranking": 20
+      },
+      {
+        "id": "610638",
+        "statValue": 447787,
+        "name": "Broom broom",
+        "time": "2025-06-19T12:33:30.000Z",
+        "ranking": 21
+      },
+      {
+        "id": "596148",
+        "statValue": 439934,
+        "name": "XOXO",
+        "time": "2025-06-11T16:36:01.000Z",
+        "ranking": 22
+      },
+      {
+        "id": "598516",
+        "statValue": 428057,
+        "name": "DragonStorm",
+        "time": "2025-06-19T16:55:38.000Z",
+        "ranking": 23
+      },
+      {
+        "id": "596549",
+        "statValue": 416261,
+        "name": "Boys from the Dwarf",
+        "time": "2025-06-16T22:07:59.000Z",
+        "ranking": 24
+      },
+      {
+        "id": "596577",
+        "statValue": 240351,
+        "name": "Jay",
+        "time": "2025-06-20T22:49:51.000Z",
+        "ranking": 25
+      },
+      {
+        "id": "595745",
+        "statValue": 227096,
+        "name": "Sea riders",
+        "time": "2025-06-15T20:09:18.000Z",
+        "ranking": 26
+      },
+      {
+        "id": "602066",
+        "statValue": 180839,
+        "name": "Caidos",
+        "time": "2025-06-18T01:48:20.000Z",
+        "ranking": 27
+      },
+      {
+        "id": "596890",
+        "statValue": 145122,
+        "name": "Gondolin",
+        "time": "2025-06-18T13:41:35.000Z",
+        "ranking": 28
+      },
+      {
+        "id": "597173",
+        "statValue": 144862,
+        "name": "TacticalAF",
+        "time": "2025-06-21T01:20:08.000Z",
+        "ranking": 29
+      },
+      {
+        "id": "613296",
+        "statValue": 140720,
+        "name": "Cobra Legends [V]",
+        "time": "2025-06-18T00:36:25.000Z",
+        "ranking": 30
+      },
+      {
+        "id": "603543",
+        "statValue": 139750,
+        "name": "Nepetalactone",
+        "time": "2025-06-19T12:44:05.000Z",
+        "ranking": 31
+      },
+      {
+        "id": "599309",
+        "statValue": 137865,
+        "name": "GermanFighter",
+        "time": "2025-06-17T18:32:51.000Z",
+        "ranking": 32
+      },
+      {
+        "id": "601055",
+        "statValue": 137512,
+        "name": "Toastwinners",
+        "time": "2025-06-14T09:45:30.000Z",
+        "ranking": 33
+      },
+      {
+        "id": "615709",
+        "statValue": 134655,
+        "name": "BloodyDance",
+        "time": "2025-06-13T08:13:51.000Z",
+        "ranking": 34
+      },
+      {
+        "id": "602522",
+        "statValue": 134568,
+        "name": "Bleh",
+        "time": "2025-06-12T09:24:14.000Z",
+        "ranking": 35
+      },
+      {
+        "id": "599642",
+        "statValue": 132905,
+        "name": "kkxx",
+        "time": "2025-06-14T12:34:08.000Z",
+        "ranking": 36
+      },
+      {
+        "id": "598215",
+        "statValue": 124976,
+        "name": "Chantaon Clan",
+        "time": "2025-06-16T13:04:57.000Z",
+        "ranking": 37
+      },
+      {
+        "id": "597441",
+        "statValue": 115278,
+        "name": "Turtle Club",
+        "time": "2025-06-19T11:00:44.000Z",
+        "ranking": 38
+      },
+      {
+        "id": "599122",
+        "statValue": 110115,
+        "name": "strong viking",
+        "time": "2025-06-21T08:07:45.000Z",
+        "ranking": 39
+      },
+      {
+        "id": "601208",
+        "statValue": 101504,
+        "name": "panvicka",
+        "time": "2025-06-15T01:37:47.000Z",
+        "ranking": 40
+      },
+      {
+        "id": "596571",
+        "statValue": 100573,
+        "name": "Angry Tatos",
+        "time": "2025-06-19T16:35:16.000Z",
+        "ranking": 41
+      },
+      {
+        "id": "596631",
+        "statValue": 99372,
+        "name": "F13",
+        "time": "2025-06-01T14:15:40.000Z",
+        "ranking": 42
+      },
+      {
+        "id": "597985",
+        "statValue": 98301,
+        "name": "PurePower",
+        "time": "2025-06-14T12:37:01.000Z",
+        "ranking": 43
+      },
+      {
+        "id": "597913",
+        "statValue": 96898,
+        "name": "Cat Cult",
+        "time": "2025-06-20T10:21:17.000Z",
+        "ranking": 44
+      },
+      {
+        "id": "596214",
+        "statValue": 84040,
+        "name": "Kitten crew",
+        "time": "2025-06-18T18:57:34.000Z",
+        "ranking": 45
+      },
+      {
+        "id": "595821",
+        "statValue": 75730,
+        "name": "SUKIYAKI",
+        "time": "2025-06-17T17:23:25.000Z",
+        "ranking": 46
+      },
+      {
+        "id": "598750",
+        "statValue": 71859,
+        "name": "Piraquara",
+        "time": "2025-06-21T07:46:39.000Z",
+        "ranking": 47
+      },
+      {
+        "id": "596194",
+        "statValue": 66688,
+        "name": "Idle",
+        "time": "2025-06-10T15:57:15.000Z",
+        "ranking": 48
+      },
+      {
+        "id": "597438",
+        "statValue": 60034,
+        "name": "Ringmasters",
+        "time": "2025-06-10T17:34:09.000Z",
+        "ranking": 49
+      },
+      {
+        "id": "615118",
+        "statValue": 58793,
+        "name": "Boytoys",
+        "time": "2025-06-15T16:23:38.000Z",
+        "ranking": 50
+      }
+    ],
+    "region": "Global",
+    "leaderboardID": "Fellowship Battle Cry!--!BattleGroup38!--!Live"
+  },
+  {
+    "region": "Global",
+    "leaderboardID": "Fellowship Battle Cry!--!BattleGroup38!--!Live",
+    "leaderboardRows": [
+      {
+        "id": "595780",
+        "ranking": 7,
+        "statValue": 7792201,
+        "name": "Sleepless"
+      }
+    ]
+  }
+]

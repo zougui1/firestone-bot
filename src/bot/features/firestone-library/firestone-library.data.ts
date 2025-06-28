@@ -68,7 +68,7 @@ const upgradesObject = {
   },
   'precision': {
     name: 'precision',
-    id: -1,
+    id: 25,
     maxLevel: 55,
   },
   'leadership': {

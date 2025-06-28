@@ -1,0 +1,523 @@
+[
+  {
+    "leaderboardRows": [
+      {
+        "id": "l6FaiDgA3MYi",
+        "statValue": 696151423163,
+        "name": "Destiny",
+        "avatarId": 801,
+        "avatarBgId": 8,
+        "flagId": "KR",
+        "time": "2025-06-21T08:00:38.932Z",
+        "ranking": 1
+      },
+      {
+        "id": "pEVd3aBG1ot4",
+        "statValue": 448588383376,
+        "name": "zenbudda",
+        "avatarId": 715,
+        "avatarBgId": 7,
+        "flagId": "US",
+        "time": "2025-06-19T14:54:44.432Z",
+        "ranking": 2
+      },
+      {
+        "id": "etRUE8QJsh6Q",
+        "statValue": 37720941089,
+        "name": "bellaMmouse",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "GB",
+        "time": "2025-06-18T23:57:42.491Z",
+        "ranking": 3
+      },
+      {
+        "id": "rPybL1zPpYUs",
+        "statValue": 239640522,
+        "name": "MegaBakura",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-06-21T11:00:33.922Z",
+        "ranking": 4
+      },
+      {
+        "id": "hlS07ap3WNXT",
+        "statValue": 165851188,
+        "name": "ChaoticFear19",
+        "avatarId": 139,
+        "avatarBgId": 6,
+        "flagId": "CA",
+        "time": "2025-06-21T10:53:01.252Z",
+        "ranking": 5
+      },
+      {
+        "id": "GyLaeRdN8Tep",
+        "statValue": 52109913,
+        "name": "Troopa",
+        "avatarId": 128,
+        "avatarBgId": 6,
+        "flagId": "CR",
+        "time": "2025-04-02T15:48:17.427Z",
+        "ranking": 6
+      },
+      {
+        "id": "43Tq9JafFBHe",
+        "statValue": 43088469,
+        "name": "Thion",
+        "avatarId": 0,
+        "avatarBgId": 6,
+        "flagId": "CZ",
+        "time": "2025-06-18T09:29:15.373Z",
+        "ranking": 7
+      },
+      {
+        "id": "IR8LPvx6IlBu",
+        "statValue": 37523091,
+        "name": "SleepyDragon",
+        "avatarId": 556,
+        "avatarBgId": 6,
+        "flagId": "AU",
+        "time": "2025-06-20T08:16:29.266Z",
+        "ranking": 8
+      },
+      {
+        "id": "HVizfIxL0h2f",
+        "statValue": 30073448,
+        "name": "DiezZzel",
+        "avatarId": 205,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-04-27T08:52:32.256Z",
+        "ranking": 9
+      },
+      {
+        "id": "Zvw4cBsD7drv",
+        "statValue": 24786010,
+        "name": "amonraven",
+        "avatarId": 0,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-20T07:10:28.763Z",
+        "ranking": 10
+      },
+      {
+        "id": "kgz8o659SVeM",
+        "statValue": 22503517,
+        "name": "Tasserian",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-20T19:05:26.887Z",
+        "ranking": 11
+      },
+      {
+        "id": "M2JVFiqkkAaI",
+        "statValue": 21196433,
+        "name": "DrPetr",
+        "avatarId": 570,
+        "avatarBgId": 6,
+        "flagId": "CZ",
+        "time": "2025-06-21T04:11:38.743Z",
+        "ranking": 12
+      },
+      {
+        "id": "me6NDi7sm7JO",
+        "statValue": 19925506,
+        "name": "Shig",
+        "avatarId": 117,
+        "avatarBgId": 6,
+        "flagId": "SE",
+        "time": "2025-06-20T08:50:31.268Z",
+        "ranking": 13
+      },
+      {
+        "id": "QoJ2nzMXFCQs",
+        "statValue": 18943774,
+        "name": "Tengu",
+        "avatarId": 2,
+        "avatarBgId": 6,
+        "flagId": "NL",
+        "time": "2025-06-18T20:18:03.841Z",
+        "ranking": 14
+      },
+      {
+        "id": "wCdUrKGcEdk0",
+        "statValue": 18692075,
+        "name": "Shurato",
+        "avatarId": 4,
+        "avatarBgId": 6,
+        "flagId": "FR",
+        "time": "2025-06-20T09:46:31.532Z",
+        "ranking": 15
+      },
+      {
+        "id": "P1FygYZseMWn",
+        "statValue": 17521331,
+        "name": "Katra",
+        "avatarId": 702,
+        "avatarBgId": 6,
+        "flagId": "UA",
+        "time": "2025-06-21T06:47:19.062Z",
+        "ranking": 16
+      },
+      {
+        "id": "jzBVl16vZiMp",
+        "statValue": 17253684,
+        "name": "nightshadowblade",
+        "avatarId": 0,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-21T11:37:59.178Z",
+        "ranking": 17
+      },
+      {
+        "id": "dKqAC4OLRBft",
+        "statValue": 17227255,
+        "name": "Pahendr",
+        "avatarId": 9,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-19T09:20:45.823Z",
+        "ranking": 18
+      },
+      {
+        "id": "kmrFpt1uPIyu",
+        "statValue": 16639732,
+        "name": "Kirmet",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-06-21T08:36:25.830Z",
+        "ranking": 19
+      },
+      {
+        "id": "1FVhKgaUL6Oi",
+        "statValue": 16341966,
+        "name": "Algaron",
+        "avatarId": 10,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-06-21T09:25:41.617Z",
+        "ranking": 20
+      },
+      {
+        "id": "aHEsu88p5IrQ",
+        "statValue": 16141354,
+        "name": "Diabolos",
+        "avatarId": 139,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-21T11:07:23.453Z",
+        "ranking": 21
+      },
+      {
+        "id": "HytoJJ3aWeHA",
+        "statValue": 15179291,
+        "name": "Cypher",
+        "avatarId": 542,
+        "avatarBgId": 6,
+        "flagId": "BE",
+        "time": "2025-06-21T10:03:51.337Z",
+        "ranking": 22
+      },
+      {
+        "id": "2xFq7xO74XKV",
+        "statValue": 12892542,
+        "name": "mastaj81",
+        "avatarId": 806,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-05-30T02:53:06.570Z",
+        "ranking": 23
+      },
+      {
+        "id": "YSQCk4sw8WAL",
+        "statValue": 11406216,
+        "name": "Mandori",
+        "avatarId": 701,
+        "avatarBgId": 6,
+        "flagId": "NO",
+        "time": "2025-06-20T23:37:18.349Z",
+        "ranking": 24
+      },
+      {
+        "id": "M6MhFIYd8sKR",
+        "statValue": 10666022,
+        "name": "Crosis Laurekal",
+        "avatarId": 6,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-21T05:09:48.722Z",
+        "ranking": 25
+      },
+      {
+        "id": "Yjn2vJfpWQE7",
+        "statValue": 10311390,
+        "name": "Guest",
+        "avatarId": 6,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-21T11:21:12.310Z",
+        "ranking": 26
+      },
+      {
+        "id": "e0oJ5iS4JE74",
+        "statValue": 10019918,
+        "name": "Pear",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-20T09:05:13.099Z",
+        "ranking": 27
+      },
+      {
+        "id": "nuoNqN6tPWN7",
+        "statValue": 9283838,
+        "name": "DrJako",
+        "avatarId": 545,
+        "avatarBgId": 6,
+        "flagId": "CH",
+        "time": "2025-06-21T09:27:13.244Z",
+        "ranking": 28
+      },
+      {
+        "id": "vzT8RLwIwav1",
+        "statValue": 8754334,
+        "name": "Vsemudachki",
+        "avatarId": 9,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-21T08:24:36.907Z",
+        "ranking": 29
+      },
+      {
+        "id": "TI6liVc5sY5o",
+        "statValue": 8480420,
+        "name": "Tarrassios",
+        "avatarId": 556,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-11T17:35:11.080Z",
+        "ranking": 30
+      },
+      {
+        "id": "xRKXvPvMYjsC",
+        "statValue": 8359490,
+        "name": "Rya",
+        "avatarId": 7,
+        "avatarBgId": 5,
+        "flagId": "GO",
+        "time": "2025-06-20T16:21:18.988Z",
+        "ranking": 31
+      },
+      {
+        "id": "8S19Jpu9obJN",
+        "statValue": 8338197,
+        "name": "Zougui",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "GO",
+        "time": "2025-06-21T11:30:28.826Z",
+        "ranking": 32
+      },
+      {
+        "id": "56Y6SuQC9yWa",
+        "statValue": 7693698,
+        "name": "Reyor",
+        "avatarId": 112,
+        "avatarBgId": 6,
+        "flagId": "FR",
+        "time": "2025-06-20T22:21:56.967Z",
+        "ranking": 33
+      },
+      {
+        "id": "UaoT9h0Nl2Kn",
+        "statValue": 6772589,
+        "name": "omioma",
+        "avatarId": 703,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-06-21T10:24:15.039Z",
+        "ranking": 34
+      },
+      {
+        "id": "gHUMG2ocJeCH",
+        "statValue": 6621845,
+        "name": "Mysterius",
+        "avatarId": 10,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-06-20T13:05:48.543Z",
+        "ranking": 35
+      },
+      {
+        "id": "Rt58dYzznts6",
+        "statValue": 6471386,
+        "name": "Zeus",
+        "avatarId": 702,
+        "avatarBgId": 6,
+        "flagId": "TR",
+        "time": "2025-06-21T09:02:53.435Z",
+        "ranking": 36
+      },
+      {
+        "id": "ZANSna7IFWVV",
+        "statValue": 6444017,
+        "name": "Jenna",
+        "avatarId": 102,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-06-20T22:06:56.227Z",
+        "ranking": 37
+      },
+      {
+        "id": "OHhIpzIg01Vc",
+        "statValue": 6331653,
+        "name": "Tendd",
+        "avatarId": 9,
+        "avatarBgId": 6,
+        "flagId": null,
+        "time": "2025-06-20T10:56:33.730Z",
+        "ranking": 38
+      },
+      {
+        "id": "fraZd4n5Kjvv",
+        "statValue": 5686440,
+        "name": "DarkVader",
+        "avatarId": 545,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-19T02:16:58.758Z",
+        "ranking": 39
+      },
+      {
+        "id": "w1GWg85doUu2",
+        "statValue": 5490931,
+        "name": "Riikudou",
+        "avatarId": 564,
+        "avatarBgId": 5,
+        "flagId": "GO",
+        "time": "2025-06-20T11:53:30.450Z",
+        "ranking": 40
+      },
+      {
+        "id": "3kaXSz92pKiY",
+        "statValue": 5342222,
+        "name": "BrilliantBlade.rztP",
+        "avatarId": 567,
+        "avatarBgId": 5,
+        "flagId": "BG",
+        "time": "2025-06-21T07:27:27.908Z",
+        "ranking": 41
+      },
+      {
+        "id": "m2JRZBRWLV62",
+        "statValue": 5231687,
+        "name": "NeonDream",
+        "avatarId": 809,
+        "avatarBgId": 5,
+        "flagId": "AU",
+        "time": "2025-06-21T03:46:12.215Z",
+        "ranking": 42
+      },
+      {
+        "id": "QH4P0mF0K6em",
+        "statValue": 5137619,
+        "name": "FlipG19",
+        "avatarId": 0,
+        "avatarBgId": 6,
+        "flagId": "GB",
+        "time": "2025-06-20T10:18:58.573Z",
+        "ranking": 43
+      },
+      {
+        "id": "kKZ5Jo0up0Oj",
+        "statValue": 5115967,
+        "name": "caliope",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "DE",
+        "time": "2025-04-19T15:19:53.956Z",
+        "ranking": 44
+      },
+      {
+        "id": "c5dzzBRQXfKE",
+        "statValue": 4984642,
+        "name": "[Pogue]JoJo",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "TW",
+        "time": "2025-06-21T06:55:48.790Z",
+        "ranking": 45
+      },
+      {
+        "id": "p7ikbxfdHCfH",
+        "statValue": 4823467,
+        "name": "SophskiMofski",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-21T08:26:42.292Z",
+        "ranking": 46
+      },
+      {
+        "id": "vOWC0yzPaCrs",
+        "statValue": 4780257,
+        "name": "Democracy",
+        "avatarId": 428,
+        "avatarBgId": 6,
+        "flagId": "US",
+        "time": "2025-06-20T11:17:40.319Z",
+        "ranking": 47
+      },
+      {
+        "id": "dgNUiigg3huA",
+        "statValue": 4371279,
+        "name": "Sam",
+        "avatarId": 11,
+        "avatarBgId": 5,
+        "flagId": "NL",
+        "time": "2025-06-20T14:06:56.410Z",
+        "ranking": 48
+      },
+      {
+        "id": "soJvgNbBxcAa",
+        "statValue": 4294505,
+        "name": "Legenda",
+        "avatarId": 5,
+        "avatarBgId": 5,
+        "flagId": null,
+        "time": "2025-06-20T08:51:23.015Z",
+        "ranking": 49
+      },
+      {
+        "id": "Q1626OhWFZX9",
+        "statValue": 4281450,
+        "name": "Kit734",
+        "avatarId": 10,
+        "avatarBgId": 5,
+        "flagId": null,
+        "time": "2025-05-13T18:52:10.976Z",
+        "ranking": 50
+      }
+    ],
+    "region": "Global",
+    "leaderboardID": "War_Machine_Power!--!BattleGroup38!--!Live"
+  },
+  {
+    "region": "Global",
+    "leaderboardID": "War_Machine_Power!--!BattleGroup38!--!Live",
+    "leaderboardRows": [
+      {
+        "id": "8S19Jpu9obJN",
+        "ranking": 32,
+        "statValue": 8338197,
+        "name": "Zougui",
+        "avatarId": 7,
+        "avatarBgId": 6,
+        "flagId": "GO"
+      }
+    ]
+  }
+]

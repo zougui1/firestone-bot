@@ -1,0 +1,370 @@
+[
+  {
+    "leaderboardRows": [
+      {
+        "id": "597491",
+        "statValue": 72192302650,
+        "name": "The Fury",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 1
+      },
+      {
+        "id": "596179",
+        "statValue": 34238795850,
+        "name": "TowerGuards-1",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 2
+      },
+      {
+        "id": "597124",
+        "statValue": 4255672400,
+        "name": "Deutschland",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 3
+      },
+      {
+        "id": "595724",
+        "statValue": 3657458200,
+        "name": "Fellowship",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 4
+      },
+      {
+        "id": "601378",
+        "statValue": 3299812100,
+        "name": "SPTeam",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 5
+      },
+      {
+        "id": "595764",
+        "statValue": 3261211250,
+        "name": "Diamond",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 6
+      },
+      {
+        "id": "595780",
+        "statValue": 2567363850,
+        "name": "Sleepless",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 7
+      },
+      {
+        "id": "601208",
+        "statValue": 2546166450,
+        "name": "panvicka",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 8
+      },
+      {
+        "id": "598372",
+        "statValue": 2150086650,
+        "name": "chillton",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 9
+      },
+      {
+        "id": "595726",
+        "statValue": 2148472400,
+        "name": "rockonoff",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 10
+      },
+      {
+        "id": "596442",
+        "statValue": 2060789000,
+        "name": "Dial-A-Warcrime",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 11
+      },
+      {
+        "id": "598516",
+        "statValue": 2012112600,
+        "name": "DragonStorm",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 12
+      },
+      {
+        "id": "597981",
+        "statValue": 1878084700,
+        "name": "Regulators",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 13
+      },
+      {
+        "id": "598016",
+        "statValue": 1836629350,
+        "name": "Bataille",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 14
+      },
+      {
+        "id": "597328",
+        "statValue": 1777785350,
+        "name": "Mindfully",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 15
+      },
+      {
+        "id": "595910",
+        "statValue": 1759003200,
+        "name": "Dragoon's",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 16
+      },
+      {
+        "id": "598206",
+        "statValue": 1639700600,
+        "name": "Reborn",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 17
+      },
+      {
+        "id": "598382",
+        "statValue": 1566244550,
+        "name": "Skibidi",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 18
+      },
+      {
+        "id": "602522",
+        "statValue": 1559785500,
+        "name": "Bleh",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 19
+      },
+      {
+        "id": "613296",
+        "statValue": 1556251900,
+        "name": "Cobra Legends [V]",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 20
+      },
+      {
+        "id": "612759",
+        "statValue": 1536121950,
+        "name": "Peachy🍑",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 21
+      },
+      {
+        "id": "598747",
+        "statValue": 1501035000,
+        "name": "Howlooners",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 22
+      },
+      {
+        "id": "597438",
+        "statValue": 1474077700,
+        "name": "Ringmasters",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 23
+      },
+      {
+        "id": "596631",
+        "statValue": 1459818150,
+        "name": "F13",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 24
+      },
+      {
+        "id": "615709",
+        "statValue": 1433415900,
+        "name": "BloodyDance",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 25
+      },
+      {
+        "id": "596577",
+        "statValue": 1427298300,
+        "name": "Jay",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 26
+      },
+      {
+        "id": "601055",
+        "statValue": 1369507950,
+        "name": "Toastwinners",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 27
+      },
+      {
+        "id": "598750",
+        "statValue": 1365626850,
+        "name": "Piraquara",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 28
+      },
+      {
+        "id": "602107",
+        "statValue": 1352436950,
+        "name": "Cheese",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 29
+      },
+      {
+        "id": "595850",
+        "statValue": 1348844950,
+        "name": "Europa(EU)",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 30
+      },
+      {
+        "id": "596549",
+        "statValue": 1323716350,
+        "name": "Boys from the Dwarf",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 31
+      },
+      {
+        "id": "596890",
+        "statValue": 1304749300,
+        "name": "Gondolin",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 32
+      },
+      {
+        "id": "596148",
+        "statValue": 1303845000,
+        "name": "XOXO",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 33
+      },
+      {
+        "id": "602066",
+        "statValue": 1296197700,
+        "name": "Caidos",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 34
+      },
+      {
+        "id": "599309",
+        "statValue": 1265843750,
+        "name": "GermanFighter",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 35
+      },
+      {
+        "id": "596875",
+        "statValue": 1246888250,
+        "name": "DreamTeam",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 36
+      },
+      {
+        "id": "596194",
+        "statValue": 1220243850,
+        "name": "Idle",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 37
+      },
+      {
+        "id": "599642",
+        "statValue": 1146175300,
+        "name": "kkxx",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 38
+      },
+      {
+        "id": "595815",
+        "statValue": 1123493950,
+        "name": "Неясыть",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 39
+      },
+      {
+        "id": "603543",
+        "statValue": 1111995550,
+        "name": "Nepetalactone",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 40
+      },
+      {
+        "id": "599122",
+        "statValue": 1075615800,
+        "name": "strong viking",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 41
+      },
+      {
+        "id": "595745",
+        "statValue": 1036817100,
+        "name": "Sea riders",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 42
+      },
+      {
+        "id": "598511",
+        "statValue": 1024730450,
+        "name": "schweizer Krieger",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 43
+      },
+      {
+        "id": "610638",
+        "statValue": 1007271050,
+        "name": "Broom broom",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 44
+      },
+      {
+        "id": "597173",
+        "statValue": 991227550,
+        "name": "TacticalAF",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 45
+      },
+      {
+        "id": "603985",
+        "statValue": 976277600,
+        "name": "LocosArgentinos",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 46
+      },
+      {
+        "id": "596307",
+        "statValue": 954977400,
+        "name": "North",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 47
+      },
+      {
+        "id": "598215",
+        "statValue": 930327450,
+        "name": "Chantaon Clan",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 48
+      },
+      {
+        "id": "597904",
+        "statValue": 918480150,
+        "name": "La Sangre Del Angels",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 49
+      },
+      {
+        "id": "597441",
+        "statValue": 914441550,
+        "name": "Turtle Club",
+        "time": "2019-04-01T00:00:00.000Z",
+        "ranking": 50
+      }
+    ],
+    "region": "Global",
+    "leaderboardID": "Fellowship Power!--!BattleGroup38!--!Live"
+  },
+  {
+    "region": "Global",
+    "leaderboardID": "Fellowship Power!--!BattleGroup38!--!Live",
+    "leaderboardRows": [
+      {
+        "id": "595780",
+        "ranking": 7,
+        "statValue": 2567363850,
+        "name": "Sleepless"
+      }
+    ]
+  }
+]

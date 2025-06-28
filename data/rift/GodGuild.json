@@ -1,0 +1,121 @@
+[
+  {
+    "region": "Global",
+    "leaderboardID": "GodGuild",
+    "leaderboardRows": [
+      {
+        "id": "k0cANNlELUgt",
+        "statValue": 235680673,
+        "LastHitTime": "2025-06-21T10:58:54.144Z",
+        "ranking": 1,
+        "name": "Scorched Syndicate",
+        "level": 63,
+        "guildBanner": 12,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "ASfb1r0zaZL6",
+        "statValue": 193027147,
+        "LastHitTime": "2025-06-21T11:00:57.096Z",
+        "ranking": 2,
+        "name": "The Fury",
+        "level": 96,
+        "guildBanner": 19,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "75dGGb6BIFxb",
+        "statValue": 182275549,
+        "LastHitTime": "2025-06-21T11:44:16.465Z",
+        "ranking": 3,
+        "name": "☆★(Cobra Team)★☆",
+        "level": 47,
+        "guildBanner": 9,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "skl1Fgq4afwh",
+        "statValue": 58978786,
+        "LastHitTime": "2025-06-21T10:13:46.940Z",
+        "ranking": 4,
+        "name": "First Generation",
+        "level": 37,
+        "guildBanner": 7,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "I6pXWm9mMe9N",
+        "statValue": 51028670,
+        "LastHitTime": "2025-06-21T11:43:09.429Z",
+        "ranking": 5,
+        "name": "Takeover",
+        "level": 70,
+        "guildBanner": 14,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "fVOYzCTJHEn3",
+        "statValue": 41637849,
+        "LastHitTime": "2025-06-21T11:29:46.312Z",
+        "ranking": 6,
+        "name": "TowerGuards",
+        "level": 65,
+        "guildBanner": 13,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "g0EUExATQjRD",
+        "statValue": 41408894,
+        "LastHitTime": "2025-06-21T11:24:48.992Z",
+        "ranking": 7,
+        "name": "Out From the Ashes",
+        "level": 57,
+        "guildBanner": 7,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "ieoZN0QNd4MI",
+        "statValue": 31602069,
+        "LastHitTime": "2025-06-21T11:38:00.485Z",
+        "ranking": 8,
+        "name": "Sleepless",
+        "level": 57,
+        "guildBanner": 11,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "kT0AcVSdfCX7",
+        "statValue": 25889647,
+        "LastHitTime": "2025-06-21T11:32:24.184Z",
+        "ranking": 9,
+        "name": "Pogueslandia!",
+        "level": 48,
+        "guildBanner": 9,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      },
+      {
+        "id": "bUyzcPPLMn2A",
+        "statValue": 21563545,
+        "LastHitTime": "2025-06-21T11:11:49.578Z",
+        "ranking": 10,
+        "name": "FIRESTONE SLAYERS",
+        "level": 35,
+        "guildBanner": 7,
+        "LastUpdateTime": "2025-06-21T11:44:16.466Z"
+      }
+    ]
+  },
+  {
+    "region": "Global",
+    "leaderboardID": "GodGuild",
+    "leaderboardRows": [
+      {
+        "id": "ieoZN0QNd4MI",
+        "ranking": 8,
+        "statValue": 31602069,
+        "name": "Sleepless",
+        "guildBanner": 11
+      }
+    ]
+  }
+]

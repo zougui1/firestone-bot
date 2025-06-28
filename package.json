@@ -7,6 +7,7 @@
     "start:kill": "node --enable-source-maps dist kill",
     "start:bot": "node --enable-source-maps dist bot",
     "start:campaign": "node --enable-source-maps dist campaign",
+    "start:test": "node --enable-source-maps dist test",
     "start:server": "uvicorn server.server:app --host 127.0.0.1 --port 8000",
     "compile": "tsc --project .",
     "compile:watch": "npm run compile -- --watch",
