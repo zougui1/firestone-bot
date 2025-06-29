@@ -63,7 +63,7 @@ const init = () => {
 const executeAction = (type: event.ActionType) => {
   return Effect.gen(function* () {
     if (type in gameHandlers && type) {
-      yield* gameHandlers[type]().pipe(Effect.catchAll(Effect.logError));
+      yield* gameHandlers[type]();
     } else {
       yield* Effect.logWarning(`feature "${type}" has no handler`);
     }
@@ -136,7 +136,17 @@ export const startBot = () => {
 
         if (isEnabled) {
           if (config.isSessionValid) {
-            yield* Effect.provideService(executeAction(event.type), EventQueue, { add });
+            yield* Effect.provideService(
+              executeAction(event.type).pipe(Effect.catchAll(error => pipe(
+                Effect.logError(error),
+                Effect.tap(() => add({
+                  type: event.type,
+                  timeoutMs: env.firestone.blindTimeoutSeconds * 1000,
+                })),
+              ))),
+              EventQueue,
+              { add },
+            );
           } else {
             yield* add({
               type: event.type,
